@@ -1,0 +1,8 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/">
+    <file alias="styles.qss">styles.qss</file>
+    <file alias="icon.ico">images/icon.ico</file>
+    <file alias="fonts/FuckinGwenhwyfar.ttf">fonts/fuckin-gwenhwyfar/FuckinGwenhwyfar.ttf</file>
+  </qresource>
+</RCC>
