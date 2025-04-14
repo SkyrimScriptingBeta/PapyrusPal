@@ -1,11 +1,11 @@
-
 from dataclasses import field
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QLabel, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QToolBar, QComboBox
 
+from papyrus_pal.app import app
 from qt_helpers.widget import widget
 from qt_helpers.window import window
-from papyrus_pal.app.widgets.source_code_textbox import SourceCodeTextBox
+from papyrus_pal.widgets.source_code_textbox import SourceCodeTextBox
 
 
 @widget()
@@ -31,6 +31,12 @@ class EditorWidget(QWidget):
         self.highlighting_combo.currentTextChanged.connect(self.update_highlighting)
         editor_toolbar.addWidget(QLabel("Syntax:"))
         editor_toolbar.addWidget(self.highlighting_combo)
+        
+        # Add theme selector dropdown
+        self.theme_combo = QComboBox()
+        editor_toolbar.addWidget(QLabel("Theme:"))
+        editor_toolbar.addWidget(self.theme_combo)
+        
         editor_toolbar.addStretch()
         
         layout.addLayout(editor_toolbar)
@@ -39,8 +45,36 @@ class EditorWidget(QWidget):
         self.editor = SourceCodeTextBox()
         layout.addWidget(self.editor)
         
+        # Populate theme dropdown and connect it
+        self.populate_themes()
+        self.theme_combo.currentTextChanged.connect(self.update_theme)
+        
         # Initial highlighting setup
         self.update_highlighting("Papyrus")
+    
+    def populate_themes(self):
+        """Populate the themes dropdown with available themes."""
+        themes = self.editor.get_available_themes()
+        self.theme_combo.addItems(themes)
+        current_theme = self.editor.get_current_theme()
+        index = self.theme_combo.findText(current_theme)
+        if index >= 0:
+            self.theme_combo.setCurrentIndex(index)
+    
+    def update_theme(self, theme_name):
+        """Update the editor theme."""
+        self.editor.set_theme(theme_name)
+        
+        # Set application style based on theme
+        if theme_name == "light":
+            app.set_app_theme("light")
+        else:
+            # All other themes use dark mode
+            app.set_app_theme("dark")
+        
+        # If Papyrus highlighting is active, reapply it with the new theme
+        if self.highlighting_combo.currentText() == "Papyrus":
+            self.editor.configure_papyrus_highlighting()
     
     def update_highlighting(self, highlighting_type):
         """Update the syntax highlighting based on the selected type."""

@@ -9,14 +9,14 @@ requires-python = "<3.14,>=3.9"
 dependencies = ["pyside6 (>=6.9.0,<7.0.0)", "qasync (>=0.27.1,<0.28.0)"]
 
 [tool.poetry.scripts]
-app = "papyrus_pal.app.__main__:dev"
-dev = "papyrus_pal.app.__main__:dev"
-prod = "papyrus_pal.app.__main__:prod"
+app = "papyrus_pal.__main__:dev"
+dev = "papyrus_pal.__main__:dev"
+prod = "papyrus_pal.__main__:prod"
 
 [tool.poe.tasks]
 qrc = "pyside6-rcc -o src/papyrus_pal/app/qrc_resources.py resources/resources.qrc"
-exe = "pyinstaller --onefile --windowed --noconfirm --name \"Papyrus Pal\" --icon resources/images/icon.ico src/papyrus_pal/app/__main__.py"
-exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pal\" --icon resources/images/icon.ico src/papyrus_pal/app/__main__.py"
+exe = "pyinstaller --onefile --windowed --noconfirm --name \"Papyrus Pal\" --icon resources/images/icon.ico src/papyrus_pal/__main__.py"
+exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pal\" --icon resources/images/icon.ico src/papyrus_pal/__main__.py"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.33.1"
