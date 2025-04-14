@@ -2,7 +2,6 @@ from dataclasses import field
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QLabel, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QToolBar, QComboBox
 
-from papyrus_pal.app import app
 from qt_helpers.widget import widget
 from qt_helpers.window import window
 from papyrus_pal.widgets.source_code_textbox import SourceCodeTextBox
@@ -64,6 +63,9 @@ class EditorWidget(QWidget):
     def update_theme(self, theme_name):
         """Update the editor theme."""
         self.editor.set_theme(theme_name)
+        
+        # Apply theme to entire application - use the singleton directly
+        from papyrus_pal.app import app
         
         # Set application style based on theme
         if theme_name == "light":

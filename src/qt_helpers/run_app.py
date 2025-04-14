@@ -16,6 +16,7 @@ def run_app(
     styles_qss_local_path: str | None = None,
     main_scss_local_path: str | None = None,
 ) -> None:
+    print("Starting application...")
     if development_mode:
         if main_scss_local_path and styles_qss_local_path:
             watch_qss(

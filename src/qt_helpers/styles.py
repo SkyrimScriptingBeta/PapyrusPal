@@ -26,6 +26,8 @@ class StylesheetWatcher:
         self._on_file_change()
 
     def _update_watched_files(self):
+        print(f"Updating watched files in {self._main_scss_folder_path}")
+
         # Remove all paths; we'll re-add the current directory contents
         for path in self._qss_watcher.files() + self._qss_watcher.directories():
             self._qss_watcher.removePath(path)
@@ -66,7 +68,9 @@ def watch_qss(app: QApplication, main_scss: str, out_qss: str) -> None:
     print(f"Watching {main_scss} and writing to {out_qss}")
 
     if not os.path.exists(main_scss):
-        raise FileNotFoundError(f"Could not find file {main_scss}. Current directory: {os.getcwd()}")
+        raise FileNotFoundError(
+            f"Could not find file {main_scss}. Current directory: {os.getcwd()}"
+        )
 
     global stylesheet_watcher
     stylesheet_watcher = StylesheetWatcher(app, main_scss, out_qss)
