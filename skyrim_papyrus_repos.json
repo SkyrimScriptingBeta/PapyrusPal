@@ -1,0 +1,2540 @@
+[
+  {
+    "html_url": "https://github.com/chesko256/Campfire",
+    "description": "Campfire is a feature-rich camping system for The Elder Scrolls V: Skyrim.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/fireundubh/skyrim",
+    "description": "Everything here is old and outdated by at least 5 years.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/chesko256/Lilac",
+    "description": "A Papyrus unit test framework for Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/MinLL/GameInterfaceForToys",
+    "description": "Scripts to control toys for Skyrim and other games.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/SkyrimLL/SkLLmods",
+    "description": "[Obsolete] Legacy repo for Personal compilation of Skyrim mods created for LL.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/SkyrimLL/SDPlus",
+    "description": "[Obsolete] Legacy repo for the Sanguine Debauchery mod for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/darkconsole/dse-display-model",
+    "description": "All new Display Model mod for Skyrim: Special Edition",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/pijaczkar8/iEquip",
+    "description": "SkyUI HUD widget project for Skyrim",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    }
+  },
+  {
+    "html_url": "https://github.com/Bradenm1/Skyrim-mods",
+    "description": "Skyrim: Certain finished and unfinished mods",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Verteiron/FamiliarFaces",
+    "description": "Skyrim mod that allows characters to be shared between different playthroughs.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/McmRecorder",
+    "description": "Skyrim Mod Configuration Menu Recorder (for recording and playing back game configs)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/art-from-the-machine/Mantella-Spell",
+    "description": "Mantella spell mod for Skyrim VR / AE / SE",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/acepleiades/XP32-Maximum-Skeleton-Special-Extended",
+    "description": "XP32 Maximum Skeleton Special Extended is the update of XP32 Maximum Skeleton Extended for Skyrim Special Edition.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/legendofceo/skyrim_osex_se",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/legendofceo/skyrim_osa_se",
+    "description": "OSA SE",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Vicyntae/SCV",
+    "description": "Skyrim Capacity Vore",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/darkconsole/dse-untamed-2",
+    "description": "Totally a Skyrim mod.",
+    "license": {
+      "key": "bsd-2-clause",
+      "name": "BSD 2-Clause \"Simplified\" License",
+      "spdx_id": "BSD-2-Clause",
+      "url": "https://api.github.com/licenses/bsd-2-clause",
+      "node_id": "MDc6TGljZW5zZTQ="
+    }
+  },
+  {
+    "html_url": "https://github.com/skyrim-platform/papyrus-bridge",
+    "description": "Enable communication between Skyrim Platform (TypeScript) and Papyrus scripts",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Rukan/Grimy-Skyrim-Papyrus-Source",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimPlatformPapyrusBridge",
+    "description": "Skyrim Platform <--> Papyrus",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/CarlosLeyvaAyala/Sandow-Plus-Plus",
+    "description": "Get muscular with this mod for Skyrim SE",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/AndersonPaschoalon/Skyrim-DSilHand",
+    "description": "Skyrim Mod: Dawn of the Silver Hand",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/SkyrimLL/Skyrim",
+    "description": "Mods for Skyrim (both Legendary and Special/Anniversary editions)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/SSyl/Skyrim-Armor-Rating-Redux-SE",
+    "description": "SKSE64 DLL Plugin that recalculates how armor works in Skyrim SE.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/SkyrimScripting/MessageBox",
+    "description": "Custom Skyrim MessageBoxes (no .esp required)",
+    "license": {
+      "key": "0bsd",
+      "name": "BSD Zero Clause License",
+      "spdx_id": "0BSD",
+      "url": "https://api.github.com/licenses/0bsd",
+      "node_id": "MDc6TGljZW5zZTM1"
+    }
+  },
+  {
+    "html_url": "https://github.com/Verteiron/SkyBox",
+    "description": "Skyrim mod that allows items to be shared between different playthroughs.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/DeviousFramework/SkyrimDeviousFramework",
+    "description": "A framework mod to work with the Devious XXX mods in Skyrim",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/colinswrath/SunHelm",
+    "description": "SunHelm is a survival modification for Skyrim Special Edition.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/chesko256/ScrollWheelEquip",
+    "description": "FPS-style equipment switching mod for Skyrim.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mort65/mark-of-arkay",
+    "description": "A death alternative mod for skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/markekraus/SentientChairsSkyrimSEMod",
+    "description": "A mod for Skyrim: Special Edition which adds a race of Sentient Chairs to the world of Skyrim.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/CarlosLeyvaAyala/armor-sets-in-skyrim",
+    "description": "Monster Hunter style armor sets in Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mskynetll/Devious-Attributes",
+    "description": "Skyrim plugin that tracks various \"devious\" attributes",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mlim15/sld-snp",
+    "description": "One of several continuations of the Skyrim mod \"Spell Learning and Discovery\", originally created by /u/bepo / auie4545",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/darkconsole/dse-dyemaster",
+    "description": "Additional/Replacement Dye Set for Skyrim Dye Manager",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/pragasette/alchemy-requires-bottles-redux",
+    "description": "Skyrim mod to have potion crafting consume empty bottles",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/valorad/vaPapyrus",
+    "description": "Papyrus script snipets created when Valorad makes Skyrim/ Fallout mods",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/pragasette/no-health-reset",
+    "description": "Skyrim mod to revert full health recovery after sleep and level up",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/ciathyza/skyrim-script-tweaks",
+    "description": "Provides script optimizations and modifications for various mods.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/drvictorvs/SkyrimStuff",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/abeiro/aiagent-aiff",
+    "description": "AIFF Skyrim mod",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Voxtric/Skyrim-Mod",
+    "description": "A mod for skyrim with all the documentation to go along with it created by Benjamin Drury, Callum Gambles, and Chris Atkins.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ProbablyManuel/skyrim-unlocked",
+    "description": "Unlocks most quest-locked content by making all dungeons fully accessible at any time and replacing most \"requires a key\" locked doors with pickable ones.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/kurotatsu77/UnforgivingSkyrim",
+    "description": "Extension to Unforgiving Devices mod by iHateMyKite",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/novaarr/SLNaughtyCourier",
+    "description": "Skyrim Mod for the SexLab Framework",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/SexLabYACR",
+    "description": "Skyrim SexLab Yet Another Combat Rape",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Search",
+    "description": "Search UI and Papyrus Utility for Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Turn-of-the-Seasons",
+    "description": "Turn of the Seasons is a mod that adds four visually distinct seasons to Skyrim. Based on po3's Seasons of Skyrim Framework.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/darkconsole/dcc-display-model-2",
+    "description": "The Skyrim Mod that lets you charm and pose people.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyActions",
+    "description": "Framework for Defining Actions to Perform in Skyrim (for bots)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/FormHelper",
+    "description": "Skyrim Helper utility for working with hexadecimal and decimal Form IDs",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/phenderix/PROTEUS",
+    "description": "PROTEUS will redefine how you play Skyrim. Play as multiple characters within the same game world, on the same save game file - all with their own unique appearance, perks, spells, items, and stats. Additionally, make permanent or temporary edits to NPCs, weapons, armors, spells, weather, and more in-game.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Tolik1992/Devourment-Refactor",
+    "description": "A comprehensive Vore Mod for The Elder Scrolls V: Skyrim.",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    }
+  },
+  {
+    "html_url": "https://github.com/Jampi0n/Skyrim-ResistancesRescaled",
+    "description": "A Skyrim mod that allows customization of damage reduction formulas for the player for different resistances.",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SgtmHotkey",
+    "description": "Hotkeys for the `sgtm` command in Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/JContainersJSON",
+    "description": "JContainers/PapyrusUtil-based super lazy, slow JSON functionality for Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/AlwaysRainyInSkyrim",
+    "description": "Always Rainy in Skyrim (Skyrim mod)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Deadmano/skyrim-dmn-skyshards",
+    "description": "Skyshards of Skyrim",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/DoofyAss/SFE",
+    "description": "Skyrim - Follower Extension",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Vicyntae/Skyrim-Muscle-Growth",
+    "description": null,
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/crajjjj/slwidgets",
+    "description": "Widgets for Skyrim SL Plugins",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/emawind84/skyrim-warehouse-custom-light",
+    "description": "Skyrim Mod - Modify the candles in the warehouse so to be able to switch them off and on for a more realistic adventure!",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/markekraus/CorpseCannonSkyrimSEMod",
+    "description": "Corpse Cannon is a Skyrim SE mod that adds a power to summons a coffin once a day that shoots fresh corpses from the targeted area.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/raziell74/skyrim-better-vampires-dak-patch",
+    "description": "some small updates to the Better Vampires - Dynamic Acitivation Key Patch mod (https://www.nexusmods.com/skyrimspecialedition/mods/98134)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ceruulean/skyrim-play-as-a-dragon",
+    "description": "[Skyrim Mod] Play as a Dragon",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/AddSpellMenu",
+    "description": "AddItemMenu-like Skyrim mod for Spells",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/MP-Console-Command-Pack",
+    "description": "MP's Skyrim Console Command Pack",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/qudix/GetWet",
+    "description": "Wet Function alternative for Skyrim: Special Edition",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleMenu",
+    "description": "Control the UI of the Skyrim Console",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Scrabx3/AlternatePerspective",
+    "description": "An alternate start mod for TES5 Skyrim",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SearchCore",
+    "description": "Core Papyrus Scripts for the Skyrim `Search` mod",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/EnchantItYourWay",
+    "description": "Enchant any item with custom enchantments in Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/McmConfig",
+    "description": "Create Skyrim SkyUI Mod Configuration Menus using .json",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/ChristianWeeks/Souls_Quick_Menu",
+    "description": "Dark Souls inspired cyclical quick menu mod for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/pragasette/ctd-on-death-alas",
+    "description": "Skyrim mod to quit the game when health reaches zero",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/JObjectToJson",
+    "description": "Skyrim Platform module to convert JContainers objects to `any` JavaScript object",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/trollusk/constraints",
+    "description": "Skyrim Special Edition mod. Impose voluntary restrictions on your character to enhance roleplaying.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/SkyrimLL/SkLLpatches",
+    "description": "[Obsolete] Legacy repo for Patches to various Skyrim mods to support my own mods",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Apprentice",
+    "description": "Skyrim mod to require training for magic/weapons/armor before the player can use them",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/BellCubeDev/WoodworkersWhim",
+    "description": "A Skyrim mod allowing you to chop wood by borrowing a nearby axe. Also applied to Pickaxe things.",
+    "license": {
+      "key": "epl-2.0",
+      "name": "Eclipse Public License 2.0",
+      "spdx_id": "EPL-2.0",
+      "url": "https://api.github.com/licenses/epl-2.0",
+      "node_id": "MDc6TGljZW5zZTMy"
+    }
+  },
+  {
+    "html_url": "https://github.com/dfxyz/TimeFlies",
+    "description": "A mod for The Elder Scrolls: Skyrim that  makes game time pass when performing actions like crafting, reading, eating etc.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Adolon/Skyrim",
+    "description": "Various custom Papyrus scripts",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Sinclo/CombatEyes",
+    "description": "Combat Eyes Skyrim Mod",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/ceejbot/firestarter",
+    "description": "Interact with any campfire in Skyrim.",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/digital-apple/SkyrimTweaks",
+    "description": null,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/DeviousFramework/SkyrimDeviouslyEnslavedContinued",
+    "description": "An add on mod to the devious mods of Skyrim allowing you to be assaulted the more vulnerable you appear.",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/hoppaman/MindOfAHarlot",
+    "description": "Skyrim Mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Vicyntae/SCL",
+    "description": "Skyrim Capacity Limited",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleCommands_Prototype",
+    "description": "~ Skyrim Console Commands ~",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleDance",
+    "description": "Make Skyrim player and NPCs dance using Skyrim console command",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleCommands",
+    "description": "~ Custom Skyrim Console Commands ~",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/ErwanBeurier/Skyrim-Werewolf-Script",
+    "description": "This is the script I made for a mod on Skyrim. ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/falouu/Skyrim-MCMwN",
+    "description": "Multiple Custom Markers And Notes",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/markekraus/GreatchairsSkyrimSEMod",
+    "description": "Adds Greatchairs (Chair Greatswords) to Skyrim.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/CenterOnCellAdventures",
+    "description": "Skyrim Mod for `coc` characters",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/eschlon/CTD",
+    "description": "Chasing The Dragon - Skyrim Mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Vicyntae/SCLSE",
+    "description": "Skyrim Capacity Limited Special Edition",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/Verteiron/BakedBeansOfSkyrim",
+    "description": "These aren't just ANY baked beans... these are the Baked Beans of Skyrim!",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Meridiano/HighHeelsCondition",
+    "description": "Skyrim RaceMenu High Heels Condition Solution",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Permadeath",
+    "description": "Skyrim mod for supporting immersive Permadeath",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/carstenseng1/carstenseng1-skyrim-se-mods",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/HatterOfMad/DZ_ME_Wards_Utility",
+    "description": "Skyrim utility scripts for ward manipulation",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/acepleiades/Let-s-Make-Out-in-Skyrim",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/charlestietjen/TESV-AltLeveling",
+    "description": "Alternate skill leveling system for TESV: Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/GAntono/SerialStrip",
+    "description": "Skyrim mod offering stripping functionality with animations.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/darkconsole/dse-magic",
+    "description": "Small collection of magic spells for Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/SCLeoX/Devious-Heatrise-Scripts",
+    "description": "Papyrus scripts for Skyrim mod Devious Heatrise.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/lucasvinbr/ShoutAndBlade",
+    "description": "Skyrim mod for creating and fighting against armies",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Digital-Sauce/Multiple-Followers-Framework",
+    "description": "An extensible, multi-follower framework for Skyrim modifications.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/NoKids",
+    "description": "Removes Kids from Skyrim (and turns them into Chickens)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/FoxinTale/Matera-Reborn",
+    "description": "A repository for my Skyrim SE Mod \"MaTera Reborn\"",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/AddStuffMenu",
+    "description": "Skyrim VR mod like [AddItemMenu] for searching for stuff",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/JsonDB",
+    "description": "Skyrim Utility for storing a \"database\" of JsonFB files",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/HamishMW/volkihar-knight",
+    "description": "An armor mod with unique scripted effects for Skyrim ",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Banh-Canh/arvakCompanion",
+    "description": "Skyrim SE mod introducing an evolution system for Arvak. ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/DaymareOn/FSMP-MCM",
+    "description": "The Faster Skinned Mesh Physics Mod Configuration Menu for Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/thallada/BazaarRealmMod",
+    "description": "Papyrus scripts and ESP plugin for the Bazaar Realm Skyrim mod",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/DailySpellList",
+    "description": "Skyrim mod for choosing a daily spell list (like D&D)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/UIExtensions_UITextEntryMenu_with_VR_support",
+    "description": "Patch to UITextEntryMenu with support for Skyrim VR (via VR Keyboard)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/PickupLines",
+    "description": "Skyrim Mod which prints out whatever items you pickup (for screencasting tutorial)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/SteveTownsend/AllGUD-Tweaks",
+    "description": "Tweaks for Skyrim Special Edition mod All Geared Up Derivative SE by cskriffin",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/SteveTownsend/AllGUD-Uncloaked",
+    "description": "Skyrim SE mod implementing AllGUD item and weapon display for NPCs using SPID",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/MintyMods/MintyLightningMod",
+    "description": "Weather mod to provide Lightning for the Bethesda game Skyrim using Creation Kit",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/ElectronicsArchiver/Oblivion",
+    "description": "Oblivion is a complete overhaul of Skyrim's Atronach Forge, designed to expand its functionality.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleTextEntry",
+    "description": "Skyrim mod (for VR) to allow for text entry using the ~ console (required vanilla Console)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/kairality/ATorchbugsLife",
+    "description": "Mod for Skyrim implementing torchbug (firefly) pets that can be used as a light source.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Tamrielic-Distribution",
+    "description": "An all-encompassing integration mod that seeks to make Skyrim feel more cohesive between several different mods.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mlheur/LivingTakesTime-forMods",
+    "description": "Another Living Takes Time Skyrim mod based on Hunterborn's customization, to work with Campfire and Frostfall 3",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/StellarWind22/StellarBanking",
+    "description": "Adds a simple bank account system to Skyrim with interest, loans, gold to coin exchange, & A safety deposit box.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/IanCelo/JaxonzRenamer-RenameConsoleTarget",
+    "description": "This is a fix to a Skyrim SE Mod (nothing realy interesting here unless you specificaly came for it)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/trollusk/respawn-soulslike",
+    "description": "Skyrim Special Edition mod. When you die, drop your valuables in a grave and respawn at a safe location.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/pocket-bees/tent_pitcher",
+    "description": "Skyrim mod/Campfire plugin to use a power/hotkey/EasyWheelMenu to place Campfire's placeable items without opening your inventory.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Nuascura/Licenses",
+    "description": "Findom taxation system for Skyrim. A modular, customizable, and dedicated implementation of \"licenses\" using modern dependencies and contemporary scripting affordances.",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/trollusk/GoldIsSouls",
+    "description": "Skyrim Special Edition mod. Instead of leveling skills through use, spend gold to increase skills and level up, similar to Dark Souls.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Varieties-of-Faiths",
+    "description": "Varieties of Faiths - Shrines and Religion is a mod that aims to add a whole host of new flavorful shrines to discover across Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Drestoy/Better-Vampires-Patch",
+    "description": "Patch for Skyrim's mod Better Vampires 6.6 that adds a new option to set the maximum light level value considered as shadow",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/dirtyredz/Re-Equip",
+    "description": "Skyrim SE mod to re-equip all gear and weapons using skse to allow player made enchantments to properly be applied to the player.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/najir/PapSkse-Practice",
+    "description": "A collection of Skyrim scripts and plugins used for practicing and educational purposes. This project is for general access to scripts/code and proof of completion.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/akatsukioshiro/Skyrim",
+    "description": "Skyrim Mods I have created . . .",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    }
+  },
+  {
+    "html_url": "https://github.com/KFCsishen/Skyrim--Devourment-Remastered",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TheWildAdmiral/OTrainers",
+    "description": "A Skyrim SE mod that adds trainers support for OStim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/alexstrout/SkyrimClassic",
+    "description": "A collection of (older) plugins for Skyrim Classic.",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/zackziegler95/SkyrimPets",
+    "description": null,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/anchpop/SkyrimMod",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mfgrady/SkyrimMods",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/osmelmc/SkyrimLL",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/alexstrout/SkyrimSE",
+    "description": "A collection of plugins for Skyrim Special Edition / Anniversary Edition.",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimShopping",
+    "description": "🛒 Skyrim Home Shopping Network 🛍️",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/wowgs/SkyrimStoneBook",
+    "description": "Book to change standing stone powers onRead",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/kieranknowles1/SkyrimReputationImproved",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/GAntono/SkyrimSlaversGuild",
+    "description": "Skyrim Slavers Guild, a Skyrim mod by Antono.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/tatianaderouen/SkyrimMultiplayerMods",
+    "description": "Just some mods that a few friends of mine and I are going to be using while we play Skyrim together -- we're using the Tamriel Online mod.",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    }
+  },
+  {
+    "html_url": "https://github.com/mlheur/mlheur_SkyrimTimescale",
+    "description": "Hotkeys to change timescale in Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimTwitchRedemptionPack",
+    "description": "Pack of Redemptions for SkyrimTwitchBot",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/jacobforte/SkyrimVRHorseMovementFix",
+    "description": "NO LONGER NEEDED. This mod fixes Bethesda bug regarding movement on a horse. Instead of having movement being based on cardinal directions (holding up on joystick moves north instead of forward), this mod makes movement based on the direction the player's head is facing.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimTwitchChatVR",
+    "description": "Yet another way to view Twitch chat in VR (Skyrim)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/AndersonPaschoalon/SkyrimSE-DSilHand",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Demo_SkyrimPlatformPapyrusBridge",
+    "description": "Demo of SkyrimPlatformPapyrusBridge",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Temetra/SkyrimSE-QuickShotStanding",
+    "description": "Increases bow draw speed by 35% when standing",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/RhoWithTheFlow/SkyrimSaveSystemSideStepper",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/thmsndk/SkyrimSSE-SimpleHuntingOverhaul-MCM",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/joekolodz/SkyrimModAlternateRealityTheCity",
+    "description": "Scripts for the Alternate Reality: The City mod for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Deadmano/skyrim-dmn-xp-addon",
+    "description": "Skyrim XP Addon",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/AdPetrou/HuntingMod",
+    "description": "Skyrim Hunting Mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/BlueAccords/Skyrim-Files",
+    "description": "skyrim papyrus files",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/markekraus/BarstoolBrawlerSkyrimSEMod",
+    "description": "Skyrim SE mod that adds a Barstool weapon to Skyrim.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/UnknownPlunger/zombification-skyrim",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Zimmja/Skyrim-Scripts",
+    "description": "This repository contains scripts for my various Skyrim mods.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/BlubberHarpoonist/Cannabis-Skyrim",
+    "description": "Cannabis Skyrim Script Sources",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/asundr/vocal-mehrunes-razor-se",
+    "description": "The Skyrim mod Vocal Mehrunes' Razor updated for Skyrim Special Edition",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Rizalgar/WorldofSkyrim",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Qliook/Skyrim_Mod",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/joedmartin/Skyrim-DDW",
+    "description": "Skyrim Creation Kit - Dungeon Design Workshop",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/thomasf1234/Skyrim.Mods",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/novaarr/Skyrim-Benchmarks",
+    "description": "Some Papyrus Benchmarks",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/PhilipOfMacedon/tensura-skyrim",
+    "description": "Skyrim Tensura Modding Project! This repository needs to be organized, please be patient until I can provide further documentation.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/SkyrimAlchemyHelper/Mod",
+    "description": "Alchemy helper skyrim mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/m3ttwur5t/Maintained-Magic-Skyrim-MOD",
+    "description": "Maintained Spells For Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Miquelator96/Skyrim_Mod",
+    "description": "Code used for my Dynamic NPC in a 2020 Skyrim mod project. It uses the Papyrus language, an object-oriented code used in Bethesda's Creation Kit software.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/trollusk/skyrim-storehouse",
+    "description": null,
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/pethzero/Skyrim_Pethzero",
+    "description": "ผมทำการฝึกซ้อม code และต่างๆ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Skyrim-Silver",
+    "description": "Adds a new fully functional currency for vendors in Windhelm to use.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ManApart/skyrim-mods",
+    "description": "Scripts from my Skyrim Mods",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/rkirgizov/Skyrim-SE",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/slacksystem/Immersive-Pickup-Only",
+    "description": "Mod for Skyrim VR",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleEquip",
+    "description": "Skyrim `equip` console command",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/phalanx/Children-of-Lilith",
+    "description": "Succubus mod for Skyrim",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/TranslationLookasideBuffer/TheHuntersRitual",
+    "description": "A learning Skyrim Mod",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/Dehkartes/Infinium",
+    "description": "Skyrim Special Edtion Mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/bmats/skyrim-wanderlust",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Letiso/Skyrim-LE-Werebeast-Overhaul",
+    "description": "Skyrim Legendary Edition mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/NoobTaco/ntCorcraTheRangerSSE",
+    "description": "Skyrim SSE Mod - Follower",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Deadmano/skyrim-se-skyshards",
+    "description": "Skyshards of Skyrim (Special Edition)",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/Osmosis-Wrench/Cold-Beds-Skyrim",
+    "description": "Dead men don't sleep...",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/akl-game-lab/skyrim-exergame-mod",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Aadilsh786/skyrim-mod-forcegreet",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Rizalgar/Dungeons-and-Skyrim",
+    "description": "A mod bringing DnD to Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/markekraus/ChairhammersSkyrimSEMod",
+    "description": "Adds Chairhammers (Chair Warhammers) to Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/LambdaSix/Skyrim-Honed-Metal",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ferrari365/skyrim-script-optimizations",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ttrebuchon/Skyrim_Spell_Learning",
+    "description": "The continuation of the Skyrim mod originally created by /u/bepo",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/TheBigMeegz/MeegzSkyrimMods",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/JackOfAllTradesModding/Suited-For-Skyrim",
+    "description": "Coming Soon",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/lvxmagick/Skyrim---Settlement-Builder",
+    "description": "Settlement building has come to Skyrim.. This is the official Github for Papyrus Scripts",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Taqmuraz/Skyrim-Mana-Mod",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/matashina/Smooches-of-Skyrim",
+    "description": "An OStim extension intended to start scenes through dialogue.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/pramirezma/skyrim-nutrition-mod",
+    "description": "Add nutrition values for Skyrim Food",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Sairion350/Ren-Sky-Dev",
+    "description": "Development for Skyrim Dating Mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/enflame93/COC",
+    "description": "corruption of champions skyrim mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Dracotorre/SpellsClean",
+    "description": "Spells Clean for Skyrim SE",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/daxtron2/Deception-Quest-Mod",
+    "description": "WIP Quest mod for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/JayQwery/Quest-Entrance-Teleport",
+    "description": "Quest Entrance Teleport (Skyrim mod)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/smangham/tes5-dwemer-certified",
+    "description": "Dwemer Certified for base Skyrim.",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/TranslationLookasideBuffer/TES4Debug",
+    "description": "Small Debug Plugin for Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/carstenseng1/carstenseng1-skyrim-mods",
+    "description": "Skyrim Mods by Garret Carstensen",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/emawind84/skyrim-place-your-paintings",
+    "description": "Skyrim Mod - Place Your Paintings",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/phinocio/toggleable-combat-music",
+    "description": "Toggleable Combat Music for Skyrim",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyDice",
+    "description": "Skyrim Dice Roller for Streamers",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Infernio/Anofeyn",
+    "description": "A necromancy overhaul for Skyrim",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/ajschmidt/Papyrus-Scripts",
+    "description": "Papyrus Scripts for Skyrim mods",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Dracotorre/DTWerewolfMeterV2",
+    "description": "werewolf meter mod for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/m3ttwur5t/Empathic-Link-Skyrim-MOD",
+    "description": "Support your Allies",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/stain2003/SKYRO---Skyrim-Relationship-Overhaul",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Nuascura/Bathing-in-Skyrim-Renewed",
+    "description": "Cleaned and enhanced Bathing in Skyrim. Allows you to bathe in rivers and shower under waterfalls. Improved with modern scripting affordances. ",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/CPULL/Skyrim-Pole-Dances-Framework",
+    "description": "Public GitHub repository for the Skyrim Pole Dances Framework",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/Aadilsh786/skyrim-mod-combat-surrender",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/austinramey/SD-Skyrim-Data-Folder",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/raziell74/skyrim-junk-it-ng",
+    "description": "Inventory management through mod for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Mateus-Kreulich/anel-de-velocidade-SKYRIM",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/jacobforte/Skyrim-Better-Resource-Warnings",
+    "description": "See https://www.nexusmods.com/skyrimspecialedition/mods/26751 for a description.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/slacksystem/Skyrim-VR-Tools-Malarkey",
+    "description": "Messing around with Skyrim VR Tools: https://github.com/SkyrimAlternativeDevelopers/SkyrimVRTools",
+    "license": {
+      "key": "lgpl-3.0",
+      "name": "GNU Lesser General Public License v3.0",
+      "spdx_id": "LGPL-3.0",
+      "url": "https://api.github.com/licenses/lgpl-3.0",
+      "node_id": "MDc6TGljZW5zZTEy"
+    }
+  },
+  {
+    "html_url": "https://github.com/pimsdsigd/skyrim-magic-salt-mining",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/FPPBathingInSkyrimTogether",
+    "description": "Bathing in Skyrim, [Together Spell] add patch",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/thereallydeep/Thor_in_Skyrim_SE",
+    "description": "The Heart of Thunder mod was well received for the original game. This is a recreated Thor for Skyrim Special Edition.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/a-kadlec/TES5-Skyrim-EOB",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/m3ttwur5t/Scroll-Scribe-Skyrim-MOD",
+    "description": "Scroll crafting for Skyrim, and more.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Aruthaxx/Wasseek",
+    "description": "Follower mod for Skyrim Special Edition",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Unknownid2/SEater",
+    "description": "Soul absorb spells for Skyrim LE",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Dracotorre/EremiteCamping",
+    "description": "Eremite Camping mod for Skyrim SE",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/kingnak/kn_cutting_trees",
+    "description": "Skyrim SE mod for cutting trees",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/EyeDeck/IHarvest",
+    "description": "Resource harvesting mod for Skyrim SE",
+    "license": {
+      "key": "wtfpl",
+      "name": "Do What The F*ck You Want To Public License",
+      "spdx_id": "WTFPL",
+      "url": "https://api.github.com/licenses/wtfpl",
+      "node_id": "MDc6TGljZW5zZTE4"
+    }
+  },
+  {
+    "html_url": "https://github.com/Just4SomeMods/TintsOfASuccubusSecretDesires",
+    "description": "Another Succubus Mod for Skyrim (NSFW)",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/KataPUMB/Skyrim_Scripts_StavesOnBack",
+    "description": "Skyrim Staves on back script code",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Wyvan/mod-face2face",
+    "description": "http://skyrim.nexusmods.com/mods/30533/",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/novaarr/SLCoitusInfectus",
+    "description": "Skyrim Mod for the SexLab Framework",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mackoy212/PapyrusScripts",
+    "description": "My collection of Skyrim papyrus scripts",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/raziell74/skyrim-read-the-room-remastered",
+    "description": "Rad The Room - Tweaks and Fixes",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/valorad/tes5-skyrim-underdog-upkeep",
+    "description": "Show some love to a group of underdogs, as they surely need it. And so do you. An Elder Scroll 5 Skyrim mod",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/emawind84/skyrim-windstad-manor-more-stuff",
+    "description": "Add some lights and mannequin to the Windstad Manor Downstairs Room",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/JeCicada/Corpse-Run-DIHO-Skyrim-LE",
+    "description": null,
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/scorpiosixnine/smalls",
+    "description": "Automatic underwear replacer for Skyrim Special Edition",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SearchProviders",
+    "description": "Search Providers for the Skyrim `Search` mod",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/blennus/Skyrim-Hot-and-Sweaty---Detection-Extended",
+    "description": "Papyrus Code for mods created in Skyrim",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/valorad/tes5-skyrim-powder-keg-exhibition",
+    "description": "Some of the most efficient powders have arrived! An Elder Scroll V Skyrim mod",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SearchActions",
+    "description": "Search Actions for the Skyrim `Search` mod",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/JayQwery/NIN-NoItemNames",
+    "description": "Skyrim UI mod that removes item names",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/Pingu-Pox/SkyScape",
+    "description": "Source scripts for the Skyrim mod \"SkyScape\"",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/SexLabMoreArousalPenalty",
+    "description": " Skyrim SexLab More Penalty to High Arousal",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/nat212/SimpleHideHUDHotkey",
+    "description": "Simple Hide HUD Hotkey for Skyrim SE",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/npacker/reanimate-disintegration-fix",
+    "description": "Fixes the Skyrim reanimation spell persistence bug.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/raziell74/skyrim-triple-triad-tamriel-tweaked-expansion",
+    "description": "Expanding the Triple Triad game in Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Spellbook",
+    "description": "D&D-like Wizard Spellbook for Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ISeeDeadPeople",
+    "description": "Makes the Skyrim player see dead people",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/dreadflopp/Animated-Heavy-Armory",
+    "description": "An armory mod for TES V: Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/CoolBag",
+    "description": "Bag of Holding for Skyrim (example mod)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/naerhy/wait-carriage-in-towns",
+    "description": "Skyrim mod to improve the carriage system",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/Hazado/IneedFixes",
+    "description": "Fixes for the Skyrim Special Edition Mod - Ineed",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/SexLabYACR4N",
+    "description": "Skyrim SexLab Yet Another Combat Rape for NPC",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/asundr/infused-equipment-example-addon",
+    "description": "Sample addon for the Skyrim plugin Infused Equipment",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Kapiainen/All-Geared-Up",
+    "description": "A mod for The Elder Scrolls V: Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/HerrDoktor9001/SFF---main-code",
+    "description": "Main code for Serana Follower Framework Skyrim mod",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/NYKevin/declarative-mcm-helper",
+    "description": "A library for writing Skyrim SkyUI MCM menus.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/asundr/infused-equipment",
+    "description": "Scripts used by the Skyrim Mod Infused Equipment",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/FightClub",
+    "description": "🤜 Build fight matches between Skyrim monsters 🤛",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/raquevedo/BenduOlo",
+    "description": "Quest design tutorial for Elder Scrolls 5: Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/kalivore/poisoning-extended",
+    "description": "Improve and extend the poisoning experience in Skyrim",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Scrabx3/Yamete",
+    "description": "A combat defeat & death alternative mod for Skyrim",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/Kapiainen/Tangible-Gold",
+    "description": "A mod for The Elder Scrolls V: Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/dirtyredz/VampireMeter",
+    "description": "Skyrim SE mod to show current vampire stage.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ech3lon42/ECLoot",
+    "description": "Hotkey based Equipmentmanager for Skyrim written in Papyrus",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TheWildAdmiral/OBooty",
+    "description": "A Skyrim SE mod that adds \"Booty call\" spell",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Infernio/Wildfire",
+    "description": "Exploration, Research, Discovery - a Campfire-based mod for Skyrim",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/ItsNotYourArmor",
+    "description": "Skyrim mod \"It's Not Your Armor\" [non-adult]",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/OverseerPrimeXF/lostpets",
+    "description": "Lost Pets - NSFW mod for skyrim, in development stage",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/s-puig/sse-torch-ignites-traps",
+    "description": "Skyrim SE mod. Traps are now igniteable with a torch",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/FPPUnequipYourAmmo",
+    "description": "Auto unequip followers ammo for skyrim party play [non adult]",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/anhexpoke/HiramekiSystem",
+    "description": "TESV Skyrim mod. Hirameki means 'come up with' in japanese.",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/FPPShareMyGold",
+    "description": "\"Share Gold\" lessor power for skyrim party play [non adult]",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/julric/find-reference-api-patch",
+    "description": "Find Reference API Patch for Skyrim SE on Xbox One",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/alekcey0211/skymp5-scripts",
+    "description": "A set of scripts for RolePlay experience in Skyrim Multiplayer.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mbacalan/oblivion-level-up",
+    "description": "Skyrim SE mod that displays level up messages from Oblivion",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/kalivore/poisoning-extended-se",
+    "description": "Improve and extend the poisoning experience in Skyrim Special Edition",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/thakyZ/SimpleMilkCowsAndGoats",
+    "description": "Simple script for milking cows and goats in Skyrim Special Edition",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/EZ337/SVR",
+    "description": "Skyrim SVR mod at https://www.nexusmods.com/skyrimspecialedition/mods/72761",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/omnijxs/OrderOfMagi",
+    "description": "Repository for the Elder Scrolls V: Skyrim mod Order of Magi",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Gaz-tec/Winterweight",
+    "description": "A comprehensive Weight Gain mod for The Elder Scrolls V: Skyrim.",
+    "license": {
+      "key": "apache-2.0",
+      "name": "Apache License 2.0",
+      "spdx_id": "Apache-2.0",
+      "url": "https://api.github.com/licenses/apache-2.0",
+      "node_id": "MDc6TGljZW5zZTI="
+    }
+  },
+  {
+    "html_url": "https://github.com/lukemoore66/UnbrokenBlade01",
+    "description": "Script Repository for the Skyrim mod: Unbroken Blade, The: Part 1",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/UILIB_1_ShowTextInput_with_VR_support",
+    "description": "Patch to UILIB_1 ShowTextInput() with support for Skyrim VR (via VRKeyboard) ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/bluetayden/EasyLootHotkey",
+    "description": "Skyrim mod for taking common items from containers in one key press",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Imperial-Law",
+    "description": "Imperial Law is a Beyond Skyrim: Cyrodiil module for EpicCrab's Lawbringer.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/s-puig/sse-stolen-possesions-npc",
+    "description": "Skyrim SE mod. Tags items from deceased NPC as stolen according to ruling",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/aleios/SoulExchange",
+    "description": "A simple skyrim mod to exchanging dragon souls for attributes and perks via MCM",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/simonmagus616/mysticism",
+    "description": "Mysticism is a mod for Skyrim Special Edition that overhauls spells, staves, and scrolls. ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/Nunoflashy/Realistic-Prison-and-Bounty",
+    "description": "Mod for Skyrim that aims to enhance the lacking Bounty and Prison systems of vanilla.",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/EcchinaArmorBreak",
+    "description": "Skyrim mod \"Ecchina Armor Break\" dll by Mr.480 [non-adult?] [Maintained by bbspink anonymous]",
+    "license": {
+      "key": "other",
+      "name": "Other",
+      "spdx_id": "NOASSERTION",
+      "url": null,
+      "node_id": "MDc6TGljZW5zZTA="
+    }
+  },
+  {
+    "html_url": "https://github.com/GAntono/SerialStripper",
+    "description": "Companion mod for the Skyrim mod SerialStrip. Provides a menu and a button to initiate stripping.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/CPULL/PoleDancesMaker",
+    "description": "Git repository for the PoleDanceMaker tool to try the Pole Dances from Skyrim Pole Dances Framework",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/JU12000/DeceiveDegaine",
+    "description": "A Skyrim SE mod which provides different avenues to complete the quest \"Steal the Statue of Dibella\"",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/geekofalltrades/DeActivator",
+    "description": "A Skyrim mod that filters player activation of in-game objects based on configurable whitelists and blacklists.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Gibberish",
+    "description": "Adds a new fully functional currency for vendors from Skyrim Extended Cut - Saints and Seducers to use.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/EbanNox/DoorObserver-SE",
+    "description": "a MOD for Skyrim, a port effort from Skyrim Oldrim version to SkyrimSE, this mod is called \"Door Observer\" and it adds a basic functions to doors where that npc's interaction events are handled to let those doors auto close.",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/Scrabx3/SLUTS-Resume",
+    "description": "S.L.U.T.S. is taking on new Staff to transport goods through the cold regions of Skyrim!",
+    "license": {
+      "key": "gpl-3.0",
+      "name": "GNU General Public License v3.0",
+      "spdx_id": "GPL-3.0",
+      "url": "https://api.github.com/licenses/gpl-3.0",
+      "node_id": "MDc6TGljZW5zZTk="
+    }
+  },
+  {
+    "html_url": "https://github.com/JU12000/PropertiesWithoutPestering",
+    "description": "A Skyrim SE mod which allows players to purchase homes from Jarls without the need to do favor quests.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SchlongBasedBodies",
+    "description": "[NSFW] Skyrim mod - automatically change character body textures or type (using BOSSE) based on Schlong (with Schlong change detection)",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/C.O.I.N.",
+    "description": "C.O.I.N. adds new types of coinage of all different values to make Skyrim's economy more interesting and challenging.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/JU12000/BanditsArePeopleToo",
+    "description": "A Skyrim SE mod which overhauls the bandit interaction experience with new quests and quest paths, voiced lines, factions, and expanded interactions.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/JU12000/AetheriumAlterations",
+    "description": "A Skyrim SE mod which expands on the Aetherium Forge to allow players to change the appearance of their favorite weapons and armor.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TeagueLander/FastLoot",
+    "description": "Adds the Fallout 4 looting system to Skyrim, allowing you to peek into containers and pull items out without going into any menus!",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/geekofalltrades/QuickDrop",
+    "description": "QuickDrop is a Skyrim mod that allows you to bind hotkeys to quickly drop or keep the last few items you picked up.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/clayne/DynamicWeatherEffects-WIP-",
+    "description": "This repo is for a mod I'm working on for Skyrim SE for dynamic weather effects to take place in the world",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/ry4n-s/Big-Iron",
+    "description": "The Big Iron mod for Skyrim SE, a custom-designed adventure that immerses players in a gripping narrative inspired by classic Western tales.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Pilgrim",
+    "description": "Pilgrim is a complete overhaul of Skyrim’s religion system that adds dozens of new deities and with powerful shrine effects to the game. ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/TateTaylorOH/Asyala-the-Nordic-Khajiit",
+    "description": "Asya'la the Nordic Khajiit is a simple follower mod featuring a strange khajiit and a friendly goat for The Elder Scrolls V: Skyrim.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/LoTekkie/DivineLogic",
+    "description": "Skyrim mod that grants mod creators the ability to add complex logic to their creations by utilizing a set of modular pre-scripted trigger boxes.",
+    "license": {
+      "key": "bsd-3-clause",
+      "name": "BSD 3-Clause \"New\" or \"Revised\" License",
+      "spdx_id": "BSD-3-Clause",
+      "url": "https://api.github.com/licenses/bsd-3-clause",
+      "node_id": "MDc6TGljZW5zZTU="
+    }
+  },
+  {
+    "html_url": "https://github.com/adhj1400/TCS-SSE",
+    "description": "Script intensive modification plugin for the game TESV: Skyrim SE. It makes torches cast shadows according to the limitations regarding how the game engine draws dynamic lights.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/gddez/TeleportToHomes",
+    "description": "This mod is for Skyrim AE. The mod adds spells to the game that allows the player to teleport back to them from anywhere in the game. ",
+    "license": {
+      "key": "mit",
+      "name": "MIT License",
+      "spdx_id": "MIT",
+      "url": "https://api.github.com/licenses/mit",
+      "node_id": "MDc6TGljZW5zZTEz"
+    }
+  },
+  {
+    "html_url": "https://github.com/charlotonne/GraveRobber",
+    "description": "GraveRobber is a plugin developed for use in The Elder Scrolls V: Skyrim. Its use is to facilitate the quickswap of weapons with any NPCs killed by the player.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/themayor897/wheels-of-lull",
+    "description": "This is for the development of the Skyrim Mod \"The Wheels of Lull.\" All original assets are free to use individually, but the mod cannot re-uploaded anywhere by anyone.",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/The-Elder-Scrolls-Stories/Episode-2-Revolution",
+    "description": "Play as Ulfric Stormcloak and see the events from the Great War to the Markarth Incident to the Dual with High King Torygg unfold from the viewpoint of one of Skyrim's most enigmatic figures. ",
+    "license": null
+  },
+  {
+    "html_url": "https://github.com/HorusArchPriest/FlappyRU-ETT4",
+    "description": "Здесь выкладываются переводы плагинов от сообщества Flappy (модпака по Skyrim AE). Файл должен содержать разрешение .eet для дальнейшей проверки перед тем, как встроить перевод в мод/плагин. Также для удобства отслеживания переводов в сообществе Discord'а",
+    "license": null
+  }
+]
