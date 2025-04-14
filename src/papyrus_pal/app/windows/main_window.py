@@ -1,4 +1,5 @@
 
+from dataclasses import field
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QLabel, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QToolBar, QComboBox
 
@@ -54,13 +55,12 @@ class EditorWidget(QWidget):
 class AppMainWindow(QMainWindow):
     """Main application window for PapyrusPal."""
     
-    central_widget: EditorWidget = None
+    central_widget: EditorWidget = field(default_factory=EditorWidget)
     
     def _init(self):
         self.setWindowTitle("PapyrusPal - Papyrus Script Editor")
         self.resize(1000, 800)
         self.create_toolbar()
-        self.central_widget = EditorWidget(self)
     
     def create_toolbar(self):
         """Create the main application toolbar."""
