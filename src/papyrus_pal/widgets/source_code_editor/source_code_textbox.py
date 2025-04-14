@@ -22,6 +22,10 @@ class SourceCodeTextBox(QPlainTextEdit):
         font.setFixedPitch(True)
         self.setFont(font)
 
+        # Font scaling - store the default font size factor (100%)
+        self._font_size_factor = 100
+        self._default_font_size_factor = 100
+
         # Set up line numbers
         self.line_number_area = LineNumberArea(self)
         self.blockCountChanged.connect(self.update_line_number_area_width)
@@ -271,3 +275,44 @@ class SourceCodeTextBox(QPlainTextEdit):
             top = bottom
             bottom = top + round(self.blockBoundingRect(block).height())
             block_number += 1
+
+    def wheelEvent(self, event):
+        """Handle mouse wheel events to allow Ctrl+wheel to zoom text."""
+        if event.modifiers() & Qt.ControlModifier:
+            delta = event.angleDelta().y()
+            if delta > 0:
+                self.zoom_in()
+            elif delta < 0:
+                self.zoom_out()
+            event.accept()
+        else:
+            super().wheelEvent(event)
+
+    def zoom_in(self):
+        """Increase the font size."""
+        if self._font_size_factor < 300:  # Maximum 300% zoom
+            self._font_size_factor += 10
+            self._update_font_size()
+
+    def zoom_out(self):
+        """Decrease the font size."""
+        if self._font_size_factor > 50:  # Minimum 50% zoom
+            self._font_size_factor -= 10
+            self._update_font_size()
+
+    def reset_zoom(self):
+        """Reset font size to default."""
+        self._font_size_factor = self._default_font_size_factor
+        self._update_font_size()
+
+    def _update_font_size(self):
+        """Update the font size using stylesheet to preserve font family."""
+        # Apply stylesheet with adjusted font size
+        percentage = self._font_size_factor / 100.0
+        self.setStyleSheet(
+            f"font-size: {int(18 * percentage)}px;"
+        )  # Base font size is 18px from QSS
+
+        # Update line numbers area after font change
+        self.update_line_number_area_width(0)
+        self.update()
