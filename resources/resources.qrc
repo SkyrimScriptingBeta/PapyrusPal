@@ -4,5 +4,7 @@
     <file alias="styles.qss">styles.qss</file>
     <file alias="icon.ico">images/icon.ico</file>
     <file alias="fonts/FuckinGwenhwyfar.ttf">fonts/fuckin-gwenhwyfar/FuckinGwenhwyfar.ttf</file>
+    <file alias="fonts/FiraCode.ttf">fonts\Fira_Code_v6.2\variable_ttf\FiraCode-VF.ttf</file>
+    <file alias="fonts/FiraCodeiScript.ttf">fonts\FiraCodeiScript-master\FiraCodeiScript-Italic.ttf</file>
   </qresource>
 </RCC>
