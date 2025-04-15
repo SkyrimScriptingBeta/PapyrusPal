@@ -33,7 +33,86 @@ from PySide6.QtWidgets import (
 )
 
 # Import pylspclient for LSP functionality
-import pylspclient
+try:
+    import pylspclient
+
+    HAS_PYLSPCLIENT = True
+except ImportError:
+    print("Warning: pylspclient not found. Using mock LSP implementation.")
+    HAS_PYLSPCLIENT = False
+
+
+# Mock LSP client implementation for when pylspclient is not available
+if not HAS_PYLSPCLIENT:
+
+    class MockJsonRpcEndpoint:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_notification(self):
+            return None
+
+    class MockLspClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def initialize(self, **kwargs):
+            return {"capabilities": {}}
+
+        def initialized(self, *args, **kwargs):
+            pass
+
+        def shutdown(self):
+            pass
+
+        def exit(self):
+            pass
+
+        def didOpen(self, **kwargs):
+            pass
+
+        def didChange(self, **kwargs):
+            pass
+
+        def completion(self, **kwargs):
+            # Return some mock completion items
+            return [
+                {
+                    "label": "mock_function",
+                    "kind": 3,
+                    "detail": "Mock function",
+                    "documentation": {
+                        "kind": "markdown",
+                        "value": "This is a mock function",
+                    },
+                },
+                {
+                    "label": "mock_variable",
+                    "kind": 6,
+                    "detail": "Mock variable",
+                    "documentation": "A mock variable",
+                },
+                {
+                    "label": "mock_class",
+                    "kind": 7,
+                    "detail": "Mock class",
+                    "documentation": {"kind": "markdown", "value": "A mock class"},
+                },
+            ]
+
+        def hover(self, **kwargs):
+            # Return mock hover information
+            return {
+                "contents": {
+                    "kind": "markdown",
+                    "value": "**Mock Documentation**\n\nThis is mock hover information provided when pylspclient is not available.",
+                }
+            }
+
+    # Replace the actual classes with our mocks
+    pylspclient = type("", (), {})
+    pylspclient.JsonRpcEndpoint = MockJsonRpcEndpoint
+    pylspclient.LspClient = MockLspClient
 
 
 # Define LSP struct classes since pylspclient.lsp_structs is not available
@@ -227,6 +306,7 @@ class LSPClient(QObject):
     def start_server(self):
         """Start the language server process."""
         try:
+            print("DEBUG: Starting language server process...")
             # Start python-lsp-server process
             self.server_process = subprocess.Popen(
                 ["pylsp"],
@@ -235,27 +315,45 @@ class LSPClient(QObject):
                 stderr=subprocess.PIPE,
                 universal_newlines=False,
             )
+            print("DEBUG: Server process started")
 
+            print("DEBUG: Creating JSON-RPC endpoint...")
             # Create JSON-RPC endpoint
             self.json_rpc_endpoint = pylspclient.JsonRpcEndpoint(
                 self.server_process.stdout, self.server_process.stdin
             )
+            print("DEBUG: JSON-RPC endpoint created")
 
+            print("DEBUG: Creating LSP endpoint...")
+            # Create LSP endpoint
+            self.lsp_endpoint = pylspclient.LspEndpoint(self.json_rpc_endpoint)
+            print("DEBUG: LSP endpoint created")
+
+            print("DEBUG: Creating LSP client...")
             # Create LSP client
-            self.lsp_client = pylspclient.LspClient(self.json_rpc_endpoint)
+            self.lsp_client = pylspclient.LspClient(self.lsp_endpoint)
+            print("DEBUG: LSP client created")
 
+            print("DEBUG: Initializing server...")
+            # Initialize the server
+            self._initialize_server()
+            print("DEBUG: Server initialized")
+
+            print("DEBUG: Creating notification thread...")
             # Start listening for notifications in a separate thread
             self.notification_thread = threading.Thread(
                 target=self._handle_notifications, daemon=True
             )
+            print("DEBUG: Starting notification thread...")
             self.notification_thread.start()
-
-            # Initialize the server
-            self._initialize_server()
+            print("DEBUG: Notification thread started")
 
             return True
         except Exception as e:
             print(f"Error starting language server: {e}")
+            import traceback
+
+            traceback.print_exc()
             self.stop_server()
             return False
 
@@ -318,7 +416,15 @@ class LSPClient(QObject):
         }
 
         # Send initialize request
-        response = self.lsp_client.initialize(initialize_params)
+        response = self.lsp_client.initialize(
+            processId=initialize_params["processId"],
+            rootPath=None,  # Not used in newer LSP versions
+            rootUri=initialize_params["rootUri"],
+            initializationOptions=None,
+            capabilities=initialize_params["capabilities"],
+            trace="off",
+            workspaceFolders=initialize_params["workspaceFolders"],
+        )
         self.server_capabilities = response.get("capabilities", {})
 
         # Send initialized notification
@@ -352,13 +458,11 @@ class LSPClient(QObject):
 
         # Send textDocument/didOpen notification
         self.lsp_client.didOpen(
-            {
-                "textDocument": {
-                    "uri": self.document_uri,
-                    "languageId": language_id,
-                    "version": self.document_version,
-                    "text": text,
-                }
+            textDocument={
+                "uri": self.document_uri,
+                "languageId": language_id,
+                "version": self.document_version,
+                "text": text,
             }
         )
 
@@ -371,13 +475,11 @@ class LSPClient(QObject):
 
         # Send textDocument/didChange notification
         self.lsp_client.didChange(
-            {
-                "textDocument": {
-                    "uri": self.document_uri,
-                    "version": self.document_version,
-                },
-                "contentChanges": [{"text": text}],
-            }
+            textDocument={
+                "uri": self.document_uri,
+                "version": self.document_version,
+            },
+            contentChanges=[{"text": text}],
         )
 
     def request_completion(self, position: Tuple[int, int], trigger_char: str = None):
@@ -398,11 +500,9 @@ class LSPClient(QObject):
         # Send completion request
         try:
             response = self.lsp_client.completion(
-                {
-                    "textDocument": {"uri": self.document_uri},
-                    "position": {"line": position[0], "character": position[1]},
-                    "context": context,
-                }
+                textDocument={"uri": self.document_uri},
+                position={"line": position[0], "character": position[1]},
+                context=context,
             )
 
             # Process completion items
@@ -467,10 +567,8 @@ class LSPClient(QObject):
         # Send hover request
         try:
             response = self.lsp_client.hover(
-                {
-                    "textDocument": {"uri": self.document_uri},
-                    "position": {"line": position[0], "character": position[1]},
-                }
+                textDocument={"uri": self.document_uri},
+                position={"line": position[0], "character": position[1]},
             )
 
             # Convert response to Hover object
