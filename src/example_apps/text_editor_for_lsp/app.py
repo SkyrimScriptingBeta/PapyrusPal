@@ -15,21 +15,21 @@ from PySide6.QtGui import (
     QTextCursor,
     QFont,
     QPainter,
-    QTextCharFormat,
     QKeyEvent,
     QMouseEvent,
     QFontMetrics,
+    QTextCharFormat,
 )
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QPlainTextEdit,
+    QStatusBar,
     QWidget,
     QLabel,
     QListWidget,
     QListWidgetItem,
     QFrame,
-    QStatusBar,
 )
 
 # Import pylspclient for LSP functionality
@@ -297,36 +297,42 @@ class LSPClient(QObject):
         self.server_process = None
         self.json_rpc_endpoint = None
         self.lsp_client = None
+        self.lsp_endpoint = None
         self.server_capabilities = None
         self.initialized = False
         self.document_version = 0
         self.root_uri = None
         self.document_uri = None
+        self.notification_thread = None
 
     def start_server(self):
         """Start the language server process."""
         try:
             print("DEBUG: Starting language server process...")
-            # Start python-lsp-server process
+            # Start python-lsp-server process with simpler approach
+            # Based on examples from other implementations
             self.server_process = subprocess.Popen(
                 ["pylsp"],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                universal_newlines=False,
+                bufsize=0,  # No buffering to ensure immediate communication
             )
             print("DEBUG: Server process started")
 
             print("DEBUG: Creating JSON-RPC endpoint...")
-            # Create JSON-RPC endpoint
+            # Create JSON-RPC endpoint using binary streams
             self.json_rpc_endpoint = pylspclient.JsonRpcEndpoint(
-                self.server_process.stdout, self.server_process.stdin
+                self.server_process.stdin,
+                self.server_process.stdout,
             )
             print("DEBUG: JSON-RPC endpoint created")
 
             print("DEBUG: Creating LSP endpoint...")
-            # Create LSP endpoint
-            self.lsp_endpoint = pylspclient.LspEndpoint(self.json_rpc_endpoint)
+            # Create LSP endpoint with increased timeout
+            self.lsp_endpoint = pylspclient.LspEndpoint(
+                self.json_rpc_endpoint, timeout=30  # Longer timeout for initialization
+            )
             print("DEBUG: LSP endpoint created")
 
             print("DEBUG: Creating LSP client...")
@@ -658,10 +664,84 @@ class TextEditorWithLSP(QPlainTextEdit):
 
         # Track diagnostics
         self.diagnostics = []
+        self.diagnostic_format = QTextCharFormat()
+        self.diagnostic_format.setUnderlineStyle(QTextCharFormat.WaveUnderline)
+        self.diagnostic_format.setUnderlineColor(QColor("#FF0000"))  # Red for errors
 
         # Set up temporary file for LSP
         self.current_file = None
         self.setup_temp_file()
+
+    def request_hover_info(self):
+        """Request hover information at the current hover position."""
+        if self.hover_position:
+            self.lsp_client.request_hover(self.hover_position)
+
+    def handle_hover_response(self, hover):
+        """Handle hover response from LSP."""
+        if not hover:
+            self.hover_tooltip.hide()
+            return
+
+        # Set hover content
+        self.hover_tooltip.set_hover_content(hover)
+
+        # Position tooltip near cursor
+        cursor = self.textCursor()
+        rect = self.cursorRect(cursor)
+        pos = self.mapToGlobal(rect.topRight())
+
+        # Show tooltip
+        self.hover_tooltip.move(pos)
+        self.hover_tooltip.adjustSize()
+        self.hover_tooltip.show()
+
+    def handle_diagnostics(self, diagnostics):
+        """Handle diagnostics from LSP."""
+        # Clear existing diagnostics
+        cursor = QTextCursor(self.document())
+        cursor.movePosition(QTextCursor.Start)
+        cursor.movePosition(QTextCursor.End, QTextCursor.KeepAnchor)
+        cursor.setCharFormat(QTextCharFormat())  # Clear formatting
+
+        # Store diagnostics
+        self.diagnostics = diagnostics
+
+        # Apply diagnostics
+        for diagnostic in diagnostics:
+            # Get diagnostic range
+            start_line = diagnostic.get("range", {}).get("start", {}).get("line", 0)
+            start_char = (
+                diagnostic.get("range", {}).get("start", {}).get("character", 0)
+            )
+            end_line = diagnostic.get("range", {}).get("end", {}).get("line", 0)
+            end_char = diagnostic.get("range", {}).get("end", {}).get("character", 0)
+
+            # Get severity (1=Error, 2=Warning, 3=Info, 4=Hint)
+            severity = diagnostic.get("severity", 1)
+
+            # Create cursor at start position
+            cursor = QTextCursor(self.document())
+            cursor.movePosition(QTextCursor.Start)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, start_line)
+            cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, start_char)
+
+            # Select to end position
+            if start_line == end_line:
+                # Same line
+                cursor.movePosition(
+                    QTextCursor.Right, QTextCursor.KeepAnchor, end_char - start_char
+                )
+            else:
+                # Multiple lines
+                cursor.movePosition(
+                    QTextCursor.Down, QTextCursor.KeepAnchor, end_line - start_line
+                )
+                cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
+                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, end_char)
+
+            # Apply formatting
+            cursor.setCharFormat(self.diagnostic_format)
 
     def setup_editor(self):
         """Set up the editor appearance."""
@@ -922,121 +1002,6 @@ class ExampleClass:
 
             # Replace selected text
             cursor.insertText(item.textEdit.newText)
-        else:
-            # Get word under cursor
-            cursor.select(QTextCursor.WordUnderCursor)
-
-            # Replace word with completion
-            cursor.insertText(
-                item.insertText if hasattr(item, "insertText") else item.label
-            )
-
-        # Update document in LSP
-        self.lsp_client.update_document(self.toPlainText())
-
-    def request_hover_info(self):
-        """Request hover information at the current hover position."""
-        if self.hover_position:
-            line, character = self.hover_position
-            self.lsp_client.request_hover((line, character))
-
-    def handle_hover_response(self, hover):
-        """Handle hover response from LSP."""
-        if not hover or not hover.contents:
-            self.hover_tooltip.hide()
-            return
-
-        # Set hover content
-        self.hover_tooltip.set_hover_content(hover)
-
-        # Position tooltip near cursor
-        if self.hover_position:
-            line, character = self.hover_position
-
-            # Create cursor at hover position
-            cursor = QTextCursor(self.document())
-            cursor.movePosition(QTextCursor.Start)
-            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, line)
-            cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, character)
-
-            # Get rect for cursor position
-            rect = self.cursorRect(cursor)
-            pos = self.mapToGlobal(rect.bottomLeft())
-
-            # Adjust position to ensure tooltip is visible
-            screen_rect = QApplication.primaryScreen().availableGeometry()
-            tooltip_width = self.hover_tooltip.sizeHint().width()
-            tooltip_height = self.hover_tooltip.sizeHint().height()
-
-            if pos.x() + tooltip_width > screen_rect.right():
-                pos.setX(screen_rect.right() - tooltip_width)
-            if pos.y() + tooltip_height > screen_rect.bottom():
-                pos.setY(rect.top() - tooltip_height)
-
-            # Show tooltip
-            self.hover_tooltip.move(pos)
-            self.hover_tooltip.show()
-
-    def handle_diagnostics(self, diagnostics):
-        """Handle diagnostics from LSP."""
-        self.diagnostics = diagnostics
-
-        # Clear existing diagnostic highlights
-        cursor = QTextCursor(self.document())
-        cursor.movePosition(QTextCursor.Start)
-        cursor.movePosition(QTextCursor.End, QTextCursor.KeepAnchor)
-
-        format = QTextCharFormat()
-        cursor.setCharFormat(format)
-
-        # Apply new diagnostic highlights
-        for diagnostic in diagnostics:
-            # Get range
-            start_line = diagnostic.get("range", {}).get("start", {}).get("line", 0)
-            start_char = (
-                diagnostic.get("range", {}).get("start", {}).get("character", 0)
-            )
-            end_line = diagnostic.get("range", {}).get("end", {}).get("line", 0)
-            end_char = diagnostic.get("range", {}).get("end", {}).get("character", 0)
-
-            # Get severity
-            severity = diagnostic.get(
-                "severity", 1
-            )  # 1 = Error, 2 = Warning, 3 = Info, 4 = Hint
-
-            # Set format based on severity
-            format = QTextCharFormat()
-            if severity == 1:  # Error
-                format.setUnderlineColor(QColor("#FF0000"))
-                format.setUnderlineStyle(QTextCharFormat.WaveUnderline)
-            elif severity == 2:  # Warning
-                format.setUnderlineColor(QColor("#FFA500"))
-                format.setUnderlineStyle(QTextCharFormat.WaveUnderline)
-            else:  # Info or Hint
-                format.setUnderlineColor(QColor("#00BFFF"))
-                format.setUnderlineStyle(QTextCharFormat.DotLine)
-
-            # Create cursor for diagnostic range
-            cursor = QTextCursor(self.document())
-            cursor.movePosition(QTextCursor.Start)
-            cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, start_line)
-            cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, start_char)
-
-            # If on same line, just move right
-            if start_line == end_line:
-                cursor.movePosition(
-                    QTextCursor.Right, QTextCursor.KeepAnchor, end_char - start_char
-                )
-            else:
-                # Otherwise navigate to end position
-                cursor.movePosition(
-                    QTextCursor.Down, QTextCursor.KeepAnchor, end_line - start_line
-                )
-                cursor.movePosition(QTextCursor.StartOfLine, QTextCursor.KeepAnchor)
-                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, end_char)
-
-            # Apply format
-            cursor.setCharFormat(format)
 
 
 class MainWindow(QMainWindow):
