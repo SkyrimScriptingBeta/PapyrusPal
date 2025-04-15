@@ -6,10 +6,15 @@ authors = [{ name = "Mrowr Purr", email = "mrowr.purr@gmail.com" }]
 license = { text = "0BSD" }
 readme = "README.md"
 requires-python = "<3.14,>=3.9"
-dependencies = ["pyside6 (>=6.9.0,<7.0.0)", "qasync (>=0.27.1,<0.28.0)", "python-dotenv (>=1.1.0,<2.0.0)"]
+dependencies = [
+  "pyside6 (>=6.9.0,<7.0.0)",
+  "qasync (>=0.27.1,<0.28.0)",
+  "python-dotenv (>=1.1.0,<2.0.0)",
+]
 
 [tool.poetry.scripts]
 app = "papyrus_pal.__main__:main"
+text_editor_for_lsp = "example_apps.text_editor_for_lsp.app:main"
 
 [tool.poe.tasks]
 dev = "poetry run app --dev"
