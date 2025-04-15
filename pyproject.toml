@@ -5,11 +5,12 @@ description = "Your friend for Skyrim script authoring!"
 authors = [{ name = "Mrowr Purr", email = "mrowr.purr@gmail.com" }]
 license = { text = "0BSD" }
 readme = "README.md"
-requires-python = "<3.14,>=3.9"
+requires-python = "<3.14,>=3.12"
 dependencies = [
   "pyside6 (>=6.9.0,<7.0.0)",
   "qasync (>=0.27.1,<0.28.0)",
   "python-dotenv (>=1.1.0,<2.0.0)",
+  "pylspclient (>=0.1.2,<0.2.0)",
 ]
 
 [tool.poetry.scripts]
@@ -31,6 +32,7 @@ exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pal\" --
 poethepoet = "^0.33.1"
 libsass = "^0.23.0"
 pyinstaller = "^6.12.0"
+python-lsp-server = {extras = ["all"], version = "^1.12.2"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
