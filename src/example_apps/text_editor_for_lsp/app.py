@@ -604,59 +604,130 @@ class LSPClient(QObject):
                 completion_items = []
                 raw_items = []
 
-                if isinstance(response, dict) and "items" in response:
-                    raw_items = response["items"]
-                    print(f"DEBUG: Found {len(raw_items)} items in completion response")
-                elif isinstance(response, list):
-                    raw_items = response
-                    print(
-                        f"DEBUG: Found {len(raw_items)} items in completion response list"
-                    )
-                else:
-                    print(f"DEBUG: Unexpected completion response format: {response}")
+                # Handle different response formats
+                try:
+                    if hasattr(response, "items") and isinstance(response.items, list):
+                        # This is a CompletionList from pylspclient.lsp_pydantic_strcuts
+                        raw_items = response.items
+                        print(f"DEBUG: Found {len(raw_items)} items in CompletionList")
+                    elif isinstance(response, dict) and "items" in response:
+                        raw_items = response["items"]
+                        print(
+                            f"DEBUG: Found {len(raw_items)} items in completion response dict"
+                        )
+                    elif isinstance(response, list):
+                        raw_items = response
+                        print(
+                            f"DEBUG: Found {len(raw_items)} items in completion response list"
+                        )
+                    else:
+                        print(
+                            f"DEBUG: Unexpected completion response format: {response}"
+                        )
+                except Exception as e:
+                    print(f"DEBUG: Error processing completion response: {e}")
+                    import traceback
+
+                    traceback.print_exc()
 
                 # Convert raw items to CompletionItem objects
                 for item in raw_items:
-                    label = item.get("label", "")
-                    kind = item.get("kind")
-                    detail = item.get("detail")
+                    try:
+                        # Handle pydantic model or dictionary
+                        if hasattr(item, "label"):
+                            # It's a pydantic model
+                            label = item.label
+                            kind = item.kind if hasattr(item, "kind") else None
+                            detail = item.detail if hasattr(item, "detail") else None
 
-                    # Handle documentation
-                    documentation = None
-                    if "documentation" in item:
-                        doc = item["documentation"]
-                        if isinstance(doc, dict) and "kind" in doc and "value" in doc:
-                            documentation = MarkupContent(doc["kind"], doc["value"])
+                            # Handle documentation
+                            documentation = None
+                            if hasattr(item, "documentation") and item.documentation:
+                                doc = item.documentation
+                                if hasattr(doc, "kind") and hasattr(doc, "value"):
+                                    documentation = MarkupContent(doc.kind, doc.value)
+                                else:
+                                    documentation = doc
+
+                            # Handle text edit
+                            text_edit = None
+                            if hasattr(item, "textEdit") and item.textEdit:
+                                te = item.textEdit
+                                if hasattr(te, "range") and hasattr(te, "newText"):
+                                    range_obj = te.range
+                                    start_pos = Position(
+                                        range_obj.start.line,
+                                        range_obj.start.character,
+                                    )
+                                    end_pos = Position(
+                                        range_obj.end.line, range_obj.end.character
+                                    )
+                                    text_edit = TextEdit(
+                                        Range(start_pos, end_pos), te.newText
+                                    )
+
+                            # Get insertText
+                            insert_text = (
+                                item.insertText if hasattr(item, "insertText") else None
+                            )
+
                         else:
-                            documentation = doc
+                            # It's a dictionary
+                            label = item.get("label", "")
+                            kind = item.get("kind")
+                            detail = item.get("detail")
 
-                    # Handle text edit
-                    text_edit = None
-                    if "textEdit" in item:
-                        te = item["textEdit"]
-                        if "range" in te and "newText" in te:
-                            range_obj = te["range"]
-                            start_pos = Position(
-                                range_obj["start"]["line"],
-                                range_obj["start"]["character"],
-                            )
-                            end_pos = Position(
-                                range_obj["end"]["line"], range_obj["end"]["character"]
-                            )
-                            text_edit = TextEdit(
-                                Range(start_pos, end_pos), te["newText"]
-                            )
+                            # Handle documentation
+                            documentation = None
+                            if "documentation" in item:
+                                doc = item["documentation"]
+                                if (
+                                    isinstance(doc, dict)
+                                    and "kind" in doc
+                                    and "value" in doc
+                                ):
+                                    documentation = MarkupContent(
+                                        doc["kind"], doc["value"]
+                                    )
+                                else:
+                                    documentation = doc
 
-                    # Create CompletionItem
-                    completion_item = CompletionItem(
-                        label,
-                        kind=kind,
-                        detail=detail,
-                        documentation=documentation,
-                        insertText=item.get("insertText"),
-                        textEdit=text_edit,
-                    )
-                    completion_items.append(completion_item)
+                            # Handle text edit
+                            text_edit = None
+                            if "textEdit" in item:
+                                te = item["textEdit"]
+                                if "range" in te and "newText" in te:
+                                    range_obj = te["range"]
+                                    start_pos = Position(
+                                        range_obj["start"]["line"],
+                                        range_obj["start"]["character"],
+                                    )
+                                    end_pos = Position(
+                                        range_obj["end"]["line"],
+                                        range_obj["end"]["character"],
+                                    )
+                                    text_edit = TextEdit(
+                                        Range(start_pos, end_pos), te["newText"]
+                                    )
+
+                            # Get insertText
+                            insert_text = item.get("insertText")
+
+                        # Create CompletionItem
+                        completion_item = CompletionItem(
+                            label,
+                            kind=kind,
+                            detail=detail,
+                            documentation=documentation,
+                            insertText=insert_text,
+                            textEdit=text_edit,
+                        )
+                        completion_items.append(completion_item)
+                    except Exception as e:
+                        print(f"ERROR processing completion item: {e}")
+                        import traceback
+
+                        traceback.print_exc()
 
                 # Emit the completion response on the main thread
                 self.completion_response.emit(completion_items)
@@ -688,22 +759,21 @@ class LSPClient(QObject):
 
                 # Convert response to Hover object
                 hover_obj = None
-                if response and isinstance(response, dict):
-                    contents = None
+                try:
+                    # Handle different response formats
+                    if hasattr(response, "contents"):
+                        # This is a Hover from pylspclient.lsp_pydantic_strcuts
+                        contents = None
+                        content_data = response.contents
 
-                    # Handle contents
-                    if "contents" in response:
-                        content_data = response["contents"]
-                        if (
-                            isinstance(content_data, dict)
-                            and "kind" in content_data
-                            and "value" in content_data
+                        if hasattr(content_data, "kind") and hasattr(
+                            content_data, "value"
                         ):
                             # MarkupContent
                             contents = MarkupContent(
-                                content_data["kind"], content_data["value"]
+                                content_data.kind, content_data.value
                             )
-                            print(f"DEBUG: Found MarkupContent: {content_data['kind']}")
+                            print(f"DEBUG: Found MarkupContent: {content_data.kind}")
                         elif isinstance(content_data, str):
                             # Plain string
                             contents = content_data
@@ -713,29 +783,90 @@ class LSPClient(QObject):
                         elif isinstance(content_data, list) and len(content_data) > 0:
                             # Array of content items - use the first one
                             first_item = content_data[0]
-                            if isinstance(first_item, dict) and "value" in first_item:
-                                contents = first_item["value"]
+                            if hasattr(first_item, "value"):
+                                contents = first_item.value
                             elif isinstance(first_item, str):
                                 contents = first_item
                             print(
                                 f"DEBUG: Found list content with {len(content_data)} items"
                             )
 
-                    # Handle range if present
-                    range_obj = None
-                    if "range" in response:
-                        range_data = response["range"]
-                        start_pos = Position(
-                            range_data["start"]["line"],
-                            range_data["start"]["character"],
-                        )
-                        end_pos = Position(
-                            range_data["end"]["line"], range_data["end"]["character"]
-                        )
-                        range_obj = Range(start_pos, end_pos)
-                        print(f"DEBUG: Found range: {range_data}")
+                        # Handle range if present
+                        range_obj = None
+                        if hasattr(response, "range") and response.range:
+                            range_data = response.range
+                            start_pos = Position(
+                                range_data.start.line,
+                                range_data.start.character,
+                            )
+                            end_pos = Position(
+                                range_data.end.line, range_data.end.character
+                            )
+                            range_obj = Range(start_pos, end_pos)
+                            print(f"DEBUG: Found range in pydantic model")
 
-                    hover_obj = Hover(contents, range_obj)
+                        hover_obj = Hover(contents, range_obj)
+                    elif response and isinstance(response, dict):
+                        contents = None
+
+                        # Handle contents
+                        if "contents" in response:
+                            content_data = response["contents"]
+                            if (
+                                isinstance(content_data, dict)
+                                and "kind" in content_data
+                                and "value" in content_data
+                            ):
+                                # MarkupContent
+                                contents = MarkupContent(
+                                    content_data["kind"], content_data["value"]
+                                )
+                                print(
+                                    f"DEBUG: Found MarkupContent: {content_data['kind']}"
+                                )
+                            elif isinstance(content_data, str):
+                                # Plain string
+                                contents = content_data
+                                print(
+                                    f"DEBUG: Found string content: {content_data[:30]}..."
+                                )
+                            elif (
+                                isinstance(content_data, list) and len(content_data) > 0
+                            ):
+                                # Array of content items - use the first one
+                                first_item = content_data[0]
+                                if (
+                                    isinstance(first_item, dict)
+                                    and "value" in first_item
+                                ):
+                                    contents = first_item["value"]
+                                elif isinstance(first_item, str):
+                                    contents = first_item
+                                print(
+                                    f"DEBUG: Found list content with {len(content_data)} items"
+                                )
+
+                        # Handle range if present
+                        range_obj = None
+                        if "range" in response:
+                            range_data = response["range"]
+                            start_pos = Position(
+                                range_data["start"]["line"],
+                                range_data["start"]["character"],
+                            )
+                            end_pos = Position(
+                                range_data["end"]["line"],
+                                range_data["end"]["character"],
+                            )
+                            range_obj = Range(start_pos, end_pos)
+                            print(f"DEBUG: Found range: {range_data}")
+
+                        hover_obj = Hover(contents, range_obj)
+                except Exception as e:
+                    print(f"DEBUG: Error processing hover response: {e}")
+                    import traceback
+
+                    traceback.print_exc()
 
                 # Emit the hover response on the main thread
                 self.hover_response.emit(hover_obj)
