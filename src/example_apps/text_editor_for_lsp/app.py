@@ -1,5 +1,15 @@
 """
 Simple text editor with LSP integration using PySide6 and pylspclient.
+
+This example demonstrates how to create a basic text editor with Language Server Protocol (LSP)
+integration, showcasing modern IDE features such as:
+- Code auto-completion (IntelliSense)
+- Documentation on hover
+- Error diagnostics with visual indicators
+- Line numbers and basic syntax styling
+
+The intention is to provide a minimal but functional implementation that illustrates
+the core components needed to build an editor with intelligent code assistance features.
 """
 
 import os
@@ -115,17 +125,81 @@ if not HAS_PYLSPCLIENT:
     pylspclient.LspClient = MockLspClient
 
 
+# Import additional typing modules
+from typing import List, Optional, Tuple, Union
+
+
 # Define LSP struct classes since pylspclient.lsp_structs is not available
+class Position:
+    """Position in a text document expressed as zero-based line and character offset."""
+
+    line: int
+    character: int
+
+    def __init__(self, line: int, character: int) -> None:
+        self.line = line
+        self.character = character
+
+
+class Range:
+    """A range in a text document expressed as start and end positions."""
+
+    start: Position
+    end: Position
+
+    def __init__(self, start: Position, end: Position) -> None:
+        self.start = start
+        self.end = end
+
+
+class TextEdit:
+    """A textual edit applicable to a text document."""
+
+    range: Range
+    newText: str
+
+    def __init__(self, range: Range, newText: str) -> None:
+        self.range = range
+        self.newText = newText
+
+
+class MarkupContent:
+    """A MarkupContent literal represents a string value which content is interpreted based on its kind flag."""
+
+    kind: str
+    value: str
+
+    def __init__(self, kind: str, value: str) -> None:
+        self.kind = kind
+        self.value = value
+
+
+class MarkupKind:
+    """Markup kind constants."""
+
+    PlainText: str = "plaintext"
+    Markdown: str = "markdown"
+
+
 class CompletionItem:
+    """A completion item represents a text edit which is to be triggered by a completion."""
+
+    label: str
+    kind: Optional[int]
+    detail: Optional[str]
+    documentation: Optional[Union[str, MarkupContent]]
+    insertText: Optional[str]
+    textEdit: Optional[TextEdit]
+
     def __init__(
         self,
-        label,
-        kind=None,
-        detail=None,
-        documentation=None,
-        insertText=None,
-        textEdit=None,
-    ):
+        label: str,
+        kind: Optional[int] = None,
+        detail: Optional[str] = None,
+        documentation: Optional[Union[str, MarkupContent]] = None,
+        insertText: Optional[str] = None,
+        textEdit: Optional[TextEdit] = None,
+    ) -> None:
         self.label = label
         self.kind = kind
         self.detail = detail
@@ -134,37 +208,17 @@ class CompletionItem:
         self.textEdit = textEdit
 
 
-class Range:
-    def __init__(self, start, end):
-        self.start = start
-        self.end = end
-
-
-class Position:
-    def __init__(self, line, character):
-        self.line = line
-        self.character = character
-
-
-class TextEdit:
-    def __init__(self, range, newText):
-        self.range = range
-        self.newText = newText
-
-
-class MarkupContent:
-    def __init__(self, kind, value):
-        self.kind = kind
-        self.value = value
-
-
-class MarkupKind:
-    PlainText = "plaintext"
-    Markdown = "markdown"
-
-
 class Hover:
-    def __init__(self, contents=None, range=None):
+    """The result of a hover request."""
+
+    contents: Optional[Union[str, MarkupContent]]
+    range: Optional[Range]
+
+    def __init__(
+        self,
+        contents: Optional[Union[str, MarkupContent]] = None,
+        range: Optional[Range] = None,
+    ) -> None:
         self.contents = contents
         self.range = range
 
@@ -176,38 +230,54 @@ COMPLETION_TRIGGER_CHARS = [".", "(", "[", "{", ",", " "]
 HOVER_DELAY_MS = 500  # Delay before showing hover tooltip
 
 
+# Import Qt types for type annotations
+from PySide6.QtCore import QRect
+from PySide6.QtGui import QPaintEvent
+from PySide6.QtWidgets import QWidget
+
+
 class LineNumberArea(QWidget):
     """Widget for displaying line numbers in the editor."""
 
-    def __init__(self, editor):
+    editor: "TextEditorWithLSP"  # Forward reference to avoid circular import
+
+    def __init__(self, editor: "TextEditorWithLSP") -> None:
         super().__init__(editor)
         self.editor = editor
 
-    def sizeHint(self):
+    def sizeHint(self) -> QSize:
+        """Override: Return the size hint for the line number area."""
         return QSize(self.editor.line_number_area_width(), 0)
 
-    def paintEvent(self, event):
+    def paintEvent(self, event: QPaintEvent) -> None:
+        """Override: Paint the line numbers."""
         self.editor.paint_line_numbers(event)
+
+
+# Import Qt constants for type annotations
+from PySide6.QtCore import Qt
+from typing import List, Optional, Tuple, Union, override
 
 
 class CompletionPopup(QListWidget):
     """Popup widget for displaying completion suggestions."""
 
     item_selected = Signal(CompletionItem)
+    completion_items: List[CompletionItem]
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
-        self.setWindowFlags(Qt.Popup | Qt.FramelessWindowHint)
-        self.setFrameStyle(QFrame.StyledPanel)
-        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setWindowFlags(Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)
+        self.setFrameStyle(QFrame.Shape.StyledPanel)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         # Store completion items
-        self.completion_items: List[CompletionItem] = []
+        self.completion_items = []
 
         # Connect signals
         self.itemClicked.connect(self.on_item_clicked)
 
-    def set_completion_items(self, items: List[CompletionItem]):
+    def set_completion_items(self, items: List[CompletionItem]) -> None:
         """Set the completion items to display."""
         self.completion_items = items
         self.clear()
@@ -226,19 +296,20 @@ class CompletionPopup(QListWidget):
         if self.count() > 0:
             self.setCurrentRow(0)
 
-    def on_item_clicked(self, item):
+    def on_item_clicked(self, item: QListWidgetItem) -> None:
         """Handle item click event."""
         index = self.row(item)
         if 0 <= index < len(self.completion_items):
             self.item_selected.emit(self.completion_items[index])
 
-    def keyPressEvent(self, event):
+    @override
+    def keyPressEvent(self, event: QKeyEvent) -> None:
         """Handle key press events."""
         key = event.key()
-        if key == Qt.Key_Escape:
+        if key == Qt.Key.Key_Escape:
             self.hide()
             event.accept()
-        elif key in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
+        elif key in (Qt.Key.Key_Enter, Qt.Key.Key_Return, Qt.Key.Key_Tab):
             current_row = self.currentRow()
             if 0 <= current_row < len(self.completion_items):
                 self.item_selected.emit(self.completion_items[current_row])
@@ -251,18 +322,18 @@ class CompletionPopup(QListWidget):
 class HoverTooltip(QLabel):
     """Tooltip widget for displaying hover information."""
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
-        self.setWindowFlags(Qt.ToolTip | Qt.FramelessWindowHint)
-        self.setFrameStyle(QFrame.StyledPanel)
-        self.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+        self.setWindowFlags(Qt.WindowType.ToolTip | Qt.WindowType.FramelessWindowHint)
+        self.setFrameStyle(QFrame.Shape.StyledPanel)
+        self.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         self.setWordWrap(True)
-        self.setTextFormat(Qt.RichText)
+        self.setTextFormat(Qt.TextFormat.RichText)
 
         # Set maximum width
         self.setMaximumWidth(400)
 
-    def set_hover_content(self, hover: Hover):
+    def set_hover_content(self, hover: Hover) -> None:
         """Set the hover content to display."""
         if hover.contents:
             if isinstance(hover.contents, MarkupContent):
