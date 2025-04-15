@@ -1,0 +1,414 @@
+[
+  {
+    "html_url": "https://github.com/chesko256/Campfire",
+    "description": "Campfire is a feature-rich camping system for The Elder Scrolls V: Skyrim."
+  },
+  {
+    "html_url": "https://github.com/fireundubh/skyrim",
+    "description": "Everything here is old and outdated by at least 5 years."
+  },
+  {
+    "html_url": "https://github.com/pijaczkar8/iEquip",
+    "description": "SkyUI HUD widget project for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/McmRecorder",
+    "description": "Skyrim Mod Configuration Menu Recorder (for recording and playing back game configs)"
+  },
+  {
+    "html_url": "https://github.com/art-from-the-machine/Mantella-Spell",
+    "description": "Mantella spell mod for Skyrim VR / AE / SE"
+  },
+  {
+    "html_url": "https://github.com/acepleiades/XP32-Maximum-Skeleton-Special-Extended",
+    "description": "XP32 Maximum Skeleton Special Extended is the update of XP32 Maximum Skeleton Extended for Skyrim Special Edition."
+  },
+  {
+    "html_url": "https://github.com/darkconsole/dse-untamed-2",
+    "description": "Totally a Skyrim mod."
+  },
+  {
+    "html_url": "https://github.com/skyrim-platform/papyrus-bridge",
+    "description": "Enable communication between Skyrim Platform (TypeScript) and Papyrus scripts"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimPlatformPapyrusBridge",
+    "description": "Skyrim Platform <--> Papyrus"
+  },
+  {
+    "html_url": "https://github.com/AndersonPaschoalon/Skyrim-DSilHand",
+    "description": "Skyrim Mod: Dawn of the Silver Hand"
+  },
+  {
+    "html_url": "https://github.com/SkyrimScripting/MessageBox",
+    "description": "Custom Skyrim MessageBoxes (no .esp required)"
+  },
+  {
+    "html_url": "https://github.com/chesko256/ScrollWheelEquip",
+    "description": "FPS-style equipment switching mod for Skyrim."
+  },
+  {
+    "html_url": "https://github.com/markekraus/SentientChairsSkyrimSEMod",
+    "description": "A mod for Skyrim: Special Edition which adds a race of Sentient Chairs to the world of Skyrim."
+  },
+  {
+    "html_url": "https://github.com/CarlosLeyvaAyala/armor-sets-in-skyrim",
+    "description": "Monster Hunter style armor sets in Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mskynetll/Devious-Attributes",
+    "description": "Skyrim plugin that tracks various \"devious\" attributes"
+  },
+  {
+    "html_url": "https://github.com/abeiro/aiagent-aiff",
+    "description": "AIFF Skyrim mod"
+  },
+  {
+    "html_url": "https://github.com/ProbablyManuel/skyrim-unlocked",
+    "description": "Unlocks most quest-locked content by making all dungeons fully accessible at any time and replacing most \"requires a key\" locked doors with pickable ones."
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/SexLabYACR",
+    "description": "Skyrim SexLab Yet Another Combat Rape"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Search",
+    "description": "Search UI and Papyrus Utility for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyActions",
+    "description": "Framework for Defining Actions to Perform in Skyrim (for bots)"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/FormHelper",
+    "description": "Skyrim Helper utility for working with hexadecimal and decimal Form IDs"
+  },
+  {
+    "html_url": "https://github.com/phenderix/PROTEUS",
+    "description": "PROTEUS will redefine how you play Skyrim. Play as multiple characters within the same game world, on the same save game file - all with their own unique appearance, perks, spells, items, and stats. Additionally, make permanent or temporary edits to NPCs, weapons, armors, spells, weather, and more in-game."
+  },
+  {
+    "html_url": "https://github.com/Tolik1992/Devourment-Refactor",
+    "description": "A comprehensive Vore Mod for The Elder Scrolls V: Skyrim."
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SgtmHotkey",
+    "description": "Hotkeys for the `sgtm` command in Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/JContainersJSON",
+    "description": "JContainers/PapyrusUtil-based super lazy, slow JSON functionality for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/AlwaysRainyInSkyrim",
+    "description": "Always Rainy in Skyrim (Skyrim mod)"
+  },
+  {
+    "html_url": "https://github.com/emawind84/skyrim-warehouse-custom-light",
+    "description": "Skyrim Mod - Modify the candles in the warehouse so to be able to switch them off and on for a more realistic adventure!"
+  },
+  {
+    "html_url": "https://github.com/markekraus/CorpseCannonSkyrimSEMod",
+    "description": "Corpse Cannon is a Skyrim SE mod that adds a power to summons a coffin once a day that shoots fresh corpses from the targeted area."
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/AddSpellMenu",
+    "description": "AddItemMenu-like Skyrim mod for Spells"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/MP-Console-Command-Pack",
+    "description": "MP's Skyrim Console Command Pack"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleMenu",
+    "description": "Control the UI of the Skyrim Console"
+  },
+  {
+    "html_url": "https://github.com/Scrabx3/AlternatePerspective",
+    "description": "An alternate start mod for TES5 Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SearchCore",
+    "description": "Core Papyrus Scripts for the Skyrim `Search` mod"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/EnchantItYourWay",
+    "description": "Enchant any item with custom enchantments in Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/McmConfig",
+    "description": "Create Skyrim SkyUI Mod Configuration Menus using .json"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/JObjectToJson",
+    "description": "Skyrim Platform module to convert JContainers objects to `any` JavaScript object"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Apprentice",
+    "description": "Skyrim mod to require training for magic/weapons/armor before the player can use them"
+  },
+  {
+    "html_url": "https://github.com/Sinclo/CombatEyes",
+    "description": "Combat Eyes Skyrim Mod"
+  },
+  {
+    "html_url": "https://github.com/digital-apple/SkyrimTweaks",
+    "description": ""
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleCommands_Prototype",
+    "description": "~ Skyrim Console Commands ~"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleDance",
+    "description": "Make Skyrim player and NPCs dance using Skyrim console command"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleCommands",
+    "description": "~ Custom Skyrim Console Commands ~"
+  },
+  {
+    "html_url": "https://github.com/markekraus/GreatchairsSkyrimSEMod",
+    "description": "Adds Greatchairs (Chair Greatswords) to Skyrim."
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/CenterOnCellAdventures",
+    "description": "Skyrim Mod for `coc` characters"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Permadeath",
+    "description": "Skyrim mod for supporting immersive Permadeath"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/NoKids",
+    "description": "Removes Kids from Skyrim (and turns them into Chickens)"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/AddStuffMenu",
+    "description": "Skyrim VR mod like [AddItemMenu] for searching for stuff"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/JsonDB",
+    "description": "Skyrim Utility for storing a \"database\" of JsonFB files"
+  },
+  {
+    "html_url": "https://github.com/HamishMW/volkihar-knight",
+    "description": "An armor mod with unique scripted effects for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/DaymareOn/FSMP-MCM",
+    "description": "The Faster Skinned Mesh Physics Mod Configuration Menu for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/thallada/BazaarRealmMod",
+    "description": "Papyrus scripts and ESP plugin for the Bazaar Realm Skyrim mod"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/DailySpellList",
+    "description": "Skyrim mod for choosing a daily spell list (like D&D)"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/PickupLines",
+    "description": "Skyrim Mod which prints out whatever items you pickup (for screencasting tutorial)"
+  },
+  {
+    "html_url": "https://github.com/SteveTownsend/AllGUD-Uncloaked",
+    "description": "Skyrim SE mod implementing AllGUD item and weapon display for NPCs using SPID"
+  },
+  {
+    "html_url": "https://github.com/MintyMods/MintyLightningMod",
+    "description": "Weather mod to provide Lightning for the Bethesda game Skyrim using Creation Kit"
+  },
+  {
+    "html_url": "https://github.com/ElectronicsArchiver/Oblivion",
+    "description": "Oblivion is a complete overhaul of Skyrim's Atronach Forge, designed to expand its functionality."
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleTextEntry",
+    "description": "Skyrim mod (for VR) to allow for text entry using the ~ console (required vanilla Console)"
+  },
+  {
+    "html_url": "https://github.com/pocket-bees/tent_pitcher",
+    "description": "Skyrim mod/Campfire plugin to use a power/hotkey/EasyWheelMenu to place Campfire's placeable items without opening your inventory."
+  },
+  {
+    "html_url": "https://github.com/najir/PapSkse-Practice",
+    "description": "A collection of Skyrim scripts and plugins used for practicing and educational purposes. This project is for general access to scripts/code and proof of completion."
+  },
+  {
+    "html_url": "https://github.com/akatsukioshiro/Skyrim",
+    "description": "Skyrim Mods I have created . . ."
+  },
+  {
+    "html_url": "https://github.com/zackziegler95/SkyrimPets",
+    "description": ""
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimShopping",
+    "description": "🛒 Skyrim Home Shopping Network 🛍️"
+  },
+  {
+    "html_url": "https://github.com/tatianaderouen/SkyrimMultiplayerMods",
+    "description": "Just some mods that a few friends of mine and I are going to be using while we play Skyrim together -- we're using the Tamriel Online mod."
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyrimTwitchRedemptionPack",
+    "description": "Pack of Redemptions for SkyrimTwitchBot"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/Demo_SkyrimPlatformPapyrusBridge",
+    "description": "Demo of SkyrimPlatformPapyrusBridge"
+  },
+  {
+    "html_url": "https://github.com/markekraus/BarstoolBrawlerSkyrimSEMod",
+    "description": "Skyrim SE mod that adds a Barstool weapon to Skyrim."
+  },
+  {
+    "html_url": "https://github.com/PhilipOfMacedon/tensura-skyrim",
+    "description": "Skyrim Tensura Modding Project! This repository needs to be organized, please be patient until I can provide further documentation."
+  },
+  {
+    "html_url": "https://github.com/trollusk/skyrim-storehouse",
+    "description": ""
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ConsoleEquip",
+    "description": "Skyrim `equip` console command"
+  },
+  {
+    "html_url": "https://github.com/phalanx/Children-of-Lilith",
+    "description": "Succubus mod for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/Osmosis-Wrench/Cold-Beds-Skyrim",
+    "description": "Dead men don't sleep..."
+  },
+  {
+    "html_url": "https://github.com/matashina/Smooches-of-Skyrim",
+    "description": "An OStim extension intended to start scenes through dialogue."
+  },
+  {
+    "html_url": "https://github.com/TranslationLookasideBuffer/TES4Debug",
+    "description": "Small Debug Plugin for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/emawind84/skyrim-place-your-paintings",
+    "description": "Skyrim Mod - Place Your Paintings"
+  },
+  {
+    "html_url": "https://github.com/phinocio/toggleable-combat-music",
+    "description": "Toggleable Combat Music for Skyrim"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SkyDice",
+    "description": "Skyrim Dice Roller for Streamers"
+  },
+  {
+    "html_url": "https://github.com/m3ttwur5t/Scroll-Scribe-Skyrim-MOD",
+    "description": "Scroll crafting for Skyrim, and more."
+  },
+  {
+    "html_url": "https://github.com/Aruthaxx/Wasseek",
+    "description": "Follower mod for Skyrim Special Edition"
+  },
+  {
+    "html_url": "https://github.com/kingnak/kn_cutting_trees",
+    "description": "Skyrim SE mod for cutting trees"
+  },
+  {
+    "html_url": "https://github.com/EyeDeck/IHarvest",
+    "description": "Resource harvesting mod for Skyrim SE"
+  },
+  {
+    "html_url": "https://github.com/mackoy212/PapyrusScripts",
+    "description": "My collection of Skyrim papyrus scripts"
+  },
+  {
+    "html_url": "https://github.com/emawind84/skyrim-windstad-manor-more-stuff",
+    "description": "Add some lights and mannequin to the Windstad Manor Downstairs Room"
+  },
+  {
+    "html_url": "https://github.com/scorpiosixnine/smalls",
+    "description": "Automatic underwear replacer for Skyrim Special Edition"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SearchProviders",
+    "description": "Search Providers for the Skyrim `Search` mod"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SearchActions",
+    "description": "Search Actions for the Skyrim `Search` mod"
+  },
+  {
+    "html_url": "https://github.com/JayQwery/NIN-NoItemNames",
+    "description": "Skyrim UI mod that removes item names"
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/SexLabMoreArousalPenalty",
+    "description": "Skyrim SexLab More Penalty to High Arousal"
+  },
+  {
+    "html_url": "https://github.com/nat212/SimpleHideHUDHotkey",
+    "description": "Simple Hide HUD Hotkey for Skyrim SE"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/ISeeDeadPeople",
+    "description": "Makes the Skyrim player see dead people"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/CoolBag",
+    "description": "Bag of Holding for Skyrim (example mod)"
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/SexLabYACR4N",
+    "description": "Skyrim SexLab Yet Another Combat Rape for NPC"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/FightClub",
+    "description": "🤜 Build fight matches between Skyrim monsters 🤛"
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/ItsNotYourArmor",
+    "description": "Skyrim mod \"It's Not Your Armor\" [non-adult]"
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/FPPShareMyGold",
+    "description": "\"Share Gold\" lessor power for skyrim party play [non adult]"
+  },
+  {
+    "html_url": "https://github.com/julric/find-reference-api-patch",
+    "description": "Find Reference API Patch for Skyrim SE on Xbox One"
+  },
+  {
+    "html_url": "https://github.com/Gaz-tec/Winterweight",
+    "description": "A comprehensive Weight Gain mod for The Elder Scrolls V: Skyrim."
+  },
+  {
+    "html_url": "https://github.com/lukemoore66/UnbrokenBlade01",
+    "description": "Script Repository for the Skyrim mod: Unbroken Blade, The: Part 1"
+  },
+  {
+    "html_url": "https://github.com/aleios/SoulExchange",
+    "description": "A simple skyrim mod to exchanging dragon souls for attributes and perks via MCM"
+  },
+  {
+    "html_url": "https://github.com/Nunoflashy/Realistic-Prison-and-Bounty",
+    "description": "Mod for Skyrim that aims to enhance the lacking Bounty and Prison systems of vanilla."
+  },
+  {
+    "html_url": "https://github.com/nbits-ssl/EcchinaArmorBreak",
+    "description": "Skyrim mod \"Ecchina Armor Break\" dll by Mr.480 [non-adult?] [Maintained by bbspink anonymous]"
+  },
+  {
+    "html_url": "https://github.com/mrowrpurr/SchlongBasedBodies",
+    "description": "[NSFW] Skyrim mod - automatically change character body textures or type (using BOSSE) based on Schlong (with Schlong change detection)"
+  },
+  {
+    "html_url": "https://github.com/LoTekkie/DivineLogic",
+    "description": "Skyrim mod that grants mod creators the ability to add complex logic to their creations by utilizing a set of modular pre-scripted trigger boxes."
+  },
+  {
+    "html_url": "https://github.com/gddez/TeleportToHomes",
+    "description": "This mod is for Skyrim AE. The mod adds spells to the game that allows the player to teleport back to them from anywhere in the game."
+  }
+]
