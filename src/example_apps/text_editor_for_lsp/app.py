@@ -227,7 +227,923 @@ class Hover:
 DEFAULT_FONT_FAMILY = "Consolas, 'Courier New', monospace"
 DEFAULT_FONT_SIZE = 10
 COMPLETION_TRIGGER_CHARS = [".", "(", "[", "{", ",", " "]
-HOVER_DELAY_MS = 500  # Delay before showing hover tooltip
+HOVER_DELAY_MS = (
+    200  # Delay before showing hover tooltip (reduced for better responsiveness)
+)
+"""
+Simple text editor with LSP integration using PySide6 and pylspclient.
+
+This example demonstrates how to create a basic text editor with Language Server Protocol (LSP)
+integration, showcasing modern IDE features such as:
+- Code auto-completion (IntelliSense)
+- Documentation on hover
+- Error diagnostics with visual indicators
+- Line numbers and basic syntax styling
+
+The intention is to provide a minimal but functional implementation that illustrates
+the core components needed to build an editor with intelligent code assistance features.
+"""
+
+import os
+import sys
+import threading
+import subprocess
+from pathlib import Path
+from typing import List, Tuple
+
+from PySide6.QtCore import Qt, QRect, QSize, Signal, QObject, QTimer
+from PySide6.QtGui import (
+    QColor,
+    QTextCursor,
+    QFont,
+    QPainter,
+    QKeyEvent,
+    QMouseEvent,
+    QFontMetrics,
+    QTextCharFormat,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QPlainTextEdit,
+    QStatusBar,
+    QWidget,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QFrame,
+)
+
+# Import pylspclient for LSP functionality
+try:
+    import pylspclient
+
+    HAS_PYLSPCLIENT = True
+except ImportError:
+    print("Warning: pylspclient not found. Using mock LSP implementation.")
+    HAS_PYLSPCLIENT = False
+
+
+# Mock LSP client implementation for when pylspclient is not available
+if not HAS_PYLSPCLIENT:
+
+    class MockJsonRpcEndpoint:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_notification(self):
+            return None
+
+    class MockLspClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def initialize(self, **kwargs):
+            return {"capabilities": {}}
+
+        def initialized(self, *args, **kwargs):
+            pass
+
+        def shutdown(self):
+            pass
+
+        def exit(self):
+            pass
+
+        def didOpen(self, **kwargs):
+            pass
+
+        def didChange(self, **kwargs):
+            pass
+
+        def completion(self, **kwargs):
+            # Return some mock completion items
+            return [
+                {
+                    "label": "mock_function",
+                    "kind": 3,
+                    "detail": "Mock function",
+                    "documentation": {
+                        "kind": "markdown",
+                        "value": "This is a mock function",
+                    },
+                },
+                {
+                    "label": "mock_variable",
+                    "kind": 6,
+                    "detail": "Mock variable",
+                    "documentation": "A mock variable",
+                },
+                {
+                    "label": "mock_class",
+                    "kind": 7,
+                    "detail": "Mock class",
+                    "documentation": {"kind": "markdown", "value": "A mock class"},
+                },
+            ]
+
+        def hover(self, textDocument, position):
+            # Return mock hover information
+            return {
+                "contents": {
+                    "kind": "markdown",
+                    "value": "**Mock Documentation**\n\nThis is mock hover information provided when pylspclient is not available.",
+                }
+            }
+
+    # Replace the actual classes with our mocks
+    pylspclient = type("", (), {})
+    pylspclient.JsonRpcEndpoint = MockJsonRpcEndpoint
+    pylspclient.LspClient = MockLspClient
+
+
+# Import additional typing modules
+from typing import List, Optional, Tuple, Union
+
+
+# Define LSP struct classes since pylspclient.lsp_structs is not available
+class Position:
+    """Position in a text document expressed as zero-based line and character offset."""
+
+    line: int
+    character: int
+
+    def __init__(self, line: int, character: int) -> None:
+        self.line = line
+        self.character = character
+
+
+class Range:
+    """A range in a text document expressed as start and end positions."""
+
+    start: Position
+    end: Position
+
+    def __init__(self, start: Position, end: Position) -> None:
+        self.start = start
+        self.end = end
+
+
+class TextEdit:
+    """A textual edit applicable to a text document."""
+
+    range: Range
+    newText: str
+
+    def __init__(self, range: Range, newText: str) -> None:
+        self.range = range
+        self.newText = newText
+
+
+class MarkupContent:
+    """A MarkupContent literal represents a string value which content is interpreted based on its kind flag."""
+
+    kind: str
+    value: str
+
+    def __init__(self, kind: str, value: str) -> None:
+        self.kind = kind
+        self.value = value
+
+
+class MarkupKind:
+    """Markup kind constants."""
+
+    PlainText: str = "plaintext"
+    Markdown: str = "markdown"
+
+
+class CompletionItem:
+    """A completion item represents a text edit which is to be triggered by a completion."""
+
+    label: str
+    kind: Optional[int]
+    detail: Optional[str]
+    documentation: Optional[Union[str, MarkupContent]]
+    insertText: Optional[str]
+    textEdit: Optional[TextEdit]
+
+    def __init__(
+        self,
+        label: str,
+        kind: Optional[int] = None,
+        detail: Optional[str] = None,
+        documentation: Optional[Union[str, MarkupContent]] = None,
+        insertText: Optional[str] = None,
+        textEdit: Optional[TextEdit] = None,
+    ) -> None:
+        self.label = label
+        self.kind = kind
+        self.detail = detail
+        self.documentation = documentation
+        self.insertText = insertText
+        self.textEdit = textEdit
+
+
+class Hover:
+    """The result of a hover request."""
+
+    contents: Optional[Union[str, MarkupContent]]
+    range: Optional[Range]
+
+    def __init__(
+        self,
+        contents: Optional[Union[str, MarkupContent]] = None,
+        range: Optional[Range] = None,
+    ) -> None:
+        self.contents = contents
+        self.range = range
+
+
+"""
+Simple text editor with LSP integration using PySide6 and pylspclient.
+
+This example demonstrates how to create a basic text editor with Language Server Protocol (LSP)
+integration, showcasing modern IDE features such as:
+- Code auto-completion (IntelliSense)
+- Documentation on hover
+- Error diagnostics with visual indicators
+- Line numbers and basic syntax styling
+
+The intention is to provide a minimal but functional implementation that illustrates
+the core components needed to build an editor with intelligent code assistance features.
+"""
+
+import os
+import sys
+import threading
+import subprocess
+from pathlib import Path
+from typing import List, Tuple
+
+from PySide6.QtCore import Qt, QRect, QSize, Signal, QObject, QTimer
+from PySide6.QtGui import (
+    QColor,
+    QTextCursor,
+    QFont,
+    QPainter,
+    QKeyEvent,
+    QMouseEvent,
+    QFontMetrics,
+    QTextCharFormat,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QPlainTextEdit,
+    QStatusBar,
+    QWidget,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QFrame,
+)
+
+# Import pylspclient for LSP functionality
+try:
+    import pylspclient
+
+    HAS_PYLSPCLIENT = True
+except ImportError:
+    print("Warning: pylspclient not found. Using mock LSP implementation.")
+    HAS_PYLSPCLIENT = False
+
+
+# Mock LSP client implementation for when pylspclient is not available
+if not HAS_PYLSPCLIENT:
+
+    class MockJsonRpcEndpoint:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_notification(self):
+            return None
+
+    class MockLspClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def initialize(self, **kwargs):
+            return {"capabilities": {}}
+
+        def initialized(self, *args, **kwargs):
+            pass
+
+        def shutdown(self):
+            pass
+
+        def exit(self):
+            pass
+
+        def didOpen(self, **kwargs):
+            pass
+
+        def didChange(self, **kwargs):
+            pass
+
+        def completion(self, **kwargs):
+            # Return some mock completion items
+            return [
+                {
+                    "label": "mock_function",
+                    "kind": 3,
+                    "detail": "Mock function",
+                    "documentation": {
+                        "kind": "markdown",
+                        "value": "This is a mock function",
+                    },
+                },
+                {
+                    "label": "mock_variable",
+                    "kind": 6,
+                    "detail": "Mock variable",
+                    "documentation": "A mock variable",
+                },
+                {
+                    "label": "mock_class",
+                    "kind": 7,
+                    "detail": "Mock class",
+                    "documentation": {"kind": "markdown", "value": "A mock class"},
+                },
+            ]
+
+        def hover(self, textDocument, position):
+            # Return mock hover information
+            return {
+                "contents": {
+                    "kind": "markdown",
+                    "value": "**Mock Documentation**\n\nThis is mock hover information provided when pylspclient is not available.",
+                }
+            }
+
+    # Replace the actual classes with our mocks
+    pylspclient = type("", (), {})
+    pylspclient.JsonRpcEndpoint = MockJsonRpcEndpoint
+    pylspclient.LspClient = MockLspClient
+
+
+# Import additional typing modules
+from typing import List, Optional, Tuple, Union
+
+
+# Define LSP struct classes since pylspclient.lsp_structs is not available
+class Position:
+    """Position in a text document expressed as zero-based line and character offset."""
+
+    line: int
+    character: int
+
+    def __init__(self, line: int, character: int) -> None:
+        self.line = line
+        self.character = character
+
+
+class Range:
+    """A range in a text document expressed as start and end positions."""
+
+    start: Position
+    end: Position
+
+    def __init__(self, start: Position, end: Position) -> None:
+        self.start = start
+        self.end = end
+
+
+class TextEdit:
+    """A textual edit applicable to a text document."""
+
+    range: Range
+    newText: str
+
+    def __init__(self, range: Range, newText: str) -> None:
+        self.range = range
+        self.newText = newText
+
+
+class MarkupContent:
+    """A MarkupContent literal represents a string value which content is interpreted based on its kind flag."""
+
+    kind: str
+    value: str
+
+    def __init__(self, kind: str, value: str) -> None:
+        self.kind = kind
+        self.value = value
+
+
+class MarkupKind:
+    """Markup kind constants."""
+
+    PlainText: str = "plaintext"
+    Markdown: str = "markdown"
+
+
+class CompletionItem:
+    """A completion item represents a text edit which is to be triggered by a completion."""
+
+    label: str
+    kind: Optional[int]
+    detail: Optional[str]
+    documentation: Optional[Union[str, MarkupContent]]
+    insertText: Optional[str]
+    textEdit: Optional[TextEdit]
+
+    def __init__(
+        self,
+        label: str,
+        kind: Optional[int] = None,
+        detail: Optional[str] = None,
+        documentation: Optional[Union[str, MarkupContent]] = None,
+        insertText: Optional[str] = None,
+        textEdit: Optional[TextEdit] = None,
+    ) -> None:
+        self.label = label
+        self.kind = kind
+        self.detail = detail
+        self.documentation = documentation
+        self.insertText = insertText
+        self.textEdit = textEdit
+
+
+class Hover:
+    """The result of a hover request."""
+
+    contents: Optional[Union[str, MarkupContent]]
+    range: Optional[Range]
+
+    def __init__(
+        self,
+        contents: Optional[Union[str, MarkupContent]] = None,
+        range: Optional[Range] = None,
+    ) -> None:
+        self.contents = contents
+        self.range = range
+
+
+# Constants
+DEFAULT_FONT_FAMILY = "Consolas, 'Courier New', monospace"
+DEFAULT_FONT_SIZE = 10
+COMPLETION_TRIGGER_CHARS = [".", "(", "[", "{", ",", " "]
+HOVER_DELAY_MS = (
+    200  # Delay before showing hover tooltip (reduced for better responsiveness)
+)
+"""
+Simple text editor with LSP integration using PySide6 and pylspclient.
+
+This example demonstrates how to create a basic text editor with Language Server Protocol (LSP)
+integration, showcasing modern IDE features such as:
+- Code auto-completion (IntelliSense)
+- Documentation on hover
+- Error diagnostics with visual indicators
+- Line numbers and basic syntax styling
+
+The intention is to provide a minimal but functional implementation that illustrates
+the core components needed to build an editor with intelligent code assistance features.
+"""
+
+import os
+import sys
+import threading
+import subprocess
+from pathlib import Path
+from typing import List, Tuple
+
+from PySide6.QtCore import Qt, QRect, QSize, Signal, QObject, QTimer
+from PySide6.QtGui import (
+    QColor,
+    QTextCursor,
+    QFont,
+    QPainter,
+    QKeyEvent,
+    QMouseEvent,
+    QFontMetrics,
+    QTextCharFormat,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QPlainTextEdit,
+    QStatusBar,
+    QWidget,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QFrame,
+)
+
+# Import pylspclient for LSP functionality
+try:
+    import pylspclient
+
+    HAS_PYLSPCLIENT = True
+except ImportError:
+    print("Warning: pylspclient not found. Using mock LSP implementation.")
+    HAS_PYLSPCLIENT = False
+
+
+# Mock LSP client implementation for when pylspclient is not available
+if not HAS_PYLSPCLIENT:
+
+    class MockJsonRpcEndpoint:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_notification(self):
+            return None
+
+    class MockLspClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def initialize(self, **kwargs):
+            return {"capabilities": {}}
+
+        def initialized(self, *args, **kwargs):
+            pass
+
+        def shutdown(self):
+            pass
+
+        def exit(self):
+            pass
+
+        def didOpen(self, **kwargs):
+            pass
+
+        def didChange(self, **kwargs):
+            pass
+
+        def completion(self, **kwargs):
+            # Return some mock completion items
+            return [
+                {
+                    "label": "mock_function",
+                    "kind": 3,
+                    "detail": "Mock function",
+                    "documentation": {
+                        "kind": "markdown",
+                        "value": "This is a mock function",
+                    },
+                },
+                {
+                    "label": "mock_variable",
+                    "kind": 6,
+                    "detail": "Mock variable",
+                    "documentation": "A mock variable",
+                },
+                {
+                    "label": "mock_class",
+                    "kind": 7,
+                    "detail": "Mock class",
+                    "documentation": {"kind": "markdown", "value": "A mock class"},
+                },
+            ]
+
+        def hover(self, textDocument, position):
+            # Return mock hover information
+            return {
+                "contents": {
+                    "kind": "markdown",
+                    "value": "**Mock Documentation**\n\nThis is mock hover information provided when pylspclient is not available.",
+                }
+            }
+
+    # Replace the actual classes with our mocks
+    pylspclient = type("", (), {})
+    pylspclient.JsonRpcEndpoint = MockJsonRpcEndpoint
+    pylspclient.LspClient = MockLspClient
+
+
+# Import additional typing modules
+from typing import List, Optional, Tuple, Union
+
+
+# Define LSP struct classes since pylspclient.lsp_structs is not available
+class Position:
+    """Position in a text document expressed as zero-based line and character offset."""
+
+    line: int
+    character: int
+
+    def __init__(self, line: int, character: int) -> None:
+        self.line = line
+        self.character = character
+
+
+class Range:
+    """A range in a text document expressed as start and end positions."""
+
+    start: Position
+    end: Position
+
+    def __init__(self, start: Position, end: Position) -> None:
+        self.start = start
+        self.end = end
+
+
+class TextEdit:
+    """A textual edit applicable to a text document."""
+
+    range: Range
+    newText: str
+
+    def __init__(self, range: Range, newText: str) -> None:
+        self.range = range
+        self.newText = newText
+
+
+class MarkupContent:
+    """A MarkupContent literal represents a string value which content is interpreted based on its kind flag."""
+
+    kind: str
+    value: str
+
+    def __init__(self, kind: str, value: str) -> None:
+        self.kind = kind
+        self.value = value
+
+
+class MarkupKind:
+    """Markup kind constants."""
+
+    PlainText: str = "plaintext"
+    Markdown: str = "markdown"
+
+
+class CompletionItem:
+    """A completion item represents a text edit which is to be triggered by a completion."""
+
+    label: str
+    kind: Optional[int]
+    detail: Optional[str]
+    documentation: Optional[Union[str, MarkupContent]]
+    insertText: Optional[str]
+    textEdit: Optional[TextEdit]
+
+    def __init__(
+        self,
+        label: str,
+        kind: Optional[int] = None,
+        detail: Optional[str] = None,
+        documentation: Optional[Union[str, MarkupContent]] = None,
+        insertText: Optional[str] = None,
+        textEdit: Optional[TextEdit] = None,
+    ) -> None:
+        self.label = label
+        self.kind = kind
+        self.detail = detail
+        self.documentation = documentation
+        self.insertText = insertText
+        self.textEdit = textEdit
+
+
+class Hover:
+    """The result of a hover request."""
+
+    contents: Optional[Union[str, MarkupContent]]
+    range: Optional[Range]
+
+    def __init__(
+        self,
+        contents: Optional[Union[str, MarkupContent]] = None,
+        range: Optional[Range] = None,
+    ) -> None:
+        self.contents = contents
+        self.range = range
+
+
+"""
+Simple text editor with LSP integration using PySide6 and pylspclient.
+
+This example demonstrates how to create a basic text editor with Language Server Protocol (LSP)
+integration, showcasing modern IDE features such as:
+- Code auto-completion (IntelliSense)
+- Documentation on hover
+- Error diagnostics with visual indicators
+- Line numbers and basic syntax styling
+
+The intention is to provide a minimal but functional implementation that illustrates
+the core components needed to build an editor with intelligent code assistance features.
+"""
+
+import os
+import sys
+import threading
+import subprocess
+from pathlib import Path
+from typing import List, Tuple
+
+from PySide6.QtCore import Qt, QRect, QSize, Signal, QObject, QTimer
+from PySide6.QtGui import (
+    QColor,
+    QTextCursor,
+    QFont,
+    QPainter,
+    QKeyEvent,
+    QMouseEvent,
+    QFontMetrics,
+    QTextCharFormat,
+)
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QPlainTextEdit,
+    QStatusBar,
+    QWidget,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QFrame,
+)
+
+# Import pylspclient for LSP functionality
+try:
+    import pylspclient
+
+    HAS_PYLSPCLIENT = True
+except ImportError:
+    print("Warning: pylspclient not found. Using mock LSP implementation.")
+    HAS_PYLSPCLIENT = False
+
+
+# Mock LSP client implementation for when pylspclient is not available
+if not HAS_PYLSPCLIENT:
+
+    class MockJsonRpcEndpoint:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def get_notification(self):
+            return None
+
+    class MockLspClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def initialize(self, **kwargs):
+            return {"capabilities": {}}
+
+        def initialized(self, *args, **kwargs):
+            pass
+
+        def shutdown(self):
+            pass
+
+        def exit(self):
+            pass
+
+        def didOpen(self, **kwargs):
+            pass
+
+        def didChange(self, **kwargs):
+            pass
+
+        def completion(self, **kwargs):
+            # Return some mock completion items
+            return [
+                {
+                    "label": "mock_function",
+                    "kind": 3,
+                    "detail": "Mock function",
+                    "documentation": {
+                        "kind": "markdown",
+                        "value": "This is a mock function",
+                    },
+                },
+                {
+                    "label": "mock_variable",
+                    "kind": 6,
+                    "detail": "Mock variable",
+                    "documentation": "A mock variable",
+                },
+                {
+                    "label": "mock_class",
+                    "kind": 7,
+                    "detail": "Mock class",
+                    "documentation": {"kind": "markdown", "value": "A mock class"},
+                },
+            ]
+
+        def hover(self, textDocument, position):
+            # Return mock hover information
+            return {
+                "contents": {
+                    "kind": "markdown",
+                    "value": "**Mock Documentation**\n\nThis is mock hover information provided when pylspclient is not available.",
+                }
+            }
+
+    # Replace the actual classes with our mocks
+    pylspclient = type("", (), {})
+    pylspclient.JsonRpcEndpoint = MockJsonRpcEndpoint
+    pylspclient.LspClient = MockLspClient
+
+
+# Import additional typing modules
+from typing import List, Optional, Tuple, Union
+
+
+# Define LSP struct classes since pylspclient.lsp_structs is not available
+class Position:
+    """Position in a text document expressed as zero-based line and character offset."""
+
+    line: int
+    character: int
+
+    def __init__(self, line: int, character: int) -> None:
+        self.line = line
+        self.character = character
+
+
+class Range:
+    """A range in a text document expressed as start and end positions."""
+
+    start: Position
+    end: Position
+
+    def __init__(self, start: Position, end: Position) -> None:
+        self.start = start
+        self.end = end
+
+
+class TextEdit:
+    """A textual edit applicable to a text document."""
+
+    range: Range
+    newText: str
+
+    def __init__(self, range: Range, newText: str) -> None:
+        self.range = range
+        self.newText = newText
+
+
+class MarkupContent:
+    """A MarkupContent literal represents a string value which content is interpreted based on its kind flag."""
+
+    kind: str
+    value: str
+
+    def __init__(self, kind: str, value: str) -> None:
+        self.kind = kind
+        self.value = value
+
+
+class MarkupKind:
+    """Markup kind constants."""
+
+    PlainText: str = "plaintext"
+    Markdown: str = "markdown"
+
+
+class CompletionItem:
+    """A completion item represents a text edit which is to be triggered by a completion."""
+
+    label: str
+    kind: Optional[int]
+    detail: Optional[str]
+    documentation: Optional[Union[str, MarkupContent]]
+    insertText: Optional[str]
+    textEdit: Optional[TextEdit]
+
+    def __init__(
+        self,
+        label: str,
+        kind: Optional[int] = None,
+        detail: Optional[str] = None,
+        documentation: Optional[Union[str, MarkupContent]] = None,
+        insertText: Optional[str] = None,
+        textEdit: Optional[TextEdit] = None,
+    ) -> None:
+        self.label = label
+        self.kind = kind
+        self.detail = detail
+        self.documentation = documentation
+        self.insertText = insertText
+        self.textEdit = textEdit
+
+
+class Hover:
+    """The result of a hover request."""
+
+    contents: Optional[Union[str, MarkupContent]]
+    range: Optional[Range]
+
+    def __init__(
+        self,
+        contents: Optional[Union[str, MarkupContent]] = None,
+        range: Optional[Range] = None,
+    ) -> None:
+        self.contents = contents
+        self.range = range
+
+
+# Constants
+DEFAULT_FONT_FAMILY = "Consolas, 'Courier New', monospace"
+DEFAULT_FONT_SIZE = 10
+COMPLETION_TRIGGER_CHARS = [".", "(", "[", "{", ",", " "]
+HOVER_DELAY_MS = (
+    200  # Delay before showing hover tooltip (reduced for better responsiveness)
+)
 
 
 # Import Qt types for type annotations
@@ -332,6 +1248,17 @@ class HoverTooltip(QLabel):
 
         # Set maximum width
         self.setMaximumWidth(400)
+
+        # Style the tooltip with a distinctive background and border
+        self.setStyleSheet(
+            """
+            background-color: #2A2A2A;
+            color: #FFFFFF;
+            border: 2px solid #007ACC;
+            border-radius: 5px;
+            padding: 8px;
+        """
+        )
 
     def set_hover_content(self, hover: Hover) -> None:
         """Set the hover content to display."""
@@ -958,6 +1885,9 @@ class TextEditorWithLSP(QPlainTextEdit):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        # Enable mouse tracking to receive mouseMoveEvent even when no button is pressed
+        self.setMouseTracking(True)
+
         # Set up editor appearance
         self.setup_editor()
 
@@ -985,6 +1915,7 @@ class TextEditorWithLSP(QPlainTextEdit):
 
         # Track hover state
         self.hover_position = None
+        self.last_mouse_pos = None  # Initialize last_mouse_pos
         self.hover_timer = QTimer(self)
         self.hover_timer.setSingleShot(True)
         self.hover_timer.timeout.connect(self.request_hover_info)
@@ -1239,22 +2170,101 @@ class ExampleClass:
         """Handle mouse move events."""
         super().mouseMoveEvent(event)
 
+        # Store the current mouse position for tooltip positioning
+        self.last_mouse_pos = event.pos()
+
         # Get position under cursor
         position = self.cursorForPosition(event.pos())
         line = position.blockNumber()
         character = position.positionInBlock()
 
+        # Get the text at the current position
+        cursor = QTextCursor(self.document())
+        cursor.movePosition(QTextCursor.Start)
+        cursor.movePosition(QTextCursor.Down, QTextCursor.MoveAnchor, line)
+        cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, character)
+        cursor.movePosition(
+            QTextCursor.Right, QTextCursor.KeepAnchor, 1
+        )  # Select one character
+        char_under_cursor = cursor.selectedText()
+
+        # Print debug information
+        print(
+            f"DEBUG: Mouse at position: line={line}, char={character}, text='{char_under_cursor}'"
+        )
+
         # Check if position changed
         new_position = (line, character)
         if new_position != self.hover_position:
+            print(f"DEBUG: Hover position changed to {new_position}")
             self.hover_position = new_position
+            # Reset and start the hover timer
+            self.hover_timer.stop()
             self.hover_timer.start(HOVER_DELAY_MS)
+            print(f"DEBUG: Hover timer started with delay {HOVER_DELAY_MS}ms")
 
     def leaveEvent(self, event):
         """Handle mouse leave events."""
         super().leaveEvent(event)
+        print("DEBUG: Mouse left editor area, stopping hover timer")
         self.hover_timer.stop()
         self.hover_tooltip.hide()
+
+    def request_hover_info(self):
+        """Request hover information at the current hover position."""
+        if self.hover_position:
+            print(f"DEBUG: Requesting hover info at position {self.hover_position}")
+            self.lsp_client.request_hover(self.hover_position)
+        else:
+            print("DEBUG: No hover position set, cannot request hover info")
+
+    def handle_hover_response(self, hover):
+        """Handle hover response from LSP."""
+        if not hover:
+            print("DEBUG: Received empty hover response")
+            self.hover_tooltip.hide()
+            return
+
+        print(
+            f"DEBUG: Received hover response: {hover.contents if hover.contents else 'No contents'}"
+        )
+
+        # Create a mock hover response if we're using the mock LSP client
+        if not HAS_PYLSPCLIENT and not hover.contents:
+            print("DEBUG: Creating mock hover content")
+            hover = Hover(
+                MarkupContent(
+                    "markdown",
+                    "**Function Documentation**\n\nThis is mock hover information for demonstration purposes.\n\n```python\ndef example_function(param1, param2):\n    # Function code here\n```",
+                )
+            )
+
+        # Set hover content
+        self.hover_tooltip.set_hover_content(hover)
+
+        # Position tooltip near the mouse cursor
+        if self.last_mouse_pos:
+            pos = self.mapToGlobal(self.last_mouse_pos)
+            # Offset slightly to not cover the text
+            pos.setX(pos.x() + 15)
+            pos.setY(pos.y() + 15)
+            print(f"DEBUG: Positioning tooltip at mouse position {pos.x()}, {pos.y()}")
+
+            # Show tooltip
+            self.hover_tooltip.move(pos)
+            self.hover_tooltip.adjustSize()
+            self.hover_tooltip.show()
+            print("DEBUG: Hover tooltip shown")
+        else:
+            # Fallback to cursor position
+            cursor = self.textCursor()
+            rect = self.cursorRect(cursor)
+            pos = self.mapToGlobal(rect.topRight())
+            pos.setX(pos.x() + 15)
+            self.hover_tooltip.move(pos)
+            self.hover_tooltip.adjustSize()
+            self.hover_tooltip.show()
+            print("DEBUG: Hover tooltip shown (fallback to cursor position)")
 
     def request_completion(self, trigger_char=None):
         """Request completion at the current cursor position."""
