@@ -366,14 +366,10 @@ class LSPClient(QObject):
             self._initialize_server()
             print("DEBUG: Server initialized")
 
-            print("DEBUG: Creating notification thread...")
-            # Start listening for notifications in a separate thread
-            self.notification_thread = threading.Thread(
-                target=self._handle_notifications, daemon=True
-            )
-            print("DEBUG: Starting notification thread...")
-            self.notification_thread.start()
-            print("DEBUG: Notification thread started")
+            # Start the LSP endpoint thread
+            print("DEBUG: Starting LSP endpoint thread...")
+            # self.lsp_endpoint.start() # It's already started automatically by the LspClient
+            print("DEBUG: LSP endpoint thread started")
 
             return True
         except Exception as e:
