@@ -434,7 +434,7 @@ class LSPClient(QObject):
         self.server_capabilities = response.get("capabilities", {})
 
         # Send initialized notification
-        self.lsp_client.initialized({})
+        self.lsp_client.initialized()
         self.initialized = True
 
     def _handle_notifications(self):
