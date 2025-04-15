@@ -100,7 +100,7 @@ if not HAS_PYLSPCLIENT:
                 },
             ]
 
-        def hover(self, **kwargs):
+        def hover(self, textDocument, position):
             # Return mock hover information
             return {
                 "contents": {
@@ -329,15 +329,36 @@ class LSPClient(QObject):
             print("DEBUG: JSON-RPC endpoint created")
 
             print("DEBUG: Creating LSP endpoint...")
-            # Create LSP endpoint with increased timeout
+            # Create LSP endpoint with increased timeout and notification handlers
+            notify_callbacks = {
+                "textDocument/publishDiagnostics": self._handle_diagnostics_notification
+            }
             self.lsp_endpoint = pylspclient.LspEndpoint(
-                self.json_rpc_endpoint, timeout=30  # Longer timeout for initialization
+                self.json_rpc_endpoint,
+                notify_callbacks=notify_callbacks,
+                timeout=30,  # Longer timeout for initialization
             )
             print("DEBUG: LSP endpoint created")
 
             print("DEBUG: Creating LSP client...")
-            # Create LSP client
-            self.lsp_client = pylspclient.LspClient(self.lsp_endpoint)
+
+            # Create LSP client with hover support
+            class ExtendedLspClient(pylspclient.LspClient):
+                def hover(self, textDocument, position):
+                    """
+                    The hover request is sent from the client to the server to request hover information at a given text
+                    document position.
+
+                    :param TextDocumentIdentifier textDocument: The text document.
+                    :param Position position: The position inside the text document.
+                    """
+                    return self.lsp_endpoint.call_method(
+                        "textDocument/hover",
+                        textDocument=textDocument,
+                        position=position,
+                    )
+
+            self.lsp_client = ExtendedLspClient(self.lsp_endpoint)
             print("DEBUG: LSP client created")
 
             print("DEBUG: Initializing server...")
@@ -437,22 +458,88 @@ class LSPClient(QObject):
         self.lsp_client.initialized()
         self.initialized = True
 
+    def _handle_diagnostics_notification(self, params):
+        """Handle textDocument/publishDiagnostics notification."""
+        if params and "diagnostics" in params:
+            diagnostics = params.get("diagnostics", [])
+            self.diagnostics_updated.emit(diagnostics)
+
     def _handle_notifications(self):
         """Handle notifications from the language server."""
-        while self.json_rpc_endpoint:
-            try:
-                notification = self.json_rpc_endpoint.get_notification()
-                if notification:
-                    method = notification.get("method")
-                    params = notification.get("params")
+        import time
+        import platform
 
-                    if method == "textDocument/publishDiagnostics" and params:
-                        # Handle diagnostics
-                        diagnostics = params.get("diagnostics", [])
-                        self.diagnostics_updated.emit(diagnostics)
-            except:
-                # If we get an exception, the server might have closed
-                break
+        # Windows doesn't support select.select() on pipes, so we need a different approach
+        is_windows = platform.system() == "Windows"
+
+        if not is_windows:
+            # On Unix-like systems, we can use select.select()
+            import select
+
+            # Set stdout to non-blocking mode
+            if hasattr(self.server_process.stdout, "fileno"):
+                try:
+                    import os
+
+                    os.set_blocking(self.server_process.stdout.fileno(), False)
+                    print("DEBUG: Set stdout to non-blocking mode")
+                except (ImportError, AttributeError, OSError) as e:
+                    print(f"WARNING: Could not set non-blocking mode: {e}")
+
+        print("DEBUG: Starting notification thread")
+        while self.json_rpc_endpoint and not getattr(self, "shutdown_flag", False):
+            try:
+                # On Windows, we can't use select.select(), so we just try to read
+                # and handle any errors that occur
+                should_continue = False
+
+                if not is_windows and hasattr(self.server_process.stdout, "fileno"):
+                    try:
+                        readable, _, _ = select.select(
+                            [self.server_process.stdout], [], [], 0.1
+                        )
+                        if not readable:
+                            time.sleep(0.01)  # Short sleep to avoid CPU spinning
+                            should_continue = True
+                    except (OSError, IOError) as e:
+                        print(f"WARNING: select.select() failed: {e}")
+                        time.sleep(0.1)
+                        should_continue = True
+
+                if should_continue:
+                    continue
+
+                # Try to read a response without blocking
+                try:
+                    notification = self.json_rpc_endpoint.recv_response()
+                    if notification:
+                        print(
+                            f"DEBUG: Received notification: {notification.get('method', 'unknown')}"
+                        )
+                        method = notification.get("method")
+                        params = notification.get("params")
+
+                        if method == "textDocument/publishDiagnostics" and params:
+                            # This should be handled by the registered callback now
+                            print(
+                                f"DEBUG: Received diagnostics with {len(params.get('diagnostics', []))} items"
+                            )
+                            self._handle_diagnostics_notification(params)
+                        elif method == "window/logMessage" and params:
+                            # Log messages from the server
+                            message = params.get("message", "")
+                            print(f"LSP Server: {message}")
+                except Exception as e:
+                    # If we get an exception reading the response, log it and continue
+                    print(f"WARNING: Error reading response: {e}")
+                    time.sleep(0.1)  # Add a small delay before retrying
+            except Exception as e:
+                # If we get an exception in the outer loop, log it and continue if possible
+                print(f"ERROR in notification thread: {e}")
+                import traceback
+
+                traceback.print_exc()
+                time.sleep(0.5)  # Add a longer delay before retrying
 
     def open_document(self, file_path: str, language_id: str, text: str):
         """Notify the server that a document has been opened."""
@@ -493,136 +580,178 @@ class LSPClient(QObject):
         if not self.initialized or not self.document_uri:
             return
 
-        # Create completion context
-        context = {}
-        if trigger_char:
-            context = {
-                "triggerKind": 2,  # TriggerCharacter
-                "triggerCharacter": trigger_char,
-            }
-        else:
-            context = {"triggerKind": 1}  # Invoked
-
-        # Send completion request
-        try:
-            response = self.lsp_client.completion(
-                textDocument={"uri": self.document_uri},
-                position={"line": position[0], "character": position[1]},
-                context=context,
-            )
-
-            # Process completion items
-            completion_items = []
-            raw_items = []
-
-            if isinstance(response, dict) and "items" in response:
-                raw_items = response["items"]
-            elif isinstance(response, list):
-                raw_items = response
-
-            # Convert raw items to CompletionItem objects
-            for item in raw_items:
-                label = item.get("label", "")
-                kind = item.get("kind")
-                detail = item.get("detail")
-
-                # Handle documentation
-                documentation = None
-                if "documentation" in item:
-                    doc = item["documentation"]
-                    if isinstance(doc, dict) and "kind" in doc and "value" in doc:
-                        documentation = MarkupContent(doc["kind"], doc["value"])
-                    else:
-                        documentation = doc
-
-                # Handle text edit
-                text_edit = None
-                if "textEdit" in item:
-                    te = item["textEdit"]
-                    if "range" in te and "newText" in te:
-                        range_obj = te["range"]
-                        start_pos = Position(
-                            range_obj["start"]["line"], range_obj["start"]["character"]
-                        )
-                        end_pos = Position(
-                            range_obj["end"]["line"], range_obj["end"]["character"]
-                        )
-                        text_edit = TextEdit(Range(start_pos, end_pos), te["newText"])
-
-                # Create CompletionItem
-                completion_item = CompletionItem(
-                    label,
-                    kind=kind,
-                    detail=detail,
-                    documentation=documentation,
-                    insertText=item.get("insertText"),
-                    textEdit=text_edit,
+        # Create a thread to handle the completion request
+        def completion_thread():
+            try:
+                print(
+                    f"DEBUG: Requesting completion at position {position}, trigger_char={trigger_char}"
                 )
-                completion_items.append(completion_item)
+                # Create completion context
+                context = {}
+                if trigger_char:
+                    context = {
+                        "triggerKind": 2,  # TriggerCharacter
+                        "triggerCharacter": trigger_char,
+                    }
+                else:
+                    context = {"triggerKind": 1}  # Invoked
 
-            self.completion_response.emit(completion_items)
-        except Exception as e:
-            print(f"Error requesting completion: {e}")
-            self.completion_response.emit([])
+                # Send completion request
+                response = self.lsp_client.completion(
+                    textDocument={"uri": self.document_uri},
+                    position={"line": position[0], "character": position[1]},
+                    context=context,
+                )
+                print(f"DEBUG: Received completion response: {type(response)}")
+
+                # Process completion items
+                completion_items = []
+                raw_items = []
+
+                if isinstance(response, dict) and "items" in response:
+                    raw_items = response["items"]
+                    print(f"DEBUG: Found {len(raw_items)} items in completion response")
+                elif isinstance(response, list):
+                    raw_items = response
+                    print(
+                        f"DEBUG: Found {len(raw_items)} items in completion response list"
+                    )
+                else:
+                    print(f"DEBUG: Unexpected completion response format: {response}")
+
+                # Convert raw items to CompletionItem objects
+                for item in raw_items:
+                    label = item.get("label", "")
+                    kind = item.get("kind")
+                    detail = item.get("detail")
+
+                    # Handle documentation
+                    documentation = None
+                    if "documentation" in item:
+                        doc = item["documentation"]
+                        if isinstance(doc, dict) and "kind" in doc and "value" in doc:
+                            documentation = MarkupContent(doc["kind"], doc["value"])
+                        else:
+                            documentation = doc
+
+                    # Handle text edit
+                    text_edit = None
+                    if "textEdit" in item:
+                        te = item["textEdit"]
+                        if "range" in te and "newText" in te:
+                            range_obj = te["range"]
+                            start_pos = Position(
+                                range_obj["start"]["line"],
+                                range_obj["start"]["character"],
+                            )
+                            end_pos = Position(
+                                range_obj["end"]["line"], range_obj["end"]["character"]
+                            )
+                            text_edit = TextEdit(
+                                Range(start_pos, end_pos), te["newText"]
+                            )
+
+                    # Create CompletionItem
+                    completion_item = CompletionItem(
+                        label,
+                        kind=kind,
+                        detail=detail,
+                        documentation=documentation,
+                        insertText=item.get("insertText"),
+                        textEdit=text_edit,
+                    )
+                    completion_items.append(completion_item)
+
+                # Emit the completion response on the main thread
+                self.completion_response.emit(completion_items)
+            except Exception as e:
+                print(f"ERROR requesting completion: {e}")
+                import traceback
+
+                traceback.print_exc()
+                self.completion_response.emit([])
+
+        # Start the thread
+        threading.Thread(target=completion_thread, daemon=True).start()
 
     def request_hover(self, position: Tuple[int, int]):
         """Request hover information at the given position."""
         if not self.initialized or not self.document_uri:
             return
 
-        # Send hover request
-        try:
-            response = self.lsp_client.hover(
-                textDocument={"uri": self.document_uri},
-                position={"line": position[0], "character": position[1]},
-            )
+        # Create a thread to handle the hover request
+        def hover_thread():
+            try:
+                print(f"DEBUG: Requesting hover at position {position}")
+                # Send hover request
+                response = self.lsp_client.hover(
+                    textDocument={"uri": self.document_uri},
+                    position={"line": position[0], "character": position[1]},
+                )
+                print(f"DEBUG: Received hover response: {type(response)}")
 
-            # Convert response to Hover object
-            hover_obj = None
-            if response and isinstance(response, dict):
-                contents = None
+                # Convert response to Hover object
+                hover_obj = None
+                if response and isinstance(response, dict):
+                    contents = None
 
-                # Handle contents
-                if "contents" in response:
-                    content_data = response["contents"]
-                    if (
-                        isinstance(content_data, dict)
-                        and "kind" in content_data
-                        and "value" in content_data
-                    ):
-                        # MarkupContent
-                        contents = MarkupContent(
-                            content_data["kind"], content_data["value"]
+                    # Handle contents
+                    if "contents" in response:
+                        content_data = response["contents"]
+                        if (
+                            isinstance(content_data, dict)
+                            and "kind" in content_data
+                            and "value" in content_data
+                        ):
+                            # MarkupContent
+                            contents = MarkupContent(
+                                content_data["kind"], content_data["value"]
+                            )
+                            print(f"DEBUG: Found MarkupContent: {content_data['kind']}")
+                        elif isinstance(content_data, str):
+                            # Plain string
+                            contents = content_data
+                            print(
+                                f"DEBUG: Found string content: {content_data[:30]}..."
+                            )
+                        elif isinstance(content_data, list) and len(content_data) > 0:
+                            # Array of content items - use the first one
+                            first_item = content_data[0]
+                            if isinstance(first_item, dict) and "value" in first_item:
+                                contents = first_item["value"]
+                            elif isinstance(first_item, str):
+                                contents = first_item
+                            print(
+                                f"DEBUG: Found list content with {len(content_data)} items"
+                            )
+
+                    # Handle range if present
+                    range_obj = None
+                    if "range" in response:
+                        range_data = response["range"]
+                        start_pos = Position(
+                            range_data["start"]["line"],
+                            range_data["start"]["character"],
                         )
-                    elif isinstance(content_data, str):
-                        # Plain string
-                        contents = content_data
-                    elif isinstance(content_data, list) and len(content_data) > 0:
-                        # Array of content items - use the first one
-                        first_item = content_data[0]
-                        if isinstance(first_item, dict) and "value" in first_item:
-                            contents = first_item["value"]
-                        elif isinstance(first_item, str):
-                            contents = first_item
+                        end_pos = Position(
+                            range_data["end"]["line"], range_data["end"]["character"]
+                        )
+                        range_obj = Range(start_pos, end_pos)
+                        print(f"DEBUG: Found range: {range_data}")
 
-                # Handle range if present
-                range_obj = None
-                if "range" in response:
-                    range_data = response["range"]
-                    start_pos = Position(
-                        range_data["start"]["line"], range_data["start"]["character"]
-                    )
-                    end_pos = Position(
-                        range_data["end"]["line"], range_data["end"]["character"]
-                    )
-                    range_obj = Range(start_pos, end_pos)
+                    hover_obj = Hover(contents, range_obj)
 
-                hover_obj = Hover(contents, range_obj)
+                # Emit the hover response on the main thread
+                self.hover_response.emit(hover_obj)
+            except Exception as e:
+                print(f"ERROR requesting hover: {e}")
+                import traceback
 
-            self.hover_response.emit(hover_obj)
-        except Exception as e:
-            print(f"Error requesting hover: {e}")
-            self.hover_response.emit(None)
+                traceback.print_exc()
+                self.hover_response.emit(None)
+
+        # Start the thread
+        threading.Thread(target=hover_thread, daemon=True).start()
 
 
 class TextEditorWithLSP(QPlainTextEdit):
