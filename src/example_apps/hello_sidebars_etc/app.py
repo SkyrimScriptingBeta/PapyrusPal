@@ -14,8 +14,9 @@ from PySide6.QtWidgets import (
     QMenu,
     QTabWidget,
     QSizePolicy,
+    QTabBar,
 )
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import Qt, QSize, QTimer
 from PySide6.QtGui import QAction, QFont
 
 
@@ -170,6 +171,9 @@ class MainWindow(QMainWindow):
         self.setTabPosition(
             Qt.DockWidgetArea.AllDockWidgetAreas, QTabWidget.TabPosition.North
         )
+
+        # Make tabs closable
+        QTimer.singleShot(0, self._make_tabs_closable)
 
         # --- Central Dock Setup ---
         self._setup_central_docks()
@@ -355,12 +359,43 @@ class MainWindow(QMainWindow):
             # Allow docking anywhere for maximum flexibility
             dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
 
-            # Add to left dock area
+            # Add to left dock area and ensure it takes up the full left side
             self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
+
+            # Set size policy to expand
+            dock_widget.setSizePolicy(
+                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+            )
+
+            # If we have any central docks, split the dock with them to ensure proper layout
+            if "Tab 1" in self.dock_widgets:
+                # Split the dock with the first tab to ensure it's positioned correctly
+                self.splitDockWidget(
+                    self.dock_widgets["Tab 1"], dock_widget, Qt.Orientation.Horizontal
+                )
             self.dock_widgets[dock_name] = dock_widget
             if self.side_widget1_action:
                 self.side_widget1_action.setChecked(True)
             self.statusBar().showMessage("Side Widget 1 opened", 2000)
+
+    def _make_tabs_closable(self) -> None:
+        """Find the QTabBar and make its tabs closable."""
+        for tab_bar in self.findChildren(QTabBar):
+            tab_bar.setTabsClosable(True)
+            tab_bar.tabCloseRequested.connect(self._handle_tab_close)
+
+    def _handle_tab_close(self, index: int) -> None:
+        """Handle the tab close request by closing the corresponding dock widget."""
+        tab_bar = self.sender()
+        if isinstance(tab_bar, QTabBar):
+            tab_text = tab_bar.tabText(index)
+            for dock_name, dock_widget in list(self.dock_widgets.items()):
+                if dock_widget.windowTitle() == tab_text:
+                    self.removeDockWidget(dock_widget)
+                    dock_widget.deleteLater()
+                    del self.dock_widgets[dock_name]
+                    self.statusBar().showMessage(f"Closed {tab_text}", 2000)
+                    break
 
     def toggle_side_widget2(self) -> None:
         """Toggle the visibility of SideWidget2 (right dock)."""
@@ -381,8 +416,20 @@ class MainWindow(QMainWindow):
             # Allow docking anywhere for maximum flexibility
             dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
 
-            # Add to right dock area
+            # Add to right dock area and ensure it takes up the full right side
             self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock_widget)
+
+            # Set size policy to expand
+            dock_widget.setSizePolicy(
+                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+            )
+
+            # If we have any central docks, split the dock with them to ensure proper layout
+            if "Tab 1" in self.dock_widgets:
+                # Split the dock with the first tab to ensure it's positioned correctly
+                self.splitDockWidget(
+                    self.dock_widgets["Tab 1"], dock_widget, Qt.Orientation.Horizontal
+                )
             self.dock_widgets[dock_name] = dock_widget
             if self.side_widget2_action:
                 self.side_widget2_action.setChecked(True)
