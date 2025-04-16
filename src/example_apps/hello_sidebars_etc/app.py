@@ -1,4 +1,5 @@
 import sys
+from typing import Optional
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -9,6 +10,8 @@ from PySide6.QtWidgets import (
     QLabel,
     QPushButton,
     QToolBar,
+    QTabBar,
+    QTabWidget,
 )
 from PySide6.QtGui import QAction, QFont
 from PySide6.QtCore import Qt
@@ -37,7 +40,7 @@ class IDEMainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Qt Docking — No Lies Edition")
-        self.resize(1200, 800)
+        self.resize(2048, 1152)
         self.setDockNestingEnabled(True)
 
         # Panels
@@ -50,12 +53,12 @@ class IDEMainWindow(QMainWindow):
         self.addDockWidget(Qt.BottomDockWidgetArea, self.bottom_panel)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.left_panel)
 
+        # Editors tabified in the center (one dock anchor, others tabified into it)
         self.editor_docks: list[QDockWidget] = []
         first_editor = self._make_editor("main.cpp")
         self.addDockWidget(Qt.RightDockWidgetArea, first_editor)
         self.editor_docks.append(first_editor)
 
-        # ✅ Fix right panel so it shows beside editors, not stacked
         self.addDockWidget(Qt.RightDockWidgetArea, self.right_panel)
         self.splitDockWidget(first_editor, self.right_panel, Qt.Horizontal)
 
@@ -67,6 +70,19 @@ class IDEMainWindow(QMainWindow):
 
         first_editor.raise_()
         self._setup_toolbar()
+        self._make_tabs_closable()
+
+        # Resize initial layout to ideal proportions
+        self.resizeDocks(
+            [self.left_panel, first_editor, self.right_panel],
+            [200, 1648, 200],
+            Qt.Horizontal,
+        )
+        self.resizeDocks(
+            [self.top_panel, first_editor, self.bottom_panel],
+            [100, 902, 150],
+            Qt.Vertical,
+        )
 
     def _setup_toolbar(self) -> None:
         toolbar = QToolBar("Toggles", self)
@@ -82,6 +98,24 @@ class IDEMainWindow(QMainWindow):
             action.setChecked(True)
             action.toggled.connect(lambda checked, d=dock: d.setVisible(checked))
             toolbar.addAction(action)
+
+    def _make_tabs_closable(self) -> None:
+        self.setTabPosition(Qt.AllDockWidgetAreas, QTabWidget.TabPosition.North)
+
+        for tab_bar in self.findChildren(QTabBar):
+            tab_bar.setTabsClosable(True)
+            tab_bar.tabCloseRequested.connect(self._handle_tab_close)
+
+    def _handle_tab_close(self, index: int) -> None:
+        tab_bar = self.sender()
+        if isinstance(tab_bar, QTabBar):
+            tab_text = tab_bar.tabText(index)
+            for dock in self.editor_docks:
+                if dock.windowTitle() == tab_text:
+                    self.removeDockWidget(dock)
+                    dock.deleteLater()
+                    self.editor_docks.remove(dock)
+                    break
 
     def _make_panel(self, title: str) -> QDockWidget:
         dock = QDockWidget(title, self)

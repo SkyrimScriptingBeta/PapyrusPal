@@ -17,6 +17,7 @@ dependencies = [
 app = "papyrus_pal.__main__:main"
 text_editor_for_lsp = "example_apps.text_editor_for_lsp.app:main"
 hello_sidebars_etc = "example_apps.hello_sidebars_etc.app:main"
+hello_sidebars1_etc = "example_apps.hello_sidebars_etc.app1:main"
 mini_test = "example_apps.mini_test.app:main"
 
 [tool.poe.tasks]
