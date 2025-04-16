@@ -16,6 +16,7 @@ dependencies = [
 [tool.poetry.scripts]
 app = "papyrus_pal.__main__:main"
 text_editor_for_lsp = "example_apps.text_editor_for_lsp.app:main"
+hello_sidebars_etc = "example_apps.hello_sidebars_etc.app:main"
 
 [tool.poe.tasks]
 dev = "poetry run app --dev"
@@ -32,7 +33,7 @@ exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pal\" --
 poethepoet = "^0.33.1"
 libsass = "^0.23.0"
 pyinstaller = "^6.12.0"
-python-lsp-server = {extras = ["all"], version = "^1.12.2"}
+python-lsp-server = { extras = ["all"], version = "^1.12.2" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
