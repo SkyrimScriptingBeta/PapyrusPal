@@ -172,11 +172,29 @@ class IDEMainWindow(QMainWindow):
         return dock
 
     def _undock_tab(self, tab_text: str) -> None:
+        print(f"Undocking tab: {tab_text}")
+        dock_to_undock: Optional[QDockWidget] = None
+
         for dock in self.editor_docks:
             if dock.windowTitle() == tab_text:
-                dock.setFloating(True)
-                dock.show()
+                dock_to_undock = dock
                 break
+
+        if not dock_to_undock:
+            return
+
+        # Undock cleanly by moving it away from the tab group first
+        self.removeDockWidget(dock_to_undock)
+        self.addDockWidget(Qt.RightDockWidgetArea, dock_to_undock)
+
+        # Make it float and show
+        dock_to_undock.setFloating(True)
+        dock_to_undock.show()
+
+        # Ensure one tab remains focused/raised if we still have them
+        remaining_tabs = [d for d in self.editor_docks if d != dock_to_undock]
+        if remaining_tabs:
+            remaining_tabs[0].raise_()
 
     def eventFilter(self, obj, event):
         if isinstance(obj, QTabBar):
@@ -186,22 +204,34 @@ class IDEMainWindow(QMainWindow):
             ):
                 self._drag_start_pos = event.pos()
                 self._drag_tab_index = obj.tabAt(event.pos())
+                self._drag_tab_text = (
+                    obj.tabText(self._drag_tab_index)
+                    if self._drag_tab_index != -1
+                    else None
+                )
 
-            elif event.type() == QEvent.Type.MouseMove and hasattr(
-                self, "_drag_tab_index"
+            elif (
+                event.type() == QEvent.Type.MouseMove
+                and hasattr(self, "_drag_tab_index")
+                and self._drag_tab_index != -1
+                and self._drag_tab_text
             ):
-                if (
-                    self._drag_tab_index != -1
-                    and (event.pos() - self._drag_start_pos).manhattanLength()
-                    > QApplication.startDragDistance()
-                ):
-                    # Trigger undock now!
-                    tab_text = obj.tabText(self._drag_tab_index)
-                    self._undock_tab(tab_text)
-                    self._drag_tab_index = -1  # only once
+                distance = (event.pos() - self._drag_start_pos).manhattanLength()
+                if distance > QApplication.startDragDistance():
+                    tab_bar_rect = obj.rect()
+                    margin = 50
+                    inflated_rect = tab_bar_rect.adjusted(
+                        -margin, -margin, margin, margin
+                    )
+                    if not inflated_rect.contains(event.pos()):
+                        print(f"Undocking tab: {self._drag_tab_text}")
+                        self._undock_tab(self._drag_tab_text)
+                        self._drag_tab_index = -1
+                        self._drag_tab_text = None
 
             elif event.type() in {QEvent.Type.MouseButtonRelease, QEvent.Type.Leave}:
                 self._drag_tab_index = -1
+                self._drag_tab_text = None
 
         return super().eventFilter(obj, event)
 
