@@ -14,7 +14,37 @@ from PySide6.QtWidgets import (
     QTabWidget,
 )
 from PySide6.QtGui import QAction, QFont
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QEvent, Qt
+
+from PySide6.QtWidgets import QTabBar
+from PySide6.QtCore import QPoint, Qt
+from PySide6.QtGui import QMouseEvent
+
+
+class DockTabBar(QTabBar):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._drag_start_pos: Optional[QPoint] = None
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.LeftButton:
+            self._drag_start_pos = event.pos()
+        super().mousePressEvent(event)
+
+    def mouseMoveEvent(self, event: QMouseEvent) -> None:
+        if (
+            self._drag_start_pos is not None
+            and (event.pos() - self._drag_start_pos).manhattanLength()
+            > QApplication.startDragDistance()
+        ):
+            index = self.tabAt(self._drag_start_pos)
+            if index != -1:
+                tab_text = self.tabText(index)
+                self.parent()._undock_tab(
+                    tab_text
+                )  # We'll define this on the main window
+                self._drag_start_pos = None  # prevent multiple triggers
+        super().mouseMoveEvent(event)
 
 
 class EditorWidget(QWidget):
@@ -104,7 +134,9 @@ class IDEMainWindow(QMainWindow):
 
         for tab_bar in self.findChildren(QTabBar):
             tab_bar.setTabsClosable(True)
+            tab_bar.setMovable(True)
             tab_bar.tabCloseRequested.connect(self._handle_tab_close)
+            tab_bar.installEventFilter(self)
 
     def _handle_tab_close(self, index: int) -> None:
         tab_bar = self.sender()
@@ -138,6 +170,40 @@ class IDEMainWindow(QMainWindow):
             | QDockWidget.DockWidgetFloatable
         )
         return dock
+
+    def _undock_tab(self, tab_text: str) -> None:
+        for dock in self.editor_docks:
+            if dock.windowTitle() == tab_text:
+                dock.setFloating(True)
+                dock.show()
+                break
+
+    def eventFilter(self, obj, event):
+        if isinstance(obj, QTabBar):
+            if (
+                event.type() == QEvent.Type.MouseButtonPress
+                and event.button() == Qt.MouseButton.LeftButton
+            ):
+                self._drag_start_pos = event.pos()
+                self._drag_tab_index = obj.tabAt(event.pos())
+
+            elif event.type() == QEvent.Type.MouseMove and hasattr(
+                self, "_drag_tab_index"
+            ):
+                if (
+                    self._drag_tab_index != -1
+                    and (event.pos() - self._drag_start_pos).manhattanLength()
+                    > QApplication.startDragDistance()
+                ):
+                    # Trigger undock now!
+                    tab_text = obj.tabText(self._drag_tab_index)
+                    self._undock_tab(tab_text)
+                    self._drag_tab_index = -1  # only once
+
+            elif event.type() in {QEvent.Type.MouseButtonRelease, QEvent.Type.Leave}:
+                self._drag_tab_index = -1
+
+        return super().eventFilter(obj, event)
 
 
 def main() -> None:
