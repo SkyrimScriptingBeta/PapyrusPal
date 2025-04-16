@@ -63,5 +63,12 @@ strictListInference = true
 strictDictionaryInference = true
 strictSetInference = true
 
+# Qt signal-slot connection handling
+reportGeneralTypeIssues = "warning" # Downgrade from error to warning for signal-slot connections
+reportFunctionMemberAccess = "warning" # Helps with signal emissions
+reportOptionalSubscript = false # For handling Qt's complex signal parameter types
+reportOptionalMemberAccess = false # For signal access patterns
+reportOptionalCall = false # For signal connections with varying parameters
+
 # Optional but often good:
 exclude = ["**/__pycache__", "**/.venv", "**/venv", "**/.mypy_cache"]

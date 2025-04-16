@@ -1,5 +1,5 @@
 import sys
-from typing import cast, List, TypeVar, override
+from typing import cast, List, TypeVar, override, Any, Callable
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -16,10 +16,16 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QAction, QFont, QMouseEvent
 from PySide6.QtCore import QEvent, Qt, QPoint, QObject
 
+# Import our custom type-safe Qt signal handlers
+from qt_helpers.typing import as_bool_handler
 
 # Type aliases for better readability
 DockList = List[QDockWidget]
 T = TypeVar("T")
+
+# Type definition for Qt signal handlers to satisfy Pylance
+# This is a workaround for Qt's signal-slot typing issues
+SignalHandler = Callable[[Any], None]
 
 
 class EditorWidget(QWidget):
@@ -78,10 +84,9 @@ class IDEMainWindow(QMainWindow):
 
         for dock in self.findChildren(QDockWidget):
             dock.topLevelChanged.connect(self._update_title_bar_for)
-            # Use a typed lambda with a default parameter
-            # Qt's signal system has complex typing that Pylance can't fully resolve
+            # Use our type-safe signal handler utility for the dockLocationChanged signal
             dock.dockLocationChanged.connect(
-                lambda _ignored, d=dock: self._update_title_bar_for(d)
+                as_bool_handler(lambda _ignored: self._update_title_bar_for(dock))
             )
 
         first_editor.raise_()
@@ -114,11 +119,12 @@ class IDEMainWindow(QMainWindow):
         ]:
             action = QAction(label, self, checkable=True)
             action.setChecked(True)
-            # Use a typed lambda with a captured dock variable
-            # The type of checked_state is bool, but Qt's signal system doesn't preserve this
+            # Use our type-safe helper for boolean signal handlers
             action.toggled.connect(
-                lambda checked_state, d=dock: self._toggle_dock_visibility(
-                    d, bool(checked_state)
+                as_bool_handler(
+                    lambda checked_state: self._toggle_dock_visibility(
+                        dock, bool(checked_state)
+                    )
                 )
             )
             toolbar.addAction(action)
