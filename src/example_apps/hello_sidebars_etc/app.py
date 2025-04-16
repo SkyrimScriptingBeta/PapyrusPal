@@ -44,6 +44,19 @@ class SideWidget1(QWidget):
         self.setLayout(layout)
 
 
+class SideWidget2(QWidget):
+    def __init__(self, parent: Optional[QWidget] = None) -> None:
+        super().__init__(parent)
+        layout = QVBoxLayout(self)
+        label = QLabel("<h2>Side Widget 2</h2>")
+        label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(label)
+        btn = QPushButton("Right Side Button")
+        layout.addWidget(btn)
+        layout.addStretch()
+        self.setLayout(layout)
+
+
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
@@ -81,6 +94,7 @@ class MainWindow(QMainWindow):
         self.central_docks[0].raise_()
 
     def _setup_side_dock(self) -> None:
+        # Left side dock
         self.side_dock1 = QDockWidget("Side Widget 1", self)
         self.side_dock1.setWidget(SideWidget1(self))
         self.side_dock1.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea)
@@ -88,13 +102,31 @@ class MainWindow(QMainWindow):
         self.side_dock1.hide()
         self.dock_widgets["side_widget1"] = self.side_dock1
 
+        # Right side dock
+        self.side_dock2 = QDockWidget("Side Widget 2", self)
+        self.side_dock2.setWidget(SideWidget2(self))
+        self.side_dock2.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.side_dock2)
+        self.side_dock2.hide()
+        self.dock_widgets["side_widget2"] = self.side_dock2
+
     def _setup_toolbar(self) -> None:
         toolbar = QToolBar("Toolbar", self)
         self.addToolBar(toolbar)
+
+        # Left panel toggle
         toggle_left_action = QAction("Toggle Left Panel", self)
         toggle_left_action.setCheckable(True)
         toggle_left_action.toggled.connect(self.toggle_left_panel)
         toolbar.addAction(toggle_left_action)
+
+        # Right panel toggle
+        toggle_right_action = QAction("Toggle Right Panel", self)
+        toggle_right_action.setCheckable(True)
+        toggle_right_action.toggled.connect(self.toggle_right_panel)
+        toolbar.addAction(toggle_right_action)
+
+        # Add tab action
         add_tab_action = QAction("Add Tab", self)
         add_tab_action.triggered.connect(self.add_new_tab)
         toolbar.addAction(add_tab_action)
@@ -121,6 +153,12 @@ class MainWindow(QMainWindow):
         else:
             self.side_dock1.hide()
 
+    def toggle_right_panel(self, checked: bool) -> None:
+        if checked:
+            self.side_dock2.show()
+        else:
+            self.side_dock2.hide()
+
     def add_new_tab(self) -> None:
         tab_count = len([k for k in self.dock_widgets if k.startswith("Tab ")]) + 1
         title = f"Tab {tab_count}"
@@ -132,7 +170,7 @@ class MainWindow(QMainWindow):
             | QDockWidget.DockWidgetFeature.DockWidgetMovable
             | QDockWidget.DockWidgetFeature.DockWidgetFloatable
         )
-        self.addDockWidget(Qt.DockWidgetArea.TopDockWidgetArea, dock)
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock)
         if self.central_docks:
             self.tabifyDockWidget(self.central_docks[0], dock)
         self.central_docks.append(dock)
