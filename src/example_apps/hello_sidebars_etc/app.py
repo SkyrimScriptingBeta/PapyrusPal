@@ -1,10 +1,9 @@
 import sys
-from typing import Optional, Dict, cast
+from typing import Optional, cast
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QWidget,
-    QDockWidget,
     QVBoxLayout,
     QLabel,
     QTextEdit,
@@ -13,10 +12,9 @@ from PySide6.QtWidgets import (
     QStatusBar,
     QMenu,
     QTabWidget,
-    QSizePolicy,
-    QTabBar,
+    QSplitter,
 )
-from PySide6.QtCore import Qt, QSize, QTimer
+from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QAction, QFont
 
 
@@ -68,9 +66,7 @@ class SideWidget1(QWidget):
 
         button = QPushButton("Test Button")
         button.clicked.connect(
-            lambda: cast(
-                QMainWindow, self.parent().parent()
-            )  # Adjust parent access if needed after changes
+            lambda: cast(QMainWindow, self.window())
             .statusBar()
             .showMessage("Side Widget 1 button clicked", 2000)
         )
@@ -106,9 +102,7 @@ class SideWidget2(QWidget):
 
         button = QPushButton("Test Button")
         button.clicked.connect(
-            lambda: cast(
-                QMainWindow, self.parent().parent()
-            )  # Adjust parent access if needed after changes
+            lambda: cast(QMainWindow, self.window())
             .statusBar()
             .showMessage("Side Widget 2 button clicked", 2000)
         )
@@ -122,32 +116,6 @@ class SideWidget2(QWidget):
         self.setLayout(layout)
 
 
-class DockableWidget(QDockWidget):
-    """A dockable widget that can be moved, closed, and docked in different areas."""
-
-    def __init__(
-        self,
-        title: str,
-        parent: Optional[QMainWindow] = None,
-        content: Optional[QWidget] = None,
-    ):
-        super().__init__(title, parent)
-
-        # Set docking features
-        self.setFeatures(
-            QDockWidget.DockWidgetFeature.DockWidgetMovable
-            | QDockWidget.DockWidgetFeature.DockWidgetFloatable
-            | QDockWidget.DockWidgetFeature.DockWidgetClosable
-        )
-
-        # Set allowed areas
-        self.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
-
-        # Set content
-        if content:
-            self.setWidget(content)
-
-
 class MainWindow(QMainWindow):
     """Main application window with docking functionality."""
 
@@ -158,84 +126,77 @@ class MainWindow(QMainWindow):
         self.view_menu: Optional[QMenu] = None
         self.side_widget1_action: Optional[QAction] = None
         self.side_widget2_action: Optional[QAction] = None
-        self.dock_widgets: Dict[str, QDockWidget] = {}
 
         # Window setup
         self.setWindowTitle("PySide6 Docking Example")
         self.resize(1000, 600)
 
-        # Enable docking in central area
-        self.setDockNestingEnabled(True)
+        # Create a central widget with a splitter layout
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
 
-        # Ensure tabs appear at the top for all dock areas
-        self.setTabPosition(
-            Qt.DockWidgetArea.AllDockWidgetAreas, QTabWidget.TabPosition.North
-        )
+        # Create a main layout for the central widget
+        main_layout = QVBoxLayout(self.central_widget)
+        main_layout.setContentsMargins(0, 0, 0, 0)
 
-        # Make tabs closable
-        QTimer.singleShot(0, self._make_tabs_closable)
+        # Create a splitter to divide the window into regions
+        self.splitter = QSplitter(Qt.Orientation.Horizontal)
+        main_layout.addWidget(self.splitter)
 
-        # --- Central Dock Setup ---
-        self._setup_central_docks()
+        # Create containers for each region
+        self.left_container = QWidget()
+        self.left_container.setVisible(False)  # Initially hidden
+
+        self.center_container = QTabWidget()
+        self.center_container.setTabsClosable(True)
+        self.center_container.setMovable(True)
+        self.center_container.setTabPosition(QTabWidget.TabPosition.North)
+        self.center_container.tabCloseRequested.connect(self._handle_tab_close)
+
+        self.right_container = QWidget()
+        self.right_container.setVisible(False)  # Initially hidden
+
+        # Add containers to splitter
+        self.splitter.addWidget(self.left_container)
+        self.splitter.addWidget(self.center_container)
+        self.splitter.addWidget(self.right_container)
+
+        # Set initial sizes (left hidden, center takes most space, right hidden)
+        self.splitter.setSizes([0, 800, 0])
+
+        # Set up UI components
         self._setup_menu_bar()
         self._setup_status_bar()
         self._setup_tool_bar()
 
+        # --- Central Tabs Setup ---
+        self._setup_central_tabs()
+
         # Show a welcome message
         self.statusBar().showMessage("Application started", 3000)
 
-    def _setup_central_docks(self) -> None:
-        """Set up the central area with dockable widgets."""
+    def _setup_central_tabs(self) -> None:
+        """Set up the central area with tabs."""
         for i in range(1, 4):
             title = f"Tab {i}"
             content = CentralWidget(f"{title} Content")
-            dock_widget = DockableWidget(title, self, content)
 
-            # Allow docking anywhere
-            dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
+            # Add tab to the center container
+            self.center_container.addTab(content, title)
 
-            # Ensure dock widgets expand to fill available space
-            dock_widget.setSizePolicy(
-                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-            )
-
-            # Add to the main window
-            self.addDockWidget(Qt.DockWidgetArea.TopDockWidgetArea, dock_widget)
-
-            # Keep track of dock widgets
-            self.dock_widgets[title] = dock_widget
-
-            # Tabify dock widgets
-            if i > 1:
-                self.tabifyDockWidget(self.dock_widgets[f"Tab {i - 1}"], dock_widget)
-
-        # Activate the first dock widget
-        self.dock_widgets["Tab 1"].raise_()
-
-    def add_new_dock(self) -> None:
-        """Add a new dockable widget."""
-        dock_count = len(self.dock_widgets) + 1
-        title = f"Tab {dock_count}"
+    def add_new_tab(self) -> None:
+        """Add a new tab to the central area."""
+        tab_count = self.center_container.count() + 1
+        title = f"Tab {tab_count}"
         content = CentralWidget(f"{title} Content")
-        dock_widget = DockableWidget(title, self, content)
 
-        # Allow docking anywhere
-        dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
+        # Add tab to the center container
+        index = self.center_container.addTab(content, title)
 
-        # Add to the main window
-        self.addDockWidget(Qt.DockWidgetArea.TopDockWidgetArea, dock_widget)
+        # Activate the new tab
+        self.center_container.setCurrentIndex(index)
 
-        # Tabify with the last added dock widget
-        last_dock = self.dock_widgets[f"Tab {dock_count - 1}"]
-        self.tabifyDockWidget(last_dock, dock_widget)
-
-        # Keep track of dock widgets
-        self.dock_widgets[title] = dock_widget
-
-        # Activate the new dock widget
-        dock_widget.raise_()
-
-        self.statusBar().showMessage(f"Added new dock: {title}", 2000)
+        self.statusBar().showMessage(f"Added new tab: {title}", 2000)
 
     def _setup_menu_bar(self) -> None:
         """Set up the menu bar with menus and actions."""
@@ -329,7 +290,7 @@ class MainWindow(QMainWindow):
 
         # Add some buttons to the toolbar
         new_tab_action = QAction("New Tab", self)
-        new_tab_action.triggered.connect(self.add_new_dock)
+        new_tab_action.triggered.connect(self.add_new_tab)
         tool_bar.addAction(new_tab_action)
 
         toggle_side1_action = QAction("Toggle Left Panel", self)
@@ -340,99 +301,86 @@ class MainWindow(QMainWindow):
         toggle_side2_action.triggered.connect(self.toggle_side_widget2)
         tool_bar.addAction(toggle_side2_action)
 
-    def toggle_side_widget1(self) -> None:
-        """Toggle the visibility of SideWidget1 (left dock)."""
-        dock_name = "side_widget1"
+    def _handle_tab_close(self, index: int) -> None:
+        """Handle the tab close request."""
+        # Get the tab text
+        tab_text = self.center_container.tabText(index)
 
-        if dock_name in self.dock_widgets:
-            # Remove existing dock widget
-            dock_widget = self.dock_widgets[dock_name]
-            self.removeDockWidget(dock_widget)
-            dock_widget.deleteLater()
-            del self.dock_widgets[dock_name]
+        # Remove the tab
+        self.center_container.removeTab(index)
+
+        self.statusBar().showMessage(f"Closed {tab_text}", 2000)
+
+    def toggle_side_widget1(self) -> None:
+        """Toggle the visibility of SideWidget1 (left side)."""
+        if self.left_container.isVisible():
+            # Hide the left container
+            self.left_container.setVisible(False)
+
+            # Update splitter sizes to give more space to center
+            sizes = self.splitter.sizes()
+            center_size = sizes[1] + sizes[0]
+            self.splitter.setSizes([0, center_size, sizes[2]])
+
             if self.side_widget1_action:
                 self.side_widget1_action.setChecked(False)
+
             self.statusBar().showMessage("Side Widget 1 closed", 2000)
         else:
-            # Create new dock widget
-            dock_widget = DockableWidget("Side Widget 1", self, SideWidget1(self))
-            # Allow docking anywhere for maximum flexibility
-            dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
+            # Create the left container content if it doesn't exist
+            if self.left_container.layout() is None:
+                left_layout = QVBoxLayout(self.left_container)
+                left_layout.setContentsMargins(0, 0, 0, 0)
+                left_layout.addWidget(SideWidget1(self))
 
-            # Add to left dock area and ensure it takes up the full left side
-            self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
+            # Show the left container
+            self.left_container.setVisible(True)
 
-            # Set size policy to expand
-            dock_widget.setSizePolicy(
-                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-            )
+            # Update splitter sizes
+            sizes = self.splitter.sizes()
+            left_size = 200
+            center_size = max(400, sizes[1] - left_size)
+            self.splitter.setSizes([left_size, center_size, sizes[2]])
 
-            # If we have any central docks, split the dock with them to ensure proper layout
-            if "Tab 1" in self.dock_widgets:
-                # Split the dock with the first tab to ensure it's positioned correctly
-                self.splitDockWidget(
-                    self.dock_widgets["Tab 1"], dock_widget, Qt.Orientation.Horizontal
-                )
-            self.dock_widgets[dock_name] = dock_widget
             if self.side_widget1_action:
                 self.side_widget1_action.setChecked(True)
+
             self.statusBar().showMessage("Side Widget 1 opened", 2000)
 
-    def _make_tabs_closable(self) -> None:
-        """Find the QTabBar and make its tabs closable."""
-        for tab_bar in self.findChildren(QTabBar):
-            tab_bar.setTabsClosable(True)
-            tab_bar.tabCloseRequested.connect(self._handle_tab_close)
-
-    def _handle_tab_close(self, index: int) -> None:
-        """Handle the tab close request by closing the corresponding dock widget."""
-        tab_bar = self.sender()
-        if isinstance(tab_bar, QTabBar):
-            tab_text = tab_bar.tabText(index)
-            for dock_name, dock_widget in list(self.dock_widgets.items()):
-                if dock_widget.windowTitle() == tab_text:
-                    self.removeDockWidget(dock_widget)
-                    dock_widget.deleteLater()
-                    del self.dock_widgets[dock_name]
-                    self.statusBar().showMessage(f"Closed {tab_text}", 2000)
-                    break
-
     def toggle_side_widget2(self) -> None:
-        """Toggle the visibility of SideWidget2 (right dock)."""
-        dock_name = "side_widget2"
+        """Toggle the visibility of SideWidget2 (right side)."""
+        if self.right_container.isVisible():
+            # Hide the right container
+            self.right_container.setVisible(False)
 
-        if dock_name in self.dock_widgets:
-            # Remove existing dock widget
-            dock_widget = self.dock_widgets[dock_name]
-            self.removeDockWidget(dock_widget)
-            dock_widget.deleteLater()
-            del self.dock_widgets[dock_name]
+            # Update splitter sizes to give more space to center
+            sizes = self.splitter.sizes()
+            center_size = sizes[1] + sizes[2]
+            self.splitter.setSizes([sizes[0], center_size, 0])
+
             if self.side_widget2_action:
                 self.side_widget2_action.setChecked(False)
+
             self.statusBar().showMessage("Side Widget 2 closed", 2000)
         else:
-            # Create new dock widget
-            dock_widget = DockableWidget("Side Widget 2", self, SideWidget2(self))
-            # Allow docking anywhere for maximum flexibility
-            dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
+            # Create the right container content if it doesn't exist
+            if self.right_container.layout() is None:
+                right_layout = QVBoxLayout(self.right_container)
+                right_layout.setContentsMargins(0, 0, 0, 0)
+                right_layout.addWidget(SideWidget2(self))
 
-            # Add to right dock area and ensure it takes up the full right side
-            self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock_widget)
+            # Show the right container
+            self.right_container.setVisible(True)
 
-            # Set size policy to expand
-            dock_widget.setSizePolicy(
-                QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-            )
+            # Update splitter sizes
+            sizes = self.splitter.sizes()
+            right_size = 200
+            center_size = max(400, sizes[1] - right_size)
+            self.splitter.setSizes([sizes[0], center_size, right_size])
 
-            # If we have any central docks, split the dock with them to ensure proper layout
-            if "Tab 1" in self.dock_widgets:
-                # Split the dock with the first tab to ensure it's positioned correctly
-                self.splitDockWidget(
-                    self.dock_widgets["Tab 1"], dock_widget, Qt.Orientation.Horizontal
-                )
-            self.dock_widgets[dock_name] = dock_widget
             if self.side_widget2_action:
                 self.side_widget2_action.setChecked(True)
+
             self.statusBar().showMessage("Side Widget 2 opened", 2000)
 
 
