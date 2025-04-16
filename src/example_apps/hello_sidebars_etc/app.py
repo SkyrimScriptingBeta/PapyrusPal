@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
     QTabWidget,
 )
 from PySide6.QtGui import QAction, QFont
-from PySide6.QtCore import QEvent, Qt, QTimer, QPoint
+from PySide6.QtCore import QEvent, Qt
 
 
 class EditorWidget(QWidget):
@@ -65,21 +65,15 @@ class IDEMainWindow(QMainWindow):
             self.addDockWidget(Qt.RightDockWidgetArea, dock)
             self.tabifyDockWidget(first_editor, dock)
             self.editor_docks.append(dock)
-            QTimer.singleShot(0, lambda d=dock: self._update_title_bar_for(d))
 
-        for dock in self.editor_docks + [
-            self.left_panel,
-            self.right_panel,
-            self.top_panel,
-            self.bottom_panel,
-        ]:
+        for dock in self.findChildren(QDockWidget):
             dock.topLevelChanged.connect(self._update_title_bar_for)
             dock.dockLocationChanged.connect(
-                lambda area, d=dock: self._update_title_bar_for(d)
+                lambda _, d=dock: self._update_title_bar_for(d)
             )
 
         first_editor.raise_()
-        QTimer.singleShot(0, lambda: self._update_title_bar_for(first_editor))
+        self._update_title_bar_for(first_editor)
 
         self._setup_toolbar()
         self._make_tabs_closable()
@@ -107,31 +101,61 @@ class IDEMainWindow(QMainWindow):
         ]:
             action = QAction(label, self, checkable=True)
             action.setChecked(True)
-            action.toggled.connect(lambda checked, d=dock: d.setVisible(checked))
+            action.toggled.connect(
+                lambda checked, d=dock: self._toggle_dock_visibility(d, checked)
+            )
             toolbar.addAction(action)
+
+    def _toggle_dock_visibility(self, dock: QDockWidget, visible: bool) -> None:
+        dock.setVisible(visible)
+        if visible:
+            self._update_title_bar_for(dock)
 
     def _make_tabs_closable(self) -> None:
         self.setTabPosition(Qt.AllDockWidgetAreas, QTabWidget.TabPosition.North)
 
+    def event(self, event):
+        if event.type() == QEvent.LayoutRequest:
+            self._install_tab_features()
+        return super().event(event)
+
+    def _install_tab_features(self) -> None:
         for tab_bar in self.findChildren(QTabBar):
-            tab_bar.setTabsClosable(True)
-            tab_bar.setMovable(True)
-            tab_bar.tabCloseRequested.connect(self._handle_tab_close)
-            tab_bar.installEventFilter(self)
+            if not tab_bar.property("_customized"):
+                tab_bar.setTabsClosable(True)
+                tab_bar.setMovable(True)
+                tab_bar.tabCloseRequested.connect(self._handle_tab_close)
+                tab_bar.installEventFilter(self)
+                tab_bar.setProperty("_customized", True)
+
+    def eventFilter(self, obj, event):
+        if isinstance(obj, QTabBar):
+            if event.type() == QEvent.MouseButtonPress:
+                self._drag_tab_start_pos = event.pos()
+                self._drag_tab_index = obj.tabAt(self._drag_tab_start_pos)
+                if self._drag_tab_index >= 0:
+                    self._drag_tab_text = obj.tabText(self._drag_tab_index)
+            elif event.type() == QEvent.MouseMove and hasattr(self, "_drag_tab_text"):
+                if (
+                    event.pos() - self._drag_tab_start_pos
+                ).manhattanLength() > QApplication.startDragDistance():
+                    self._undock_tab(self._drag_tab_text)
+                    self._drag_tab_text = None
+            elif event.type() in {QEvent.MouseButtonRelease, QEvent.Leave}:
+                self._drag_tab_text = None
+        return super().eventFilter(obj, event)
 
     def _handle_tab_close(self, index: int) -> None:
         tab_bar = self.sender()
         if isinstance(tab_bar, QTabBar):
             tab_text = tab_bar.tabText(index)
-            for dock in self.editor_docks:
+            for dock in self.findChildren(QDockWidget):
                 if dock.windowTitle() == tab_text:
                     self.removeDockWidget(dock)
                     dock.deleteLater()
-                    self.editor_docks.remove(dock)
+                    if dock in self.editor_docks:
+                        self.editor_docks.remove(dock)
                     break
-            if self.editor_docks:
-                self.editor_docks[0].raise_()
-                self._update_title_bar_for(self.editor_docks[0])
 
     def _make_panel(self, title: str) -> QDockWidget:
         dock = QDockWidget(title, self)
@@ -156,89 +180,33 @@ class IDEMainWindow(QMainWindow):
         return dock
 
     def _undock_tab(self, tab_text: str) -> None:
-        dock_to_undock: Optional[QDockWidget] = None
-
-        for dock in self.editor_docks:
+        for dock in self.findChildren(QDockWidget):
             if dock.windowTitle() == tab_text:
-                dock_to_undock = dock
+                self.removeDockWidget(dock)
+                self.addDockWidget(Qt.RightDockWidgetArea, dock)
+                dock.setFloating(True)
+                dock.show()
+                self._update_title_bar_for(dock)
                 break
-
-        if not dock_to_undock:
-            return
-
-        self.removeDockWidget(dock_to_undock)
-        self.addDockWidget(Qt.RightDockWidgetArea, dock_to_undock)
-        dock_to_undock.setFloating(True)
-        dock_to_undock.show()
-
-        remaining_tabs = [d for d in self.editor_docks if d != dock_to_undock]
-        if remaining_tabs:
-            remaining_tabs[0].raise_()
-
-        QTimer.singleShot(0, lambda d=dock_to_undock: self._update_title_bar_for(d))
-
-    def eventFilter(self, obj, event):
-        if isinstance(obj, QTabBar):
-            if (
-                event.type() == QEvent.Type.MouseButtonPress
-                and event.button() == Qt.MouseButton.LeftButton
-            ):
-                self._drag_start_pos = event.pos()
-                self._drag_tab_index = obj.tabAt(event.pos())
-                self._drag_tab_text = (
-                    obj.tabText(self._drag_tab_index)
-                    if self._drag_tab_index != -1
-                    else None
-                )
-
-            elif (
-                event.type() == QEvent.Type.MouseMove
-                and hasattr(self, "_drag_tab_index")
-                and self._drag_tab_index != -1
-                and self._drag_tab_text
-            ):
-                distance = (event.pos() - self._drag_start_pos).manhattanLength()
-                if distance > QApplication.startDragDistance():
-                    tab_bar_rect = obj.rect()
-                    margin = 50
-                    inflated_rect = tab_bar_rect.adjusted(
-                        -margin, -margin, margin, margin
-                    )
-                    if not inflated_rect.contains(event.pos()):
-                        self._undock_tab(self._drag_tab_text)
-                        self._drag_tab_index = -1
-                        self._drag_tab_text = None
-
-            elif event.type() in {QEvent.Type.MouseButtonRelease, QEvent.Type.Leave}:
-                self._drag_tab_index = -1
-                self._drag_tab_text = None
-
-        return super().eventFilter(obj, event)
 
     def _update_title_bar_for(self, dock: QDockWidget) -> None:
         if not isinstance(dock, QDockWidget):
-            print(f"[Warning] Skipping non-dock: {dock}")
             return
-
         is_tabbified = any(
             other in self.tabifiedDockWidgets(dock)
             for other in self.findChildren(QDockWidget)
             if other is not dock
         )
-
-        current = dock.titleBarWidget()
-
         if is_tabbified:
             if (
-                current is None
-                or not isinstance(current, QWidget)
-                or current.sizeHint().height() > 0
+                not isinstance(dock.titleBarWidget(), QWidget)
+                or dock.titleBarWidget().sizeHint().height() > 0
             ):
-                hidden_bar = QWidget()
-                hidden_bar.setFixedHeight(0)
-                dock.setTitleBarWidget(hidden_bar)
+                hidden = QWidget()
+                hidden.setFixedHeight(0)
+                dock.setTitleBarWidget(hidden)
         else:
-            if current is not None:
+            if dock.titleBarWidget() is not None:
                 dock.setTitleBarWidget(None)
 
 
