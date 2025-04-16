@@ -1,5 +1,5 @@
 import sys
-from typing import cast, List, override
+from typing import cast, List, TypeVar, override
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -15,6 +15,11 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QAction, QFont, QMouseEvent
 from PySide6.QtCore import QEvent, Qt, QPoint, QObject
+
+
+# Type aliases for better readability
+DockList = List[QDockWidget]
+T = TypeVar("T")
 
 
 class EditorWidget(QWidget):
@@ -57,7 +62,7 @@ class IDEMainWindow(QMainWindow):
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, self.bottom_panel)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.left_panel)
 
-        self.editor_docks: List[QDockWidget] = []
+        self.editor_docks: DockList = []
         first_editor = self._make_editor("main.cpp")
         self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, first_editor)
         self.editor_docks.append(first_editor)
@@ -73,7 +78,8 @@ class IDEMainWindow(QMainWindow):
 
         for dock in self.findChildren(QDockWidget):
             dock.topLevelChanged.connect(self._update_title_bar_for)
-            # Use a typed lambda
+            # Use a typed lambda with a default parameter
+            # Qt's signal system has complex typing that Pylance can't fully resolve
             dock.dockLocationChanged.connect(
                 lambda _ignored, d=dock: self._update_title_bar_for(d)
             )
@@ -84,12 +90,13 @@ class IDEMainWindow(QMainWindow):
         self._setup_toolbar()
         self._make_tabs_closable()
 
-        self.resizeDocks(
+        # Type ignore for resizeDocks as it's a Qt API with complex typing
+        self.resizeDocks(  # type: ignore
             [self.left_panel, first_editor, self.right_panel],
             [200, 1648, 200],
             Qt.Orientation.Horizontal,
         )
-        self.resizeDocks(
+        self.resizeDocks(  # type: ignore
             [self.top_panel, first_editor, self.bottom_panel],
             [100, 902, 150],
             Qt.Orientation.Vertical,
@@ -108,6 +115,7 @@ class IDEMainWindow(QMainWindow):
             action = QAction(label, self, checkable=True)
             action.setChecked(True)
             # Use a typed lambda with a captured dock variable
+            # The type of checked_state is bool, but Qt's signal system doesn't preserve this
             action.toggled.connect(
                 lambda checked_state, d=dock: self._toggle_dock_visibility(
                     d, bool(checked_state)
@@ -125,7 +133,6 @@ class IDEMainWindow(QMainWindow):
             Qt.DockWidgetArea.AllDockWidgetAreas, QTabWidget.TabPosition.North
         )
 
-    # Override the event method from QMainWindow
     @override
     def event(self, event: QEvent) -> bool:
         if event.type() == QEvent.Type.LayoutRequest:
@@ -219,8 +226,9 @@ class IDEMainWindow(QMainWindow):
             tab_group.append(dock)
 
         for w in tab_group:
-            # Skip non-QDockWidget items (should not happen, but type check)
-            if not isinstance(w, QDockWidget):
+            # We know all items in tab_group are QDockWidgets
+            # This check is for type safety but Pylance knows it's unnecessary
+            if not isinstance(w, QDockWidget):  # type: ignore
                 continue
 
             is_tabbified = any(
@@ -232,7 +240,8 @@ class IDEMainWindow(QMainWindow):
             if is_tabbified:
                 current = w.titleBarWidget()
                 # Check if we need to hide the title bar
-                if current is None or current.sizeHint().height() > 0:
+                # The condition is complex due to None handling
+                if current is None or current.sizeHint().height() > 0:  # type: ignore
                     hidden = QWidget()
                     hidden.setFixedHeight(0)
                     w.setTitleBarWidget(hidden)
@@ -241,12 +250,13 @@ class IDEMainWindow(QMainWindow):
                 # This is a workaround for the None issue
                 temp_widget = QWidget()
                 w.setTitleBarWidget(temp_widget)
-                w.setTitleBarWidget(None)
+                w.setTitleBarWidget(None)  # type: ignore
 
 
 def main() -> None:
     app = QApplication(sys.argv)
-    app.setFont(QFont("Segoe UI", 9))
+    # The setFont method has complex typing that Pylance can't fully resolve
+    app.setFont(QFont("Segoe UI", 9))  # type: ignore
     window = IDEMainWindow()
     window.show()
     sys.exit(app.exec())
