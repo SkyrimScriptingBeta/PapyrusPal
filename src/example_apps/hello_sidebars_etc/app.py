@@ -1,11 +1,10 @@
 import sys
-from typing import Optional, Dict, cast
+from typing import Optional, Dict, cast, List
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
     QWidget,
     QDockWidget,
-    QTabWidget,
     QVBoxLayout,
     QLabel,
     QTextEdit,
@@ -116,6 +115,32 @@ class SideWidget2(QWidget):
         self.setLayout(layout)
 
 
+class DockableWidget(QDockWidget):
+    """A dockable widget that can be moved, closed, and docked in different areas."""
+
+    def __init__(
+        self,
+        title: str,
+        parent: Optional[QMainWindow] = None,
+        content: Optional[QWidget] = None,
+    ):
+        super().__init__(title, parent)
+
+        # Set docking features
+        self.setFeatures(
+            QDockWidget.DockWidgetFeature.DockWidgetMovable
+            | QDockWidget.DockWidgetFeature.DockWidgetFloatable
+            | QDockWidget.DockWidgetFeature.DockWidgetClosable
+        )
+
+        # Set allowed areas
+        self.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
+
+        # Set content
+        if content:
+            self.setWidget(content)
+
+
 class MainWindow(QMainWindow):
     """Main application window with docking functionality."""
 
@@ -123,7 +148,6 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Initialize instance variables
-        self.tab_widget = QTabWidget()
         self.view_menu: Optional[QMenu] = None  # Will be initialized in _setup_menu_bar
         self.side_widget1_action: Optional[QAction] = (
             None  # Will be initialized in _setup_menu_bar
@@ -132,13 +156,22 @@ class MainWindow(QMainWindow):
             None  # Will be initialized in _setup_menu_bar
         )
         self.dock_widgets: Dict[str, QDockWidget] = {}
+        self.central_docks: List[DockableWidget] = []
 
         # Window setup
         self.setWindowTitle("PySide6 Docking Example")
         self.resize(1000, 600)
 
+        # Enable docking in central area
+        self.setDockNestingEnabled(True)
+
+        # Set central widget to a placeholder
+        # This is needed to allow docking in the central area
+        placeholder = QWidget()
+        self.setCentralWidget(placeholder)
+
         # Set up UI components
-        self._setup_central_widget()
+        self._setup_central_docks()
         self._setup_menu_bar()
         self._setup_status_bar()
         self._setup_tool_bar()
@@ -146,20 +179,26 @@ class MainWindow(QMainWindow):
         # Show a welcome message
         self.statusBar().showMessage("Application started", 3000)
 
-    def _setup_central_widget(self) -> None:
-        """Set up the central widget with tabs."""
-        # Configure tab widget
-        self.tab_widget.setTabPosition(QTabWidget.TabPosition.North)
-        self.tab_widget.setMovable(True)
-        self.tab_widget.setTabsClosable(True)
-
-        # Add tabs with CentralWidget instances
+    def _setup_central_docks(self) -> None:
+        """Set up the central area with dockable widgets."""
+        # Create dockable widgets for the central area
         for i in range(1, 4):
-            tab = CentralWidget(f"Tab {i} Content")
-            self.tab_widget.addTab(tab, f"Tab {i}")
+            content = CentralWidget(f"Tab {i} Content")
+            dock = DockableWidget(f"Tab {i}", self, content)
 
-        # Set as central widget
-        self.setCentralWidget(self.tab_widget)
+            # Add to central area
+            self.addDockWidget(Qt.DockWidgetArea.TopDockWidgetArea, dock)
+
+            # If not the first dock, tab with the previous one
+            if i > 1:
+                self.tabifyDockWidget(self.central_docks[-1], dock)
+
+            # Keep track of central docks
+            self.central_docks.append(dock)
+
+        # Activate the first tab
+        if self.central_docks:
+            self.central_docks[0].raise_()
 
     def _setup_menu_bar(self) -> None:
         """Set up the menu bar with menus and actions."""
@@ -265,11 +304,22 @@ class MainWindow(QMainWindow):
         tool_bar.addAction(toggle_side2_action)
 
     def add_new_tab(self) -> None:
-        """Add a new tab with a CentralWidget instance."""
-        tab_count = self.tab_widget.count() + 1
-        new_tab = CentralWidget(f"Tab {tab_count} Content")
-        self.tab_widget.addTab(new_tab, f"Tab {tab_count}")
-        self.tab_widget.setCurrentIndex(tab_count - 1)
+        """Add a new dockable widget to the central area."""
+        tab_count = len(self.central_docks) + 1
+        content = CentralWidget(f"Tab {tab_count} Content")
+        dock = DockableWidget(f"Tab {tab_count}", self, content)
+
+        # Add to central area and tabify with existing docks if any
+        self.addDockWidget(Qt.DockWidgetArea.TopDockWidgetArea, dock)
+        if self.central_docks:
+            self.tabifyDockWidget(self.central_docks[-1], dock)
+
+        # Keep track of central docks
+        self.central_docks.append(dock)
+
+        # Activate the new tab
+        dock.raise_()
+
         self.statusBar().showMessage(f"Added new tab: Tab {tab_count}", 2000)
 
     def toggle_side_widget1(self) -> None:
@@ -287,8 +337,7 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage("Side Widget 1 closed", 2000)
         else:
             # Create new dock widget
-            dock_widget = QDockWidget("Side Widget 1", self)
-            dock_widget.setWidget(SideWidget1(self))
+            dock_widget = DockableWidget("Side Widget 1", self, SideWidget1(self))
             dock_widget.setAllowedAreas(Qt.DockWidgetArea.LeftDockWidgetArea)
 
             self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
@@ -312,8 +361,7 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage("Side Widget 2 closed", 2000)
         else:
             # Create new dock widget
-            dock_widget = QDockWidget("Side Widget 2", self)
-            dock_widget.setWidget(SideWidget2(self))
+            dock_widget = DockableWidget("Side Widget 2", self, SideWidget2(self))
             dock_widget.setAllowedAreas(Qt.DockWidgetArea.RightDockWidgetArea)
 
             self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock_widget)
