@@ -1,5 +1,4 @@
 import sys
-from typing import Optional
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -192,22 +191,28 @@ class IDEMainWindow(QMainWindow):
     def _update_title_bar_for(self, dock: QDockWidget) -> None:
         if not isinstance(dock, QDockWidget):
             return
-        is_tabbified = any(
-            other in self.tabifiedDockWidgets(dock)
-            for other in self.findChildren(QDockWidget)
-            if other is not dock
-        )
-        if is_tabbified:
-            if (
-                not isinstance(dock.titleBarWidget(), QWidget)
-                or dock.titleBarWidget().sizeHint().height() > 0
-            ):
-                hidden = QWidget()
-                hidden.setFixedHeight(0)
-                dock.setTitleBarWidget(hidden)
-        else:
-            if dock.titleBarWidget() is not None:
-                dock.setTitleBarWidget(None)
+
+        # Update title bar for ALL widgets in this tab group
+        group = self.tabifiedDockWidgets(dock)
+        group.append(dock)
+
+        for w in group:
+            is_tabbified = any(
+                other in self.tabifiedDockWidgets(w)
+                for other in self.findChildren(QDockWidget)
+                if other is not w
+            )
+            if is_tabbified:
+                if (
+                    not isinstance(w.titleBarWidget(), QWidget)
+                    or w.titleBarWidget().sizeHint().height() > 0
+                ):
+                    hidden = QWidget()
+                    hidden.setFixedHeight(0)
+                    w.setTitleBarWidget(hidden)
+            else:
+                if w.titleBarWidget() is not None:
+                    w.setTitleBarWidget(None)
 
 
 def main() -> None:
