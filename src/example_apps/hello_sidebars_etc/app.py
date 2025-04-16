@@ -181,32 +181,36 @@ class IDEMainWindow(QMainWindow):
     def _undock_tab(self, tab_text: str) -> None:
         for dock in self.findChildren(QDockWidget):
             if dock.windowTitle() == tab_text:
+                siblings = self.tabifiedDockWidgets(dock)
                 self.removeDockWidget(dock)
                 self.addDockWidget(Qt.RightDockWidgetArea, dock)
                 dock.setFloating(True)
                 dock.show()
-                self._update_title_bar_for(dock)
+
+                # Update all previously tabified docks (including the undocked one)
+                for d in siblings + [dock]:
+                    self._update_title_bar_for(d)
                 break
 
     def _update_title_bar_for(self, dock: QDockWidget) -> None:
         if not isinstance(dock, QDockWidget):
             return
 
-        # Update title bar for ALL widgets in this tab group
-        group = self.tabifiedDockWidgets(dock)
-        group.append(dock)
+        tab_group = self.tabifiedDockWidgets(dock)
+        if dock not in tab_group:
+            tab_group.append(dock)
 
-        for w in group:
+        for w in tab_group:
+            if not isinstance(w, QDockWidget):
+                continue
             is_tabbified = any(
                 other in self.tabifiedDockWidgets(w)
                 for other in self.findChildren(QDockWidget)
                 if other is not w
             )
             if is_tabbified:
-                if (
-                    not isinstance(w.titleBarWidget(), QWidget)
-                    or w.titleBarWidget().sizeHint().height() > 0
-                ):
+                current = w.titleBarWidget()
+                if not isinstance(current, QWidget) or current.sizeHint().height() > 0:
                     hidden = QWidget()
                     hidden.setFixedHeight(0)
                     w.setTitleBarWidget(hidden)
