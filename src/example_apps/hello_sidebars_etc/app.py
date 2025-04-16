@@ -136,9 +136,9 @@ class IDEMainWindow(QMainWindow):
                 if self._drag_tab_index >= 0:
                     self._drag_tab_text = obj.tabText(self._drag_tab_index)
             elif event.type() == QEvent.MouseMove and hasattr(self, "_drag_tab_text"):
-                if (
-                    event.pos() - self._drag_tab_start_pos
-                ).manhattanLength() > QApplication.startDragDistance():
+                margin = 50
+                padded = obj.rect().adjusted(-margin, -margin, margin, margin)
+                if not padded.contains(event.pos()):
                     self._undock_tab(self._drag_tab_text)
                     self._drag_tab_text = None
             elif event.type() in {QEvent.MouseButtonRelease, QEvent.Leave}:
