@@ -214,10 +214,15 @@ class MainWindow(QMainWindow):
 
         # Set up central widget - a placeholder to ensure proper layout
         central_widget = QWidget()
-        central_widget.setStyleSheet(
-            "background-color: #424242; color: #ffffff;"
-        )  # Medium gray
+        central_layout = QVBoxLayout(central_widget)
+        central_layout.setContentsMargins(0, 0, 0, 0)
+        central_layout.setSpacing(0)
+        central_widget.setLayout(central_layout)
         self.setCentralWidget(central_widget)
+
+        # Add dockable area to central layout
+        for dock_widget in self.central_docks:
+            central_layout.addWidget(dock_widget.widget())
 
         # --- Central Dock Setup ---
         self._setup_central_docks()
