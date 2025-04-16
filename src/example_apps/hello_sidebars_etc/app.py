@@ -14,37 +14,7 @@ from PySide6.QtWidgets import (
     QTabWidget,
 )
 from PySide6.QtGui import QAction, QFont
-from PySide6.QtCore import QEvent, Qt
-
-from PySide6.QtWidgets import QTabBar
-from PySide6.QtCore import QPoint, Qt
-from PySide6.QtGui import QMouseEvent
-
-
-class DockTabBar(QTabBar):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self._drag_start_pos: Optional[QPoint] = None
-
-    def mousePressEvent(self, event: QMouseEvent) -> None:
-        if event.button() == Qt.LeftButton:
-            self._drag_start_pos = event.pos()
-        super().mousePressEvent(event)
-
-    def mouseMoveEvent(self, event: QMouseEvent) -> None:
-        if (
-            self._drag_start_pos is not None
-            and (event.pos() - self._drag_start_pos).manhattanLength()
-            > QApplication.startDragDistance()
-        ):
-            index = self.tabAt(self._drag_start_pos)
-            if index != -1:
-                tab_text = self.tabText(index)
-                self.parent()._undock_tab(
-                    tab_text
-                )  # We'll define this on the main window
-                self._drag_start_pos = None  # prevent multiple triggers
-        super().mouseMoveEvent(event)
+from PySide6.QtCore import QEvent, Qt, QTimer, QPoint
 
 
 class EditorWidget(QWidget):
@@ -74,16 +44,16 @@ class IDEMainWindow(QMainWindow):
         self.setDockNestingEnabled(True)
 
         # Panels
-        self.left_panel: QDockWidget = self._make_panel("Left Panel")
-        self.right_panel: QDockWidget = self._make_panel("Right Panel")
-        self.top_panel: QDockWidget = self._make_panel("Top Panel")
-        self.bottom_panel: QDockWidget = self._make_panel("Bottom Panel")
+        self.left_panel = self._make_panel("Left Panel")
+        self.right_panel = self._make_panel("Right Panel")
+        self.top_panel = self._make_panel("Top Panel")
+        self.bottom_panel = self._make_panel("Bottom Panel")
 
         self.addDockWidget(Qt.TopDockWidgetArea, self.top_panel)
         self.addDockWidget(Qt.BottomDockWidgetArea, self.bottom_panel)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.left_panel)
 
-        # Editors tabified in the center (one dock anchor, others tabified into it)
+        # Center editors (tabbified)
         self.editor_docks: list[QDockWidget] = []
         first_editor = self._make_editor("main.cpp")
         self.addDockWidget(Qt.RightDockWidgetArea, first_editor)
@@ -98,11 +68,25 @@ class IDEMainWindow(QMainWindow):
             self.tabifyDockWidget(first_editor, dock)
             self.editor_docks.append(dock)
 
+            QTimer.singleShot(0, lambda d=dock: self._update_title_bar_for(d))
+
+        for dock in self.editor_docks + [
+            self.left_panel,
+            self.right_panel,
+            self.top_panel,
+            self.bottom_panel,
+        ]:
+            dock.topLevelChanged.connect(self._update_title_bar_for)
+            dock.dockLocationChanged.connect(
+                lambda _, d=dock: self._update_title_bar_for(d)
+            )
+
         first_editor.raise_()
+        self._update_title_bar_for(first_editor)  # 🔥 FIX for main.cpp title bar
+
         self._setup_toolbar()
         self._make_tabs_closable()
 
-        # Resize initial layout to ideal proportions
         self.resizeDocks(
             [self.left_panel, first_editor, self.right_panel],
             [200, 1648, 200],
@@ -148,6 +132,9 @@ class IDEMainWindow(QMainWindow):
                     dock.deleteLater()
                     self.editor_docks.remove(dock)
                     break
+            if self.editor_docks:
+                self.editor_docks[0].raise_()
+                self._update_title_bar_for(self.editor_docks[0])
 
     def _make_panel(self, title: str) -> QDockWidget:
         dock = QDockWidget(title, self)
@@ -172,7 +159,6 @@ class IDEMainWindow(QMainWindow):
         return dock
 
     def _undock_tab(self, tab_text: str) -> None:
-        print(f"Undocking tab: {tab_text}")
         dock_to_undock: Optional[QDockWidget] = None
 
         for dock in self.editor_docks:
@@ -183,18 +169,16 @@ class IDEMainWindow(QMainWindow):
         if not dock_to_undock:
             return
 
-        # Undock cleanly by moving it away from the tab group first
         self.removeDockWidget(dock_to_undock)
         self.addDockWidget(Qt.RightDockWidgetArea, dock_to_undock)
-
-        # Make it float and show
         dock_to_undock.setFloating(True)
         dock_to_undock.show()
 
-        # Ensure one tab remains focused/raised if we still have them
         remaining_tabs = [d for d in self.editor_docks if d != dock_to_undock]
         if remaining_tabs:
             remaining_tabs[0].raise_()
+
+        QTimer.singleShot(0, lambda d=dock_to_undock: self._update_title_bar_for(d))
 
     def eventFilter(self, obj, event):
         if isinstance(obj, QTabBar):
@@ -224,7 +208,6 @@ class IDEMainWindow(QMainWindow):
                         -margin, -margin, margin, margin
                     )
                     if not inflated_rect.contains(event.pos()):
-                        print(f"Undocking tab: {self._drag_tab_text}")
                         self._undock_tab(self._drag_tab_text)
                         self._drag_tab_index = -1
                         self._drag_tab_text = None
@@ -234,6 +217,29 @@ class IDEMainWindow(QMainWindow):
                 self._drag_tab_text = None
 
         return super().eventFilter(obj, event)
+
+    def _update_title_bar_for(self, dock: QDockWidget) -> None:
+        is_tabbified = any(
+            other in self.tabifiedDockWidgets(dock)
+            for other in self.findChildren(QDockWidget)
+            if other is not dock
+        )
+
+        should_hide = is_tabbified
+        current = dock.titleBarWidget()
+
+        if should_hide:
+            if (
+                current is None
+                or not isinstance(current, QWidget)
+                or current.sizeHint().height() > 0
+            ):
+                hidden_bar = QWidget()
+                hidden_bar.setFixedHeight(0)
+                dock.setTitleBarWidget(hidden_bar)
+        else:
+            if current is not None:
+                dock.setTitleBarWidget(None)
 
 
 def main() -> None:
