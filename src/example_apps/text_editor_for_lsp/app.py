@@ -16,6 +16,7 @@ import os
 import sys
 import threading
 import subprocess
+import json
 from pathlib import Path
 from typing import List, Tuple
 
@@ -230,6 +231,105 @@ COMPLETION_TRIGGER_CHARS = [".", "(", "[", "{", ",", " "]
 HOVER_DELAY_MS = (
     200  # Delay before showing hover tooltip (reduced for better responsiveness)
 )
+
+# Language server commands and file extensions
+LANGUAGE_SERVERS = {
+    "python": {
+        "command": ["pylsp"],
+        "extensions": [".py"],
+        "language_id": "python",
+    },
+    "lua": {
+        "command": ["lua-language-server.exe"],
+        "extensions": [".lua"],
+        "language_id": "lua",
+    },
+}
+
+# Sample content for different languages
+SAMPLE_CONTENT = {
+    "python": """# LSP-enabled editor example
+import math
+import os
+import sys
+
+def example_function(param1, param2):
+    \"\"\"
+    This is an example function with docstring.
+    
+    Args:
+        param1: The first parameter
+        param2: The second parameter
+        
+    Returns:
+        The result of the computation
+    \"\"\"
+    result = param1 + param2
+    return result
+
+class ExampleClass:
+    def __init__(self, value):
+        self.value = value
+        
+    def get_value(self):
+        return self.value
+        
+    def set_value(self, new_value):
+        self.value = new_value
+
+# Try typing below this line and use autocompletion
+# Type 'math.' to see available methods
+# Hover over functions or classes to see documentation
+""",
+    "lua": """-- Example Lua file for LSP testing
+local math = require("math")
+
+---
+-- A simple function to calculate the factorial of a number
+-- @param n The number to calculate factorial for
+-- @return The factorial result
+local function factorial(n)
+    if n <= 1 then
+        return 1
+    else
+        return n * factorial(n - 1)
+    end
+end
+
+---
+-- Person class demonstration
+-- @class Person
+local Person = {}
+Person.__index = Person
+
+---
+-- Create a new Person
+-- @param name The person's name
+-- @param age The person's age
+-- @return A new Person object
+function Person.new(name, age)
+    local self = setmetatable({}, Person)
+    self.name = name
+    self.age = age
+    return self
+end
+
+---
+-- Make the person greet someone
+-- @param other The name to greet
+-- @return A greeting string
+function Person:greet(other)
+    return "Hello " .. other .. ", my name is " .. self.name
+end
+
+-- Create a person instance
+local john = Person.new("John", 30)
+
+-- Try typing below this line to test autocompletion
+-- Type 'john:' to see available methods
+-- Hover over functions or classes to see documentation
+""",
+}
 """
 Simple text editor with LSP integration using PySide6 and pylspclient.
 
@@ -1290,7 +1390,7 @@ class LSPClient(QObject):
     hover_response = Signal(object)  # Hover object
     diagnostics_updated = Signal(list)  # List of Diagnostic objects
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, language="python"):
         super().__init__(parent)
         self.server_process = None
         self.json_rpc_endpoint = None
@@ -1302,15 +1402,24 @@ class LSPClient(QObject):
         self.root_uri = None
         self.document_uri = None
         self.notification_thread = None
+        self.language = language
 
     def start_server(self):
         """Start the language server process."""
         try:
-            print("DEBUG: Starting language server process...")
-            # Start python-lsp-server process with simpler approach
-            # Based on examples from other implementations
+            print(f"DEBUG: Starting {self.language} language server process...")
+
+            # Get the command for the current language
+            if self.language not in LANGUAGE_SERVERS:
+                print(f"ERROR: Language '{self.language}' not supported")
+                return False
+
+            server_command = LANGUAGE_SERVERS[self.language]["command"]
+            print(f"DEBUG: Using command: {server_command}")
+
+            # Start language server process
             self.server_process = subprocess.Popen(
-                ["pylsp"],
+                server_command,
                 stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -1590,12 +1699,57 @@ class LSPClient(QObject):
                 else:
                     context = {"triggerKind": 1}  # Invoked
 
-                # Send completion request
-                response = self.lsp_client.completion(
-                    textDocument={"uri": self.document_uri},
-                    position={"line": position[0], "character": position[1]},
-                    context=context,
-                )
+                # Send completion request with extra error handling for Lua language server
+                try:
+                    response = self.lsp_client.completion(
+                        textDocument={"uri": self.document_uri},
+                        position={"line": position[0], "character": position[1]},
+                        context=context,
+                    )
+                except json.JSONDecodeError as e:
+                    print(f"ERROR: JSON decode error in completion request: {e}")
+                    # Return empty response for Lua server
+                    if self.language == "lua":
+                        print("Using fallback completion items for Lua")
+                        # Provide some basic Lua completions as fallback
+                        response = [
+                            {
+                                "label": "print",
+                                "kind": 3,  # Function
+                                "detail": "print(...)",
+                                "documentation": "Prints the arguments to stdout",
+                            },
+                            {
+                                "label": "require",
+                                "kind": 3,  # Function
+                                "detail": "require(module)",
+                                "documentation": "Loads the given module",
+                            },
+                            {
+                                "label": "table",
+                                "kind": 7,  # Class
+                                "detail": "Lua table library",
+                                "documentation": "Library for table manipulation",
+                            },
+                            {
+                                "label": "string",
+                                "kind": 7,  # Class
+                                "detail": "Lua string library",
+                                "documentation": "Library for string manipulation",
+                            },
+                            {
+                                "label": "math",
+                                "kind": 7,  # Class
+                                "detail": "Lua math library",
+                                "documentation": "Library for mathematical functions",
+                            },
+                        ]
+                    else:
+                        # For other languages, return empty list
+                        response = []
+                except Exception as e:
+                    print(f"ERROR: Unexpected error in completion request: {e}")
+                    response = []
                 print(f"DEBUG: Received completion response: {type(response)}")
 
                 # Process completion items
@@ -2022,54 +2176,46 @@ class TextEditorWithLSP(QPlainTextEdit):
         palette.setColor(self.foregroundRole(), QColor("#D4D4D4"))
         self.setPalette(palette)
 
-    def setup_temp_file(self):
+    def setup_temp_file(self, language="lua"):
         """Set up a temporary file for LSP."""
-        # Create a temporary Python file
+        # Create a temporary directory
         temp_dir = Path.home() / ".lsp_editor_temp"
         temp_dir.mkdir(exist_ok=True)
 
-        self.current_file = str(temp_dir / "temp_file.py")
+        # Stop previous LSP server if running
+        if hasattr(self, "lsp_client") and self.lsp_client:
+            self.lsp_client.stop_server()
+
+        # Set up new LSP client with the selected language
+        self.lsp_client = LSPClient(self, language)
+        self.lsp_client.completion_response.connect(self.handle_completion_response)
+        self.lsp_client.hover_response.connect(self.handle_hover_response)
+        self.lsp_client.diagnostics_updated.connect(self.handle_diagnostics)
+
+        # Start the LSP server
+        self.lsp_client.start_server()
+
+        # Create a temporary file with the appropriate extension
+        file_extension = LANGUAGE_SERVERS[language]["extensions"][0]
+        self.current_file = str(temp_dir / f"temp_file{file_extension}")
+
+        # Get the language ID
+        language_id = LANGUAGE_SERVERS[language]["language_id"]
+
+        # Get the sample content for the selected language
+        initial_content = SAMPLE_CONTENT.get(language, "")
+
+        # Set the content in the editor
+        self.setPlainText(initial_content)
 
         # Open the document in LSP
-        self.lsp_client.open_document(self.current_file, "python", self.toPlainText())
+        self.lsp_client.open_document(self.current_file, language_id, initial_content)
 
-        # Set some initial Python content
-        initial_content = """# LSP-enabled editor example
-import math
-import os
-import sys
-
-def example_function(param1, param2):
-    \"\"\"
-    This is an example function with docstring.
-    
-    Args:
-        param1: The first parameter
-        param2: The second parameter
-        
-    Returns:
-        The result of the computation
-    \"\"\"
-    result = param1 + param2
-    return result
-
-class ExampleClass:
-    def __init__(self, value):
-        self.value = value
-        
-    def get_value(self):
-        return self.value
-        
-    def set_value(self, new_value):
-        self.value = new_value
-
-# Try typing below this line and use autocompletion
-# Type 'math.' to see available methods
-# Hover over functions or classes to see documentation
-
-"""
-        self.setPlainText(initial_content)
-        self.lsp_client.update_document(initial_content)
+        # Update the status bar in the main window
+        if self.parent() and hasattr(self.parent(), "status_bar"):
+            self.parent().status_bar.showMessage(
+                f"LSP server started for {language.upper()}. Try typing to see completions or hover over functions."
+            )
 
     def line_number_area_width(self):
         """Calculate the width of the line number area."""
@@ -2355,12 +2501,32 @@ class MainWindow(QMainWindow):
         # Create status bar
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
+
+        # Add language selector to status bar
+        from PySide6.QtWidgets import QComboBox, QLabel
+
+        self.language_label = QLabel("Language: ")
+        self.status_bar.addPermanentWidget(self.language_label)
+
+        self.language_selector = QComboBox()
+        for lang in LANGUAGE_SERVERS.keys():
+            self.language_selector.addItem(lang.upper())
+        self.language_selector.setCurrentText("LUA")  # Default to Lua
+        self.language_selector.currentTextChanged.connect(self.change_language)
+        self.status_bar.addPermanentWidget(self.language_selector)
+
         self.status_bar.showMessage(
-            "LSP server started. Try typing 'math.' to see completions or hover over functions."
+            "LSP server started for LUA. Try typing to see completions or hover over functions."
         )
 
         # Set central widget
         self.setCentralWidget(self.editor)
+
+    def change_language(self, language):
+        """Change the language server."""
+        language = language.lower()
+        if language in LANGUAGE_SERVERS:
+            self.editor.setup_temp_file(language)
 
     def closeEvent(self, event):
         """Handle window close event."""
