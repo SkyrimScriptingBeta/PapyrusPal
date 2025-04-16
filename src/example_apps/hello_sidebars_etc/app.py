@@ -43,7 +43,6 @@ class IDEMainWindow(QMainWindow):
         self.resize(2048, 1152)
         self.setDockNestingEnabled(True)
 
-        # Panels
         self.left_panel = self._make_panel("Left Panel")
         self.right_panel = self._make_panel("Right Panel")
         self.top_panel = self._make_panel("Top Panel")
@@ -53,7 +52,6 @@ class IDEMainWindow(QMainWindow):
         self.addDockWidget(Qt.BottomDockWidgetArea, self.bottom_panel)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.left_panel)
 
-        # Center editors (tabbified)
         self.editor_docks: list[QDockWidget] = []
         first_editor = self._make_editor("main.cpp")
         self.addDockWidget(Qt.RightDockWidgetArea, first_editor)
@@ -67,7 +65,6 @@ class IDEMainWindow(QMainWindow):
             self.addDockWidget(Qt.RightDockWidgetArea, dock)
             self.tabifyDockWidget(first_editor, dock)
             self.editor_docks.append(dock)
-
             QTimer.singleShot(0, lambda d=dock: self._update_title_bar_for(d))
 
         for dock in self.editor_docks + [
@@ -78,11 +75,11 @@ class IDEMainWindow(QMainWindow):
         ]:
             dock.topLevelChanged.connect(self._update_title_bar_for)
             dock.dockLocationChanged.connect(
-                lambda _, d=dock: self._update_title_bar_for(d)
+                lambda area, d=dock: self._update_title_bar_for(d)
             )
 
         first_editor.raise_()
-        self._update_title_bar_for(first_editor)  # 🔥 FIX for main.cpp title bar
+        QTimer.singleShot(0, lambda: self._update_title_bar_for(first_editor))
 
         self._setup_toolbar()
         self._make_tabs_closable()
@@ -219,16 +216,19 @@ class IDEMainWindow(QMainWindow):
         return super().eventFilter(obj, event)
 
     def _update_title_bar_for(self, dock: QDockWidget) -> None:
+        if not isinstance(dock, QDockWidget):
+            print(f"[Warning] Skipping non-dock: {dock}")
+            return
+
         is_tabbified = any(
             other in self.tabifiedDockWidgets(dock)
             for other in self.findChildren(QDockWidget)
             if other is not dock
         )
 
-        should_hide = is_tabbified
         current = dock.titleBarWidget()
 
-        if should_hide:
+        if is_tabbified:
             if (
                 current is None
                 or not isinstance(current, QWidget)
