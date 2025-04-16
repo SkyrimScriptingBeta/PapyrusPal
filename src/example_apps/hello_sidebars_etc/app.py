@@ -1,5 +1,4 @@
 import sys
-from typing import Optional
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -50,13 +49,15 @@ class IDEMainWindow(QMainWindow):
         self.addDockWidget(Qt.TopDockWidgetArea, self.top_panel)
         self.addDockWidget(Qt.BottomDockWidgetArea, self.bottom_panel)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.left_panel)
-        self.addDockWidget(Qt.RightDockWidgetArea, self.right_panel)
 
-        # Editors tabified in the center (one dock anchor, others tabified into it)
         self.editor_docks: list[QDockWidget] = []
         first_editor = self._make_editor("main.cpp")
         self.addDockWidget(Qt.RightDockWidgetArea, first_editor)
         self.editor_docks.append(first_editor)
+
+        # ✅ Fix right panel so it shows beside editors, not stacked
+        self.addDockWidget(Qt.RightDockWidgetArea, self.right_panel)
+        self.splitDockWidget(first_editor, self.right_panel, Qt.Horizontal)
 
         for filename in ["engine.cpp", "ui.cpp"]:
             dock = self._make_editor(filename)
