@@ -3,6 +3,7 @@ from typing import Optional, Dict, cast, List
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
+    QTabWidget,
     QWidget,
     QDockWidget,
     QVBoxLayout,
@@ -12,6 +13,7 @@ from PySide6.QtWidgets import (
     QToolBar,
     QStatusBar,
     QMenu,
+    QTabBar,
 )
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QAction, QFont
@@ -179,6 +181,13 @@ class MainWindow(QMainWindow):
         # Show a welcome message
         self.statusBar().showMessage("Application started", 3000)
 
+        self.setTabPosition(
+            Qt.DockWidgetArea.AllDockWidgetAreas, QTabWidget.TabPosition.North
+        )
+
+        # Make tabs closable
+        self._make_tabs_closable()
+
     def _setup_central_docks(self) -> None:
         """Set up the central area with dockable widgets."""
         # Create dockable widgets for the central area
@@ -303,6 +312,28 @@ class MainWindow(QMainWindow):
         toggle_side2_action.triggered.connect(self.toggle_side_widget2)
         tool_bar.addAction(toggle_side2_action)
 
+    def _make_tabs_closable(self) -> None:
+        """Find the QTabBar and make its tabs closable."""
+        tab_bar = self.findChild(QTabBar)
+        if tab_bar:
+            tab_bar.setTabsClosable(True)
+            tab_bar.tabCloseRequested.connect(self._handle_tab_close)
+
+    def _handle_tab_close(self, index: int) -> None:
+        """Handle the tab close request by closing the corresponding dock widget."""
+        tab_bar = self.findChild(QTabBar)
+        if tab_bar:
+            tab_text = tab_bar.tabText(index)
+            for dock in self.findChildren(QDockWidget):
+                if dock.windowTitle() == tab_text:
+                    dock.close()
+                    # If it's one of our central docks, remove it from the list
+                    for i, central_dock in enumerate(self.central_docks):
+                        if central_dock.windowTitle() == tab_text:
+                            self.central_docks.pop(i)
+                            break
+                    break
+
     def add_new_tab(self) -> None:
         """Add a new dockable widget to the central area."""
         tab_count = len(self.central_docks) + 1
@@ -321,6 +352,9 @@ class MainWindow(QMainWindow):
         dock.raise_()
 
         self.statusBar().showMessage(f"Added new tab: Tab {tab_count}", 2000)
+
+        # Make sure the new tab is also closable
+        self._make_tabs_closable()
 
     def toggle_side_widget1(self) -> None:
         """Toggle the visibility of SideWidget1 (left dock)."""
