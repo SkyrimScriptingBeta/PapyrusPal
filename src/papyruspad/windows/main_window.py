@@ -75,13 +75,6 @@ class EditorWidget(QWidget):
         # Apply theme to entire application - use the singleton directly
         from papyruspad.app import app
 
-        # Set application style based on theme
-        if theme_name == "light":
-            app.set_app_theme("light")
-        else:
-            # All other themes use dark mode
-            app.set_app_theme("dark")
-
         # If Papyrus highlighting is active, reapply it with the new theme
         if self.highlighting_combo.currentText() == "Papyrus":
             self.editor.configure_papyrus_highlighting()

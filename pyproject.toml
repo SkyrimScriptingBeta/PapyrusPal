@@ -70,5 +70,7 @@ reportOptionalSubscript = false # For handling Qt's complex signal parameter typ
 reportOptionalMemberAccess = false # For signal access patterns
 reportOptionalCall = false # For signal connections with varying parameters
 
+# reportCallInDefaultInitializer = false # Because Qt super() and stuff
+
 # Optional but often good:
 exclude = ["**/__pycache__", "**/.venv", "**/venv", "**/.mypy_cache"]

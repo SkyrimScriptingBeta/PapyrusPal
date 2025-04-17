@@ -2,14 +2,7 @@ from PySide6.QtWidgets import QApplication
 
 
 class Application(QApplication):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args: list[str], **kwargs: dict[str, object]) -> None:
+        super().__init__(*args, *kwargs)  # type: ignore[no-untyped-call]
         self.setApplicationName("Papyrus Pad")
         self.setApplicationDisplayName("Papyrus Pad")
-
-        # Set default theme to dark mode (for Nord theme)
-        self.set_app_theme("dark")
-
-    def set_app_theme(self, theme_type):
-        """Set application-wide theme to either 'light' or 'dark'"""
-        pass
