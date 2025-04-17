@@ -1,9 +1,9 @@
 from PySide6.QtGui import QPixmap
 from qt_helpers.fonts import load_fonts
-from papyrus_pal.windows.main_window import AppMainWindow
-from papyrus_pal.qrc_resources import qt_resource_data
+from papyruspad.windows.main_window import AppMainWindow
+from papyruspad.qrc_resources import qt_resource_data
 from qt_helpers.run_app import run_app
-from papyrus_pal.app import app
+from papyruspad.app import app
 
 
 QRC_DATA = qt_resource_data

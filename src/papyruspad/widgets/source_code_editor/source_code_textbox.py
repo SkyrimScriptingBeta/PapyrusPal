@@ -4,8 +4,8 @@ from PySide6.QtCore import Qt, QRect
 from PySide6.QtGui import QColor, QFont, QPainter
 from PySide6.QtWidgets import QPlainTextEdit
 
-from papyrus_pal.syntax_highlighting.syntax_highlighter import SyntaxHighlighter, THEMES
-from papyrus_pal.widgets.source_code_editor.line_number_area import LineNumberArea
+from papyruspad.syntax_highlighting.syntax_highlighter import SyntaxHighlighter, THEMES
+from papyruspad.widgets.source_code_editor.line_number_area import LineNumberArea
 
 
 class SourceCodeTextBox(QPlainTextEdit):

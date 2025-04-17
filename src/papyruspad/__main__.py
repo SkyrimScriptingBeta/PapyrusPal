@@ -10,11 +10,11 @@ def main():
         os.environ["QT_QPA_PLATFORM"] = "windows:darkmode=1"
 
     if "--dev" in sys.argv:
-        from papyrus_pal.main import dev
+        from papyruspad.main import dev
 
         dev()
     else:
-        from papyrus_pal.main import prod
+        from papyruspad.main import prod
 
         prod()
 

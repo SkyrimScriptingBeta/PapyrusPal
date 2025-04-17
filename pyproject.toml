@@ -1,5 +1,5 @@
 [project]
-name = "papyrus-pal"
+name = "papyruspad"
 version = "0.0.1"
 description = "Your friend for Skyrim script authoring!"
 authors = [{ name = "Mrowr Purr", email = "mrowr.purr@gmail.com" }]
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [tool.poetry.scripts]
-app = "papyrus_pal.__main__:main"
+app = "papyruspad.__main__:main"
 text_editor_for_lsp = "example_apps.text_editor_for_lsp.app:main"
 hello_sidebars_etc = "example_apps.hello_sidebars_etc.app:main"
 hello_sidebars1_etc = "example_apps.hello_sidebars_etc.app1:main"
@@ -27,9 +27,9 @@ dev-dark = "poetry run app --dev --dark"
 prod = "poetry run app"
 prod-light = "poetry run app --light"
 prod-dark = "poetry run app --dark"
-qrc = "pyside6-rcc -o src/papyrus_pal/qrc_resources.py resources/resources.qrc"
-exe = "pyinstaller --onefile --windowed --noconfirm --name \"Papyrus Pal\" --icon resources/images/icon.ico src/papyrus_pal/__main__.py"
-exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pal\" --icon resources/images/icon.ico src/papyrus_pal/__main__.py"
+qrc = "pyside6-rcc -o src/papyruspad/qrc_resources.py resources/resources.qrc"
+exe = "pyinstaller --onefile --windowed --noconfirm --name \"Papyrus Pad\" --icon resources/images/icon.ico src/papyruspad/__main__.py"
+exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pad\" --icon resources/images/icon.ico src/papyruspad/__main__.py"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.33.1"

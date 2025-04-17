@@ -3,7 +3,7 @@
 from PySide6.QtCore import QRegularExpression
 from PySide6.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
 
-from papyrus_pal.syntax_highlighting.themes import light, dark, nord, monokai
+from papyruspad.syntax_highlighting.themes import light, dark, nord, monokai
 
 # Dictionary to store all available themes
 THEMES = {

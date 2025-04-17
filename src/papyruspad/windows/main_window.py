@@ -12,7 +12,7 @@ from PySide6.QtWidgets import (
 
 from qt_helpers.widget import widget
 from qt_helpers.window import window
-from papyrus_pal.widgets.source_code_editor.source_code_textbox import SourceCodeTextBox
+from papyruspad.widgets.source_code_editor.source_code_textbox import SourceCodeTextBox
 
 
 @widget()
@@ -73,7 +73,7 @@ class EditorWidget(QWidget):
         self.editor.set_theme(theme_name)
 
         # Apply theme to entire application - use the singleton directly
-        from papyrus_pal.app import app
+        from papyruspad.app import app
 
         # Set application style based on theme
         if theme_name == "light":
@@ -97,12 +97,12 @@ class EditorWidget(QWidget):
 
 @window()
 class AppMainWindow(QMainWindow):
-    """Main application window for PapyrusPal."""
+    """Main application window for PapyrusPad."""
 
     central_widget: EditorWidget = field(default_factory=EditorWidget)
 
     def _init(self):
-        self.setWindowTitle("PapyrusPal - Papyrus Script Editor")
+        self.setWindowTitle("PapyrusPad - Papyrus Script Editor")
         self.resize(1000, 800)
         self.create_toolbar()
 
