@@ -1,5 +1,5 @@
 [project]
-name = "papyruspad"
+name = "skyrim_mod_maker"
 version = "0.0.1"
 description = "Your friend for Skyrim script authoring!"
 authors = [{ name = "Mrowr Purr", email = "mrowr.purr@gmail.com" }]
@@ -14,11 +14,7 @@ dependencies = [
 ]
 
 [tool.poetry.scripts]
-app = "papyruspad.__main__:main"
-text_editor_for_lsp = "example_apps.text_editor_for_lsp.app:main"
-hello_sidebars_etc = "example_apps.hello_sidebars_etc.app:main"
-hello_sidebars1_etc = "example_apps.hello_sidebars_etc.app1:main"
-mini_test = "example_apps.mini_test.app:main"
+app = "skyrim_mod_maker.app.__main__:main"
 
 [tool.poe.tasks]
 dev = "poetry run app --dev"
@@ -27,9 +23,9 @@ dev-dark = "poetry run app --dev --dark"
 prod = "poetry run app"
 prod-light = "poetry run app --light"
 prod-dark = "poetry run app --dark"
-qrc = "pyside6-rcc -o src/papyruspad/qrc_resources.py resources/resources.qrc"
-exe = "pyinstaller --onefile --windowed --noconfirm --name \"Papyrus Pad\" --icon resources/images/icon.ico src/papyruspad/__main__.py"
-exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pad\" --icon resources/images/icon.ico src/papyruspad/__main__.py"
+qrc = "pyside6-rcc -o src/skyrim_mod_maker/app/qrc_resources.py resources/resources.qrc"
+exe = "pyinstaller --onefile --windowed --noconfirm --name \"Papyrus Pad\" --icon resources/images/icon.ico src/skyrim_mod_maker/app/__main__.py"
+exe-dir = "pyinstaller --onedir --windowed --noconfirm --name \"Papyrus Pad\" --icon resources/images/icon.ico src/skyrim_mod_maker/app/__main__.py"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.33.1"

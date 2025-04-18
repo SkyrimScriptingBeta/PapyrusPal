@@ -10,11 +10,11 @@ def main():
         os.environ["QT_QPA_PLATFORM"] = "windows:darkmode=1"
 
     if "--dev" in sys.argv:
-        from papyruspad.main import dev
+        from skyrim_mod_maker.app.main import dev
 
         dev()
     else:
-        from papyruspad.main import prod
+        from skyrim_mod_maker.app.main import prod
 
         prod()
 
