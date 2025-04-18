@@ -2,7 +2,8 @@
 <RCC version="1.0">
   <qresource prefix="/">
     <file alias="styles.qss">styles.qss</file>
-    <file alias="icon.ico">images/icon.ico</file>
+    <file alias="icon.ico">images/icon/icon.ico</file>
+    <file alias="logo-512.png">images/icon/icon-512.png</file>
     <file alias="fonts/FuckinGwenhwyfar.ttf">fonts/fuckin-gwenhwyfar/FuckinGwenhwyfar.ttf</file>
     <file alias="fonts/FiraCode.ttf">fonts\Fira_Code_v6.2\variable_ttf\FiraCode-VF.ttf</file>
     <file alias="fonts/FiraCodeiScript.ttf">fonts\FiraCodeiScript-master\FiraCodeiScript-Italic.ttf</file>
